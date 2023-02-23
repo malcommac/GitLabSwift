@@ -210,9 +210,11 @@ public extension Model {
     }
     
     struct ShaCompareResult: Decodable {
-        public let commit: Commit
+        public let commit: Commit?
         public let commits: [Commit]
         public let diffs: [Diff]
+        public let compare_timeout: Bool?
+        public let compare_same_ref: Bool?
     }
     
     struct Diff: Decodable {
