@@ -23,7 +23,7 @@ extension APIService {
         ///   - email: Public email address of the user.
         ///   - size: Single pixel dimension (because images are squares).
         /// - Returns: avatar.
-        func url(email: String, size: Int? = nil) async throws -> GitLabResponse<Model.Avatar> {
+        public func url(email: String, size: Int? = nil) async throws -> GitLabResponse<Model.Avatar> {
             let options = APIOptionsCollection([
                 APIOption(key: "email", email),
                 APIOption(key: "size", size)

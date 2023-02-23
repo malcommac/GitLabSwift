@@ -25,7 +25,7 @@ extension APIService {
         ///   - ref: The name of branch, tag or commit.
         ///   - project: The ID or URL-encoded path of the project owned by the authenticated user.
         /// - Returns: file
-        func fileInfo(path: String,
+        public func fileInfo(path: String,
                       ref: String,
                       project: DataTypes.ProjectID) async throws -> GitLabResponse<Model.File> {
             let options = APIOptionsCollection([
@@ -56,7 +56,7 @@ extension APIService {
         ///   - rangeEnd: The last line of the range to blame.
         ///   - project: The ID or URL-encoded path of the project owned by the authenticated user.
         /// - Returns: file blame
-        func blame(path: String,
+        public func blame(path: String,
                    ref: String,
                    filePath: String,
                    rangeStart: Int,
@@ -81,7 +81,7 @@ extension APIService {
         ///   - lfs: Determines if the response should be Git LFS file contents, rather than the pointer.
         ///   - project: The ID or URL-encoded path of the project owned by the authenticated user.
         /// - Returns: generic response.
-        func file(path: String,
+        public func file(path: String,
                   ref: String,
                   lfs: Bool? = nil,
                   project: DataTypes.ProjectID) async throws -> GitLabResponse<Model.NoResponse> {
@@ -105,7 +105,7 @@ extension APIService {
         ///   - project: The ID or URL-encoded path of the project owned by the authenticated user.
         ///   - callback: configuration callback.
         /// - Returns: generic response
-        func createFile(branch: String,
+        public func createFile(branch: String,
                         commit: String,
                         content: String,
                         filePath: String,
@@ -133,7 +133,7 @@ extension APIService {
         ///   - project: The ID or URL-encoded path of the project owned by the authenticated user.
         ///   - callback: configuration callback.
         /// - Returns: generic response
-        func updateFile(branch: String,
+        public func updateFile(branch: String,
                         commit: String,
                         content: String,
                         filePath: String,
@@ -160,7 +160,7 @@ extension APIService {
         ///   - project: The ID or URL-encoded path of the project owned by the authenticated user.
         ///   - callback: configuration callback.
         /// - Returns: generic response
-        func deleteFile(branch: String,
+        public func deleteFile(branch: String,
                         commit: String,
                         content: String,
                         filePath: String,

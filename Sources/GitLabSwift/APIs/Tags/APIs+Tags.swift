@@ -27,7 +27,7 @@ extension APIService {
         ///   - sort: Return tags sorted by value.
         ///   - search: Return list of tags matching the search criteria.
         /// - Returns: tags
-        func list(project: DataTypes.ProjectID,
+        public func list(project: DataTypes.ProjectID,
                   order: DataTypes.TagsOrder? = nil,
                   sort: DataTypes.Sort? = nil,
                   search: DataTypes.Search? = nil) async throws -> GitLabResponse<[Model.Tag]> {
@@ -47,7 +47,7 @@ extension APIService {
         ///   - name: The name of the tag
         ///   - project: The ID or URL-encoded path of the project owned by the authenticated user
         /// - Returns: found tag
-        func get(name: String,
+        public func get(name: String,
                  project: DataTypes.ProjectID) async throws -> GitLabResponse<Model.Tag> {
             let options = APIOptionsCollection([
                 APIOption(key: "id", project),
@@ -65,7 +65,7 @@ extension APIService {
         ///   - project: The ID or URL-encoded path of the project owned by the authenticated user
         ///   - message: Creates annotated tag
         /// - Returns: new tag
-        func create(name: String,
+        public func create(name: String,
                     ref: String,
                     project: DataTypes.ProjectID,
                     message: String? = nil) async throws -> GitLabResponse<Model.Tag> {
@@ -85,7 +85,7 @@ extension APIService {
         ///   - name: The name of a tag
         ///   - project: The ID or URL-encoded path of the project owned by the authenticated user
         /// - Returns: no response
-        func delete(name: String,
+        public func delete(name: String,
                     project: DataTypes.ProjectID) async throws -> GitLabResponse<Model.NoResponse> {
             let options = APIOptionsCollection([
                 APIOption(key: "id", project),

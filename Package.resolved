@@ -1,0 +1,14 @@
+{
+  "pins" : [
+    {
+      "identity" : "realhttp",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/immobiliare/RealHTTP.git",
+      "state" : {
+        "revision" : "51697c00589b61ba402131c226c1d6a958e4e704",
+        "version" : "1.8.0"
+      }
+    }
+  ],
+  "version" : 2
+}

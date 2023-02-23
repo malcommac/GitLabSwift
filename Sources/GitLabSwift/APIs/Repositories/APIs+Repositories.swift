@@ -24,7 +24,7 @@ extension APIService {
         ///   - project: The ID or URL-encoded path of the project owned by the authenticated user.
         ///   - callback: configuration callback.
         /// - Returns: list of files and folders
-        func list(project: DataTypes.ProjectID,
+        public func list(project: DataTypes.ProjectID,
                          _ callback: ((APIOptions.RepositoriesSearch) -> Void)? = nil) async throws -> GitLabResponse<[Model.Repository.Tree]> {
             let options = APIOptions.RepositoriesSearch(projectID: project, callback)
             return try await gitlab.execute(.init(endpoint: Endpoints.Repositories.tree, options: options))
@@ -38,7 +38,7 @@ extension APIService {
         ///   - sha: The blob SHA.
         ///   - project: The ID or URL-encoded path of the project owned by the authenticated user.
         /// - Returns: generic response
-        func blob(sha: String,
+        public func blob(sha: String,
                   project: DataTypes.ProjectID) async throws -> GitLabResponse<Model.NoResponse> {
             let options = APIOptionsCollection([
                 APIOption(key: "id", project),
@@ -54,7 +54,7 @@ extension APIService {
         ///   - sha: The blob SHA.
         ///   - project: The ID or URL-encoded path of the project owned by the authenticated user.
         /// - Returns: generic response
-        func blobRaw(sha: String,
+        public func blobRaw(sha: String,
                   project: DataTypes.ProjectID) async throws -> GitLabResponse<Model.NoResponse> {
             let options = APIOptionsCollection([
                 APIOption(key: "id", project),
@@ -72,7 +72,7 @@ extension APIService {
         ///   - sha: The commit SHA to download.
         ///   - format: The commit SHA to download.
         /// - Returns: generic response
-        func fileArchive(project: DataTypes.ProjectID,
+        public func fileArchive(project: DataTypes.ProjectID,
                          path: String? = nil,
                          sha: String? = nil,
                          format: DataTypes.ArchiveFormat = .zip) async throws -> GitLabResponse<Model.NoResponse> {
@@ -98,7 +98,7 @@ extension APIService {
         ///               - `false` to compare using merge base `(from…to)`’.
         ///               Default is `false`.
         /// - Returns: diff
-        func compare(project: DataTypes.ProjectID,
+        public func compare(project: DataTypes.ProjectID,
                      fromSha: String,
                      toSha: String,
                      fromProjectId: Int? = nil,
@@ -121,7 +121,7 @@ extension APIService {
         ///   - orderBy: Return contributors ordered by `name`, `email`, or `commits` (orders by commit date) fields.
         ///   - sort: Return contributors sorted.
         /// - Returns: list of contributors
-        func contributors(project: DataTypes.ProjectID,
+        public func contributors(project: DataTypes.ProjectID,
                           orderBy: DataTypes.ContributorsOrder,
                           sort: DataTypes.Sort) async throws -> GitLabResponse<[Model.Contributor]> {
             let options = APIOptionsCollection([
@@ -139,7 +139,7 @@ extension APIService {
         ///   - project: The ID or URL-encoded path of the project.
         ///   - refs: The refs to find the common ancestor of. Accepts multiple refs.
         /// - Returns: common ancestor info
-        func mergeBase(project: DataTypes.ProjectID,
+        public func mergeBase(project: DataTypes.ProjectID,
                        refs: [String]) async throws -> GitLabResponse<Model.CommonAncestor> {
             let options = APIOptionsCollection([
                 APIOption(key: "id", project),
@@ -154,7 +154,7 @@ extension APIService {
         ///   - version: The version to generate the changelog for. The format must follow semantic versioning.
         ///   - project: Referenced project.
         ///   - callback: Configuration callback.
-        func addChangelog(version: String,
+        public func addChangelog(version: String,
                           project: DataTypes.ProjectID,
                           _ callback: ((APIOptions.AddChangelog) -> Void)? = nil) async throws -> GitLabResponse<Model.NoResponse> {
             let options = APIOptions.AddChangelog(version: version, project: project, callback)
@@ -173,7 +173,7 @@ extension APIService {
         ///   - project: referenced project.
         ///   - callback: configuration callback.
         /// - Returns: changelog.
-        func generateChangelog(version: String,
+        public func generateChangelog(version: String,
                                project: DataTypes.ProjectID,
                                _ callback: ((APIOptions.GenerateChangelog) -> Void)? = nil) async throws -> GitLabResponse<Model.Changelog> {
             let options = APIOptions.GenerateChangelog(version: version, project: project, callback)
