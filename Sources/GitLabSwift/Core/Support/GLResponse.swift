@@ -79,7 +79,7 @@ public class GLResponse<Object: Decodable>: Response {
     /// Initialize a new response from gitlab service from a raw http response.
     ///
     /// - Parameter httpResponse: http response received.
-    internal init(httpResponse: HTTPResponse, decoder: JSONDecoder?) {
+    init(httpResponse: HTTPResponse, decoder: JSONDecoder?) {
         self.httpResponse = httpResponse
         self.jsonDecoder = decoder ?? JSONDecoder()
     }

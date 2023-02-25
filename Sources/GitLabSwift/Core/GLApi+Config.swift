@@ -77,7 +77,7 @@ public struct Config {
     /// Get the authentication header's key and values.
     ///
     /// - Returns: header key and value if available.
-    internal func authenticationToken() -> (key: String, value: String)? {
+    func authenticationToken() -> (key: String, value: String)? {
         guard let authentication else { return nil }
         
         return (authentication.key, authentication.value)
@@ -106,7 +106,7 @@ extension Config {
             }
         }
         
-        internal var key: String {
+        var key: String {
             switch self {
             case .jobToken: return ""
             case .oAuthToken: return ""

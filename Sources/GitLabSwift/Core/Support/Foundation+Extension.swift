@@ -21,7 +21,7 @@ extension HTTPHeaders {
     ///   - key: key to retrive.
     ///   - defaultValue: default value in case of failure.
     /// - Returns: parsed or default value
-    public func intValue(forKey key: String, defaultValue: Int) -> Int {
+    func intValue(forKey key: String, defaultValue: Int) -> Int {
         guard let strValue = value(for: key) else {
             return defaultValue
         }
@@ -33,7 +33,7 @@ extension HTTPHeaders {
     ///
     /// - Parameter key: key to retrive.
     /// - Returns: parsed value, `nil` if not exists.
-    public func int(forKey key: String) -> Int? {
+    func int(forKey key: String) -> Int? {
         guard let strValue = value(for: key) else {
             return nil
         }
@@ -80,7 +80,7 @@ extension URITemplate {
     ///
     /// - Parameter queryItems: query items.
     /// - Returns: String
-    internal func expand(withQueryItems queryItems: [URLQueryItem]) -> String {
+    func expand(withQueryItems queryItems: [URLQueryItem]) -> String {
         var dictionary = [String: Any]()
         for queryItem in queryItems {
             dictionary[queryItem.name] = queryItem.value

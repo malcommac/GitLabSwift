@@ -28,7 +28,7 @@ open class APIs {
     /// Initialize with given gitlab service.
     ///
     /// - Parameter gitlab: gitlab.
-    internal init(gitlab: GLApi) {
+    init(gitlab: GLApi) {
         self.gitlab = gitlab
     }
     

@@ -44,7 +44,7 @@ public struct GLError: LocalizedError {
     /// - Parameters:
     ///   - response: response received.
     ///   - request: origin request.
-    internal init?(response: any Response, request: GLRequest) {
+    init?(response: any Response, request: GLRequest) {
         guard (200...299).contains(response.httpResponse.statusCode.rawValue) == false else {
             return nil
         }
@@ -66,7 +66,7 @@ public struct GLError: LocalizedError {
     ///   - message: message to print.
     ///   - response: optional linked response.
     ///   - request: optional linked request.
-    internal init(message: String, response: (any Response)? = nil, request: GLRequest? = nil) {
+    init(message: String, response: (any Response)? = nil, request: GLRequest? = nil) {
         self.message = message
         self.response = response
         self.request = request
