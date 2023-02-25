@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   uuid = "4265F279-C025-4144-9F1A-B84CCE3F5E9A"
+   type = "1"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "B9726F62-8245-48C6-8BCA-B5E4598BEE60"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Sources/GitLabSwift/Core/Support/GLResponse.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "109"
+            endingLineNumber = "109"
+            landmarkName = "nextPage()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "B9726F62-8245-48C6-8BCA-B5E4598BEE60 - afe0f30afcf1680"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(1) suspend resume partial function for GitLabSwift.GLResponse.nextPage() async throws -&gt; GitLabSwift.GLResponse&lt;&#x3c4;_0_0&gt;"
+                  moduleName = "GitLabSwiftTests"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/daniele/Developer/GitLabSwift/Sources/GitLabSwift/Core/Support/GLResponse.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "110"
+                  endingLineNumber = "110"
+                  offsetFromSymbolStart = "320">
+               </Location>
+               <Location
+                  uuid = "B9726F62-8245-48C6-8BCA-B5E4598BEE60 - afe0f30afcf16e1"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(1) suspend resume partial function for GitLabSwift.GLResponse.nextPage() async throws -&gt; GitLabSwift.GLResponse&lt;&#x3c4;_0_0&gt;"
+                  moduleName = "GitLabSwiftTests"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/daniele/Developer/GitLabSwift/Sources/GitLabSwift/Core/Support/GLResponse.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "109"
+                  endingLineNumber = "109"
+                  offsetFromSymbolStart = "912">
+               </Location>
+               <Location
+                  uuid = "B9726F62-8245-48C6-8BCA-B5E4598BEE60 - afe0f30afcf16e1"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(1) suspend resume partial function for GitLabSwift.GLResponse.nextPage() async throws -&gt; GitLabSwift.GLResponse&lt;&#x3c4;_0_0&gt;"
+                  moduleName = "GitLabSwiftTests"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/daniele/Developer/GitLabSwift/Sources/GitLabSwift/Core/Support/GLResponse.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "109"
+                  endingLineNumber = "109"
+                  offsetFromSymbolStart = "1068">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "AAC934BD-9AA2-4701-9A7B-90644C2937A2"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Sources/GitLabSwift/Core/Support/GLResponse.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "107"
+            endingLineNumber = "107"
+            landmarkName = "nextPage()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "AAC934BD-9AA2-4701-9A7B-90644C2937A2 - afe0f30afcf1723"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(1) suspend resume partial function for GitLabSwift.GLResponse.nextPage() async throws -&gt; GitLabSwift.GLResponse&lt;&#x3c4;_0_0&gt;"
+                  moduleName = "GitLabSwiftTests"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/daniele/Developer/GitLabSwift/Sources/GitLabSwift/Core/Support/GLResponse.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "107"
+                  endingLineNumber = "107"
+                  offsetFromSymbolStart = "612">
+               </Location>
+               <Location
+                  uuid = "AAC934BD-9AA2-4701-9A7B-90644C2937A2 - afe0f30afcf1723"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(1) suspend resume partial function for GitLabSwift.GLResponse.nextPage() async throws -&gt; GitLabSwift.GLResponse&lt;&#x3c4;_0_0&gt;"
+                  moduleName = "GitLabSwiftTests"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/daniele/Developer/GitLabSwift/Sources/GitLabSwift/Core/Support/GLResponse.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "107"
+                  endingLineNumber = "107"
+                  offsetFromSymbolStart = "888">
+               </Location>
+               <Location
+                  uuid = "AAC934BD-9AA2-4701-9A7B-90644C2937A2 - afe0f30afcf1723"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(1) suspend resume partial function for GitLabSwift.GLResponse.nextPage() async throws -&gt; GitLabSwift.GLResponse&lt;&#x3c4;_0_0&gt;"
+                  moduleName = "GitLabSwiftTests"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/daniele/Developer/GitLabSwift/Sources/GitLabSwift/Core/Support/GLResponse.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "107"
+                  endingLineNumber = "107"
+                  offsetFromSymbolStart = "912">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "3FCF7732-DA56-4C54-A70B-7168AD364734"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Tests/GitLabSwiftTests/Issues_Tests.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "30"
+            endingLineNumber = "30"
+            landmarkName = "test_list()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "D53599D5-E522-4A6E-BA3B-9C4F885B5C2F"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Sources/GitLabSwift/Core/Support/GLResponse.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "106"
+            endingLineNumber = "106"
+            landmarkName = "nextPage()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "D53599D5-E522-4A6E-BA3B-9C4F885B5C2F - afe0f30afcf170c"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(1) suspend resume partial function for GitLabSwift.GLResponse.nextPage() async throws -&gt; GitLabSwift.GLResponse&lt;&#x3c4;_0_0&gt;"
+                  moduleName = "GitLabSwiftTests"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/daniele/Developer/GitLabSwift/Sources/GitLabSwift/Core/Support/GLResponse.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "106"
+                  endingLineNumber = "106"
+                  offsetFromSymbolStart = "96">
+               </Location>
+               <Location
+                  uuid = "D53599D5-E522-4A6E-BA3B-9C4F885B5C2F - afe0f30afcf170c"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(1) suspend resume partial function for GitLabSwift.GLResponse.nextPage() async throws -&gt; GitLabSwift.GLResponse&lt;&#x3c4;_0_0&gt;"
+                  moduleName = "GitLabSwiftTests"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/daniele/Developer/GitLabSwift/Sources/GitLabSwift/Core/Support/GLResponse.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "106"
+                  endingLineNumber = "106"
+                  offsetFromSymbolStart = "300">
+               </Location>
+               <Location
+                  uuid = "D53599D5-E522-4A6E-BA3B-9C4F885B5C2F - afe0f30afcf170c"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(1) suspend resume partial function for GitLabSwift.GLResponse.nextPage() async throws -&gt; GitLabSwift.GLResponse&lt;&#x3c4;_0_0&gt;"
+                  moduleName = "GitLabSwiftTests"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/daniele/Developer/GitLabSwift/Sources/GitLabSwift/Core/Support/GLResponse.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "106"
+                  endingLineNumber = "106"
+                  offsetFromSymbolStart = "152">
+               </Location>
+               <Location
+                  uuid = "D53599D5-E522-4A6E-BA3B-9C4F885B5C2F - afe0f30afcf170c"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(1) suspend resume partial function for GitLabSwift.GLResponse.nextPage() async throws -&gt; GitLabSwift.GLResponse&lt;&#x3c4;_0_0&gt;"
+                  moduleName = "GitLabSwiftTests"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/daniele/Developer/GitLabSwift/Sources/GitLabSwift/Core/Support/GLResponse.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "106"
+                  endingLineNumber = "106"
+                  offsetFromSymbolStart = "168">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>

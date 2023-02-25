@@ -21,15 +21,11 @@ public struct Config {
     /// By default `https://gitlab.com` is used.
     public var baseURL = URL(string: "https://gitlab.com")!
     
-    /// API version identifier.
-    /// By default `4` is used.
-    public var apiVersion = "4"
-    
     /// JSON decoder used to decode raw data from server.
     public var jsonDecoder = JSONDecoder()
     
     /// Authentication style to use.
-    public var authentication: Authentication?
+    public var token: String?
     
     /// Configuration of the logger.
     public var loggerConfiguration: Glider.Log.Configuration
@@ -47,7 +43,6 @@ public struct Config {
             $0.level = .error
             $0.transports = [ConsoleTransport()]
         })
-        // self.jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
         self.jsonDecoder.dateDecodingStrategy = .custom({ decoder in
             let container = try decoder.singleValueContainer()
             let data = try container.decode(String.self)
@@ -78,42 +73,8 @@ public struct Config {
     ///
     /// - Returns: header key and value if available.
     func authenticationToken() -> (key: String, value: String)? {
-        guard let authentication else { return nil }
+        guard let token else { return nil }
         
-        return (authentication.key, authentication.value)
+        return ("PRIVATE-TOKEN", token)
     }
-}
-
-extension Config {
-    
-    /// Authentication styles for endpoint.
-    public enum Authentication {
-        
-        /// Personal Token
-        case token(String)
-        
-        /// OAuth Token
-        case oAuthToken(String)
-        
-        /// CI Job Token
-        case jobToken(String)
-        
-        public var value: String {
-            switch self {
-            case .jobToken(let v): return v
-            case .oAuthToken(let v): return v
-            case .token(let v): return v
-            }
-        }
-        
-        var key: String {
-            switch self {
-            case .jobToken: return ""
-            case .oAuthToken: return ""
-            case .token: return "PRIVATE-TOKEN"
-            }
-        }
-        
-    }
-    
 }
