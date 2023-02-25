@@ -12,7 +12,7 @@
 
 import Foundation
 
-extension APIService.ProtectedBranches {
+extension APIs.ProtectedBranches {
     
     /// Options used to setup a protection for a branch.
     public class ProtectBranchOptions: OutputParamsCollection {

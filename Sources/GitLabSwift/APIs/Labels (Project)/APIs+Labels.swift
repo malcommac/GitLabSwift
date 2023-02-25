@@ -14,7 +14,7 @@ import Foundation
 
 // MARK: - Labels + URLs
 
-extension APIService.Labels {
+extension APIs.Labels {
     
     fileprivate enum URLs: String, GLEndpoint {
         case labels = "/projects/{id}/labels"
@@ -30,12 +30,12 @@ extension APIService.Labels {
 
 // MARK: - Labels + APIs
 
-extension APIService {
+extension APIs {
     
     /// Labels API
     ///
     /// [API Documentation](https://docs.gitlab.com/ee/api/labels.html#list-labels)
-    public class Labels: APIService {
+    public class Labels: APIs {
         
         /// Search for user with passed configuration.
         ///

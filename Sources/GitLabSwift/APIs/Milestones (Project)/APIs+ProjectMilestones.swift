@@ -15,7 +15,7 @@ import RealHTTP
 
 // MARK: ProjectMilestones + URLs
 
-extension APIService.ProjectMilestones {
+extension APIs.ProjectMilestones {
     
     fileprivate enum URLs: String, GLEndpoint {
         case milestones = "/projects/{id}/milestones"
@@ -31,7 +31,7 @@ extension APIService.ProjectMilestones {
 
 //MARK: - ProjectMilestones + APIs
 
-extension APIService {
+extension APIs {
     
     /// Project milestones API
     ///
@@ -39,7 +39,7 @@ extension APIService {
     ///
     /// MISSING APIs:
     /// - https://docs.gitlab.com/ee/api/milestones.html#get-all-burndown-chart-events-for-a-single-milestone
-    public class ProjectMilestones: APIService {
+    public class ProjectMilestones: APIs {
   
         /// Return all visible projects across GitLab for the authenticated user.
         ///

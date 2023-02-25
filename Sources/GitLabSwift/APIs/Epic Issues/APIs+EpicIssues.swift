@@ -14,7 +14,7 @@ import Foundation
 
 // MARK: - EpicIssues + URLs
 
-extension APIService {
+extension APIs {
     
     fileprivate enum URLs: String, GLEndpoint {
         case list = "/groups/{id}/epics/{epic_iid}/issues"
@@ -28,12 +28,12 @@ extension APIService {
 
 // MARK: - EpicIssues + APIs
 
-extension APIService {
+extension APIs {
     
     /// Epic Issues API.
     ///
     /// [API Documentation](https://docs.gitlab.com/ee/api/epic_issues.html)
-    public class EpicIssues: APIService {
+    public class EpicIssues: APIs {
         
         /// Gets all issues that are assigned to an epic and the authenticated user has access to.
         ///

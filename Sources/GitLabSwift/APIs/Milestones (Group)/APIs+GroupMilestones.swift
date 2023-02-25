@@ -15,7 +15,7 @@ import RealHTTP
 
 // MARK: - GroupMilestones + URLs
 
-extension APIService.GroupMilestones {
+extension APIs.GroupMilestones {
     
     fileprivate enum URLs: String, GLEndpoint {
         case list = "/groups/{id}/milestones"
@@ -30,7 +30,7 @@ extension APIService.GroupMilestones {
 
 // MARK: - GroupMilestones + APIs
 
-extension APIService {
+extension APIs {
     
     /// Group milestones API.
     ///
@@ -38,7 +38,7 @@ extension APIService {
     ///
     /// MISSING APIs:
     /// - https://docs.gitlab.com/ee/api/group_milestones.html#get-all-burndown-chart-events-for-a-single-milestone
-    public class GroupMilestones: APIService {
+    public class GroupMilestones: APIs {
         
         /// Returns a list of group milestones.
         /// [API Documentation](https://docs.gitlab.com/ee/api/group_milestones.html#list-group-milestones)

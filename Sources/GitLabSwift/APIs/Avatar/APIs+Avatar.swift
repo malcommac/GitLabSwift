@@ -14,7 +14,7 @@ import Foundation
 
 // MARK: - Avatar + URLs
 
-extension APIService.Avatar {
+extension APIs.Avatar {
     
     fileprivate enum URLs: String, GLEndpoint {
         case get = "/avatar"
@@ -26,10 +26,10 @@ extension APIService.Avatar {
 
 // MARK: - Avatar + APIs
 
-extension APIService {
+extension APIs {
     
     /// [API Documentation](https://docs.gitlab.com/ee/api/avatar.html)
-    public class Avatar: APIService {
+    public class Avatar: APIs {
         
         /// Get a single avatar URL for a user with the given email address.
         ///

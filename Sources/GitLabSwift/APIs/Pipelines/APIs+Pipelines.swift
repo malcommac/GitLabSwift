@@ -15,7 +15,7 @@ import RealHTTP
 
 // MARK: - Pipelines + URLs
 
-extension APIService.Pipelines {
+extension APIs.Pipelines {
     
     fileprivate enum URLs: String, GLEndpoint {
         case list = "/projects/{id}/pipelines"
@@ -35,12 +35,12 @@ extension APIService.Pipelines {
 
 // MARK: - Pipelines + APIs
 
-extension APIService {
+extension APIs {
     
     /// Pipelines API.
     ///
     /// [API Documentation](https://docs.gitlab.com/ee/api/pipelines.html)
-    public class Pipelines: APIService {
+    public class Pipelines: APIs {
     
         /// List pipelines in a project.
         ///

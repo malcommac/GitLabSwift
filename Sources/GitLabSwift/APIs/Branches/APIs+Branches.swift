@@ -14,7 +14,7 @@ import Foundation
 
 // MARK: - Branches + URLs
 
-extension APIService.Branches {
+extension APIs.Branches {
     
     fileprivate enum URLs: String, GLEndpoint {
         case list = "/projects/{id}/repository/branches"
@@ -28,12 +28,12 @@ extension APIService.Branches {
 
 // MARK: - Branches + APIs
 
-extension APIService {
+extension APIs {
     
     /// Branches API
     ///
     /// [API Documentation](https://docs.gitlab.com/ee/api/branches.html)
-    public class Branches: APIService {
+    public class Branches: APIs {
                 
         /// Get a list of repository branches from a project, sorted by name alphabetically.
         /// [Documentation](https://docs.gitlab.com/ee/api/branches.html#list-repository-branches).

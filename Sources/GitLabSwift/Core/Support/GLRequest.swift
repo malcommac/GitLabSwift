@@ -55,7 +55,7 @@ public class GLRequest: APIRequestsURLConvertible {
     ///
     /// - Parameter gitlab: gitlab client where the request will be executed.
     /// - Returns: the request itself, throws if something went wrong.
-    internal func httpRequest(forClient gitlab: GitLab) throws -> HTTPRequest {
+    internal func httpRequest(forClient gitlab: GLApi) throws -> HTTPRequest {
         // Expand parameters and create the url based upon the request.
         let queryData = try options.encodedOptions()
         let allVariables = queryData.queryItems

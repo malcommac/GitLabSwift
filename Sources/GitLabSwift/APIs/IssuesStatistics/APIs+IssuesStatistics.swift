@@ -14,7 +14,7 @@ import Foundation
 
 // MARK: - IssuesStatistics + URLs
 
-extension APIService.IssuesStatistics {
+extension APIs.IssuesStatistics {
     
     fileprivate enum URLs: String, GLEndpoint {
         case list = "/issues_statistics"
@@ -28,12 +28,12 @@ extension APIService.IssuesStatistics {
 
 // MARK: - IssuesStatistics + APIs
 
-extension APIService {
+extension APIs {
     
     /// Issues statistics API
     /// 
     /// [API Documentation](https://docs.gitlab.com/ee/api/issues_statistics.html)
-    public class IssuesStatistics: APIService {
+    public class IssuesStatistics: APIs {
         
         /// Gets issues count statistics on all issues.
         ///

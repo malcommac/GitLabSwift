@@ -14,7 +14,7 @@ import Foundation
 
 // MARK: - Discussions + URLs
 
-extension APIService {
+extension APIs {
     
     fileprivate enum URLs: String, GLEndpoint {
         case discussions = "/projects/{id}/issues/{issue_iid}/discussions"
@@ -32,7 +32,7 @@ extension APIService {
 
 // MARK: - Discussions + APIs
 
-extension APIService {
+extension APIs {
     
     /// Discussions APIs.
     ///
@@ -63,7 +63,7 @@ extension APIService {
     /// - https://docs.gitlab.com/ee/api/discussions.html#add-note-to-existing-commit-thread
     /// - https://docs.gitlab.com/ee/api/discussions.html#modify-an-existing-commit-thread-note
     /// - https://docs.gitlab.com/ee/api/discussions.html#delete-a-commit-thread-note
-    public class Discussions: APIService {
+    public class Discussions: APIs {
         
         // MARK: - Issues
         // https://docs.gitlab.com/ee/api/discussions.html#issues

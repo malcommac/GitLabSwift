@@ -14,7 +14,7 @@ import Foundation
 
 // MARK: - Repositories + URLs
 
-extension APIService.Repositories {
+extension APIs.Repositories {
     
     fileprivate enum URLs: String, GLEndpoint {
         case tree = "/projects/{id}/repository/tree"
@@ -33,12 +33,12 @@ extension APIService.Repositories {
 
 // MARK: - Repositories + APIs
 
-extension APIService {
+extension APIs {
     
     /// Repositories API
     ///
     /// [API Documentation](https://docs.gitlab.com/ee/api/repositories.html)
-    public class Repositories: APIService {
+    public class Repositories: APIs {
         
         /// Get a list of repository files and directories in a project.
         /// 

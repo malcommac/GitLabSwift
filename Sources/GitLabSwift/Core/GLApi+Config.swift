@@ -11,6 +11,7 @@
 //
 
 import Foundation
+import Glider
 
 public struct Config {
     
@@ -30,6 +31,9 @@ public struct Config {
     /// Authentication style to use.
     public var authentication: Authentication?
     
+    /// Configuration of the logger.
+    public var loggerConfiguration: Glider.Log.Configuration
+    
     // MARK: - Initialization
     
     /// Initialize a new gitlab configuration.
@@ -39,6 +43,10 @@ public struct Config {
     ///   - configuration: optional configuration callback.
     public init(baseURL: URL, _ configuration: ((inout Self) -> Void)? = nil) {
         self.baseURL = baseURL
+        self.loggerConfiguration = .init({
+            $0.level = .error
+            $0.transports = [ConsoleTransport()]
+        })
         // self.jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
         self.jsonDecoder.dateDecodingStrategy = .custom({ decoder in
             let container = try decoder.singleValueContainer()

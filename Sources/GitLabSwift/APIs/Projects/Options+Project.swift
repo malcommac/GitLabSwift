@@ -12,7 +12,7 @@
 
 import Foundation
 
-extension APIService.Projects {
+extension APIs.Projects {
     
     public class ProjectNew: OutputParamsCollection {
         

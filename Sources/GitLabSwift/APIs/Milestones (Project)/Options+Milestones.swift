@@ -12,7 +12,7 @@
 
 import Foundation
 
-extension APIService.ProjectMilestones {
+extension APIs.ProjectMilestones {
     
     public class EditOptions: CreateOptions {
         

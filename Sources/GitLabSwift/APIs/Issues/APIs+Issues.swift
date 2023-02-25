@@ -14,7 +14,7 @@ import Foundation
 
 // MARK: - Issues + URLs
 
-extension APIService {
+extension APIs {
     
     fileprivate enum URLs: String, GLEndpoint {
         case list = "/issues"
@@ -46,7 +46,7 @@ extension APIService {
 
 // MARK: - Issues + APIs
 
-extension APIService {
+extension APIs {
     
     /// Issues API.
     /// 
@@ -58,7 +58,7 @@ extension APIService {
     /// - https://docs.gitlab.com/ee/api/issues.html#list-metric-images
     /// - https://docs.gitlab.com/ee/api/issues.html#delete-metric-image
     
-    public class Issues: APIService {
+    public class Issues: APIs {
         
         /// Get all issues the authenticated user has access to.
         /// By default it returns only issues created by the current user.

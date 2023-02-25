@@ -12,7 +12,7 @@
 
 import Foundation
 
-extension APIService.Repositories {
+extension APIs.Repositories {
     
     public class NewChangelogOptions: OutputParamsCollection {
         

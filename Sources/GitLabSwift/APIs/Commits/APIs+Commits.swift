@@ -15,7 +15,7 @@ import RealHTTP
 
 // MARK: - Commits + URLs
 
-extension APIService.Commits {
+extension APIs.Commits {
     
     fileprivate enum URLs: String, GLEndpoint {
         case commits = "/projects/{id}/repository/commits"
@@ -37,7 +37,7 @@ extension APIService.Commits {
 
 // MARK: - Commits + APIs
 
-extension APIService {
+extension APIs {
     
     /// This API operates on repository commits. Read more about GitLab-specific information for commits.
     ///
@@ -46,7 +46,7 @@ extension APIService {
     /// MISSING APIs:
     /// - https://docs.gitlab.com/ee/api/commits.html#create-a-commit-with-multiple-files-and-actions
     /// - https://docs.gitlab.com/ee/api/commits.html#set-the-pipeline-status-of-a-commit
-    public class Commits: APIService {
+    public class Commits: APIs {
         
         /// Get a list of repository commits in a project.
         ///

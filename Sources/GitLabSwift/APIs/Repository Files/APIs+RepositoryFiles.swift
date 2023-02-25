@@ -15,7 +15,7 @@ import RealHTTP
 
 // MARK: - RepositoryFiles + URLs
 
-extension APIService.RepositoryFiles {
+extension APIs.RepositoryFiles {
     
     fileprivate enum URLs: String, GLEndpoint {
         case get = "/projects/{id}/repository/files/{file_path}"
@@ -29,12 +29,12 @@ extension APIService.RepositoryFiles {
 
 // MARK: - RepositoryFiles + APIs
 
-extension APIService {
+extension APIs {
     
     /// Repository files API.
     ///
     /// [API Documentation](https://docs.gitlab.com/ee/api/repository_files.html)
-    public class RepositoryFiles: APIService {
+    public class RepositoryFiles: APIs {
         
         /// Allows you to receive information about file in repository like name, size, and content. File content is Base64 encoded.
         ///

@@ -14,7 +14,7 @@ import Foundation
 @testable import GitLabSwift
 import RealHTTP
 
-let gitlab: GitLab = {
+let gitlab: GLApi = {
     let config = Config(baseURL: "", {
         $0.apiVersion = "4"
     })

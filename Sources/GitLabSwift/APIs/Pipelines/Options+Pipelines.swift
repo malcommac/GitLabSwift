@@ -12,7 +12,7 @@
 
 import Foundation
 
-extension APIService.Pipelines {
+extension APIs.Pipelines {
     
     public class SearchOptions: OutputParamsCollection {
         

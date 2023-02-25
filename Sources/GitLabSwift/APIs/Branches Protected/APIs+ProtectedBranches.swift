@@ -14,7 +14,7 @@ import Foundation
 
 // MARK: - Protected Branches + URLs
 
-extension APIService.ProtectedBranches {
+extension APIs.ProtectedBranches {
     
     fileprivate enum URLs: String, GLEndpoint {
         case protectedList = "/projects/{id}/protected_branches"
@@ -27,12 +27,12 @@ extension APIService.ProtectedBranches {
 
 // MARK: - Protected Branches + APIs
 
-extension APIService {
+extension APIs {
     
     /// Protected branches API.
     ///
     /// [API Documentation](https://docs.gitlab.com/ee/api/protected_branches.html)
-    public class ProtectedBranches: APIService {
+    public class ProtectedBranches: APIs {
         
         /// Gets a list of protected branches from a project as they are defined in the UI.
         /// If a wildcard is set, it is returned instead of the exact name of the branches that match that wildcard.

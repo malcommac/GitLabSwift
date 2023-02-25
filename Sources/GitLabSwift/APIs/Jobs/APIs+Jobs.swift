@@ -14,7 +14,7 @@ import Foundation
 
 // MARK: - Jobs + URLs
 
-extension APIService.Jobs {
+extension APIs.Jobs {
     
     fileprivate enum URLs: String, GLEndpoint {
         case list = "/projects/{id}/jobs"
@@ -32,7 +32,7 @@ extension APIService.Jobs {
 
 // MARK: - Jobs + APIs
 
-extension APIService {
+extension APIs {
     
     /// Jobs API
     ///
@@ -42,7 +42,7 @@ extension APIService {
     /// - https://docs.gitlab.com/ee/api/jobs.html#list-pipeline-bridges
     /// - https://docs.gitlab.com/ee/api/jobs.html#get-job-tokens-job
     /// - https://docs.gitlab.com/ee/api/jobs.html#get-a-log-file
-    public class Jobs: APIService {
+    public class Jobs: APIs {
         
         /// Get a list of jobs in a project.
         /// Jobs are sorted in descending order of their IDs.

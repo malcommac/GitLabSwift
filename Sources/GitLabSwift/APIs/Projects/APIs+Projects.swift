@@ -14,7 +14,7 @@ import Foundation
 
 // MARK: - Projects + URLs
 
-extension APIService.Projects {
+extension APIs.Projects {
     
     fileprivate enum URLs: String, GLEndpoint {
         case all = "/projects"
@@ -39,7 +39,7 @@ extension APIService.Projects {
 
 // MARK: - Projects + APIs
 
-extension APIService {
+extension APIs {
     
     /// Interact with projects using the REST API.
     /// 
@@ -82,7 +82,7 @@ extension APIService {
     /// - https://docs.gitlab.com/ee/api/projects.html#configure-pull-mirroring-for-a-project
     /// - https://docs.gitlab.com/ee/api/projects.html#download-snapshot-of-a-git-repository
     /// - https://docs.gitlab.com/ee/api/projects.html#get-the-path-to-repository-storage
-    public class Projects: APIService {
+    public class Projects: APIs {
         
         /// Return all visible projects across GitLab for the authenticated user.
         ///

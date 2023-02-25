@@ -128,7 +128,7 @@ final class GitLabSwift_BranchesTests: XCTestCase {
                 return
             }
             
-            let response = try await gitlab.protectedBranches.unprotect(branchName, project: .id(1183))
+            let _ = try await gitlab.protectedBranches.unprotect(branchName, project: .id(1183))
         }
         XCTAssertTrue(result)
     }
@@ -137,18 +137,18 @@ final class GitLabSwift_BranchesTests: XCTestCase {
         let result = await catchErrors {
             let branchName = "feature/testbranch"
             let sourceBranch = "main"
-            let respCreate = try await gitlab.branches.create(name: branchName,
-                                                              fromRef: sourceBranch,
-                                                              project: .id(2008))
+            let _ = try await gitlab.branches.create(name: branchName,
+                                                     fromRef: sourceBranch,
+                                                     project: .id(2008))
             // delete branch
-            let respDel = try await gitlab.branches.delete(name: branchName, project: .id(2008))
+            let _ = try await gitlab.branches.delete(name: branchName, project: .id(2008))
         }
         XCTAssertTrue(result)
     }
     
     public func test_deleteMergedBranches() async throws {
         let result = await catchErrors {
-            let response = try await gitlab.branches.deleteMergedBranches(project: .id(2008))
+            let _ = try await gitlab.branches.deleteMergedBranches(project: .id(2008))
         }
         XCTAssertTrue(result)
     }

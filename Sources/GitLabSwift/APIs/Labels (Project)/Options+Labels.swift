@@ -12,7 +12,7 @@
 
 import Foundation
 
-extension APIService.Labels {
+extension APIs.Labels {
     
     public class EditOptions: OutputParamsCollection {
         

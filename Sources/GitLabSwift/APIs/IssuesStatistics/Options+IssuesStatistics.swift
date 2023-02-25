@@ -12,7 +12,7 @@
 
 import Foundation
 
-extension APIService.IssuesStatistics {
+extension APIs.IssuesStatistics {
     
     public class SearchOptions: OutputParamsCollection {
         

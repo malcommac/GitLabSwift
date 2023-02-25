@@ -12,7 +12,7 @@
 
 import Foundation
 
-extension APIService.Commits {
+extension APIs.Commits {
     
     public class CommitStatusOptions: OutputParamsCollection {
         

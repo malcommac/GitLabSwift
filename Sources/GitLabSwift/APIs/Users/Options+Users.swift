@@ -12,7 +12,7 @@
 
 import Foundation
 
-extension APIService.Users {
+extension APIs.Users {
     
     public class SearchOptions: OutputParamsCollection {
         

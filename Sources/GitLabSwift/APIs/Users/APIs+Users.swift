@@ -14,7 +14,7 @@ import Foundation
 
 // MARK: - Users + URLs
 
-extension APIService.Users {
+extension APIs.Users {
     
     public enum URLs: String, GLEndpoint {
         case userFromId = "/users/{id}"
@@ -28,7 +28,7 @@ extension APIService.Users {
 
 // MARK: - Users + APIs
 
-extension APIService {
+extension APIs {
     
     /// Users API
     ///
@@ -89,7 +89,7 @@ extension APIService {
     /// - https://docs.gitlab.com/ee/api/users.html#get-user-activities
     /// - https://docs.gitlab.com/ee/api/users.html#user-memberships
     /// - https://docs.gitlab.com/ee/api/users.html#disable-two-factor-authentication
-    public class Users: APIService {
+    public class Users: APIs {
         
         /// Search for user with passed configuration.
         ///

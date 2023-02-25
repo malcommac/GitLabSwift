@@ -14,7 +14,7 @@ import Foundation
 
 // MARK: - GroupLabels + URLs
 
-extension APIService.GroupLabels {
+extension APIs.GroupLabels {
     
     fileprivate enum URLs: String, GLEndpoint {
         case list = "/groups/{id}/labels"
@@ -29,12 +29,12 @@ extension APIService.GroupLabels {
 
 // MARK: - GroupLabels + APIs
 
-extension APIService {
+extension APIs {
     
     /// Group labels API.
     ///
     /// [API Documentation](https://docs.gitlab.com/ee/api/group_labels.html)
-    public class GroupLabels: APIService {
+    public class GroupLabels: APIs {
         
         /// Get all labels for a given group.
         /// 

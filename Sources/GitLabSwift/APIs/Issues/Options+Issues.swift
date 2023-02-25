@@ -12,7 +12,7 @@
 
 import Foundation
 
-extension APIService.Issues {
+extension APIs.Issues {
     
     public class EditOptions: OutputParamsCollection {
         

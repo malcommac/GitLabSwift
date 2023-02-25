@@ -28,6 +28,11 @@ public class GLResponse<Object: Decodable>: Response {
     
     /// Raw response from server.
     public let httpResponse: HTTPResponse
+    
+    /// Origin request.
+    public var httpRequest: HTTPRequest? {
+        httpResponse.request
+    }
         
     // MARK: - Pages Inspector
     

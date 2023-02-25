@@ -12,7 +12,7 @@
 
 import Foundation
 
-extension APIService.RepositoryFiles {
+extension APIs.RepositoryFiles {
     
     public class CreateOptions: OutputParamsCollection {
         

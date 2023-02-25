@@ -12,7 +12,7 @@
 
 import Foundation
 
-extension APIService.GroupLabels {
+extension APIs.GroupLabels {
     
     public class ListOptions: OutputParamsCollection {
         

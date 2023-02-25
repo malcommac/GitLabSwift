@@ -14,7 +14,7 @@ import Foundation
 
 // MARK: - Tags + URLs
 
-extension APIService.Tags {
+extension APIs.Tags {
     
     fileprivate enum URLs: String, GLEndpoint {
         case list = "/projects/{id}/repository/tags"
@@ -26,7 +26,7 @@ extension APIService.Tags {
 
 // MARK: Tags + APIs
 
-extension APIService {
+extension APIs {
     
     /// Tags API
     ///
@@ -34,7 +34,7 @@ extension APIService {
     ///
     /// MISSING APIs:
     /// - https://docs.gitlab.com/ee/api/tags.html#get-x509-signature-of-a-tag
-    public class Tags: APIService {
+    public class Tags: APIs {
         
         /// Get a list of repository tags from a project, sorted by update date and time in descending order.
         /// This endpoint can be accessed without authentication if the repository is publicly accessible.
