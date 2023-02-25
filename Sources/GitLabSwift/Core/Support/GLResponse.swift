@@ -84,7 +84,7 @@ public class GLResponse<Object: Decodable>: Response {
     /// Decoded object from JSON data.
     ///
     /// - Returns: parsed object, may throws if parsing fails.
-    public func model() throws -> Object? {
+    public func decode() throws -> Object? {
         if let _value {
             return _value
         }
@@ -99,12 +99,15 @@ public class GLResponse<Object: Decodable>: Response {
     
     // MARK: - Private Functions
     
-    public func writeRawResponse(_ name: String) {
-        if #available(macOS 13.0, *) {
-            try! httpResponse.data?.write(to: URL(filePath: "/Users/daniele/Desktop/\(name).json"))
-        } else {
-            // Fallback on earlier versions
+    /// Write response data at file url.
+    ///
+    /// - Parameter fileURL: fileURL
+    public func writeRawResponse(fileURL: URL) throws {
+        guard let data = httpResponse.data else {
+            return
         }
+        
+        try data.write(to: fileURL)
     }
     
 }

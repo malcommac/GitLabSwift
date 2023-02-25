@@ -19,7 +19,7 @@ final class GitLabSwift_UsersTests: XCTestCase {
     public func test_me() async throws {
         let result = await catchErrors {
             let response = try await gitlab.users.me()
-            guard let userProfile = try response.model() else {
+            guard let userProfile = try response.decode() else {
                 XCTFail()
                 return
             }
@@ -34,9 +34,9 @@ final class GitLabSwift_UsersTests: XCTestCase {
     
     public func test_userById() async throws {
         let result = await catchErrors {
-            let meUser = try await gitlab.users.me().model()
+            let meUser = try await gitlab.users.me().decode()
             let response = try await gitlab.users.user(meUser!.id)
-            guard let foundUser = try response.model() else {
+            guard let foundUser = try response.decode() else {
                 XCTFail()
                 return
             }
@@ -57,7 +57,7 @@ final class GitLabSwift_UsersTests: XCTestCase {
                 $0.search = searchTerm
             })
             
-            guard let foundUsers = try response.model() else {
+            guard let foundUsers = try response.decode() else {
                 XCTFail()
                 return
             }

@@ -20,7 +20,7 @@ final class GitLabSwift_CommitsTests: XCTestCase {
     private var anyProjectID: InputParams.Project!
     
     override func setUp() async throws {
-        let project = try await gitlab.projects.list().model()?.randomElement()
+        let project = try await gitlab.projects.list().decode()?.randomElement()
         XCTAssertNotNil(project)
         self.anyProjectID = .id(project!.id)
         self.anyProjectID = .id(1097)
@@ -33,8 +33,7 @@ final class GitLabSwift_CommitsTests: XCTestCase {
                 $0.until = Date()
                 $0.includeStats = true
             })
-            response.writeRawResponse("commits")
-            guard let commits = try response.model() else {
+            guard let commits = try response.decode() else {
                 XCTFail()
                 return
             }
@@ -49,10 +48,9 @@ final class GitLabSwift_CommitsTests: XCTestCase {
     
     public func test_singleCommit() async throws {
         let result = await catchErrors {
-            let anyCommit = try await gitlab.commits.list(project: anyProjectID).model()?.randomElement()
+            let anyCommit = try await gitlab.commits.list(project: anyProjectID).decode()?.randomElement()
             let response = try await gitlab.commits.get(sha: anyCommit!.short_id, project: anyProjectID)
-            response.writeRawResponse("commit")
-            guard let commitInfo = try response.model() else {
+            guard let commitInfo = try response.decode() else {
                 XCTFail()
                 return
             }
@@ -64,10 +62,9 @@ final class GitLabSwift_CommitsTests: XCTestCase {
     
     public func test_commitDiff() async throws {
         let result = await catchErrors {
-            let anyCommit = try await gitlab.commits.list(project: anyProjectID).model()?.randomElement()
+            let anyCommit = try await gitlab.commits.list(project: anyProjectID).decode()?.randomElement()
             let response = try await gitlab.commits.diff(sha: anyCommit!.short_id, project: anyProjectID)
-            response.writeRawResponse("diff")
-            guard let commitDiffs = try response.model() else {
+            guard let commitDiffs = try response.decode() else {
                 XCTFail()
                 return
             }
@@ -79,9 +76,9 @@ final class GitLabSwift_CommitsTests: XCTestCase {
     
     public func test_commitComments() async throws {
         let result = await catchErrors {
-            let anyCommit = try await gitlab.commits.list(project: anyProjectID).model()?.randomElement()
+            let anyCommit = try await gitlab.commits.list(project: anyProjectID).decode()?.randomElement()
             let response = try await gitlab.commits.comments(sha: /*anyCommit!.short_id*/ "98ce87a2", project: anyProjectID)
-            guard let comments = try response.model() else {
+            guard let comments = try response.decode() else {
                 XCTFail()
                 return
             }
@@ -100,8 +97,7 @@ final class GitLabSwift_CommitsTests: XCTestCase {
                 $0.line = 47
                 $0.line_type = .new
             })
-            response.writeRawResponse("post_comment")
-            guard let postedComment = try response.model() else {
+            guard let postedComment = try response.decode() else {
                 XCTFail()
                 return
             }
@@ -114,7 +110,7 @@ final class GitLabSwift_CommitsTests: XCTestCase {
     public func test_discussions() async throws {
         let result = await catchErrors {
             let response = try await gitlab.commits.discussions(sha: "b5c08ac015c53a76ef747652c2eb04d12c11ac07", project: anyProjectID)
-            guard let discussions = try response.model() else {
+            guard let discussions = try response.decode() else {
                 XCTFail()
                 return
             }
@@ -128,8 +124,7 @@ final class GitLabSwift_CommitsTests: XCTestCase {
     public func test_statuses() async throws {
         let result = await catchErrors {
             let response = try await gitlab.commits.statuses(sha: "b5c08ac015c53a76ef747652c2eb04d12c11ac07", project: anyProjectID)
-            response.writeRawResponse("statuses")
-            guard let statuses = try response.model() else {
+            guard let statuses = try response.decode() else {
                 XCTFail()
                 return
             }
@@ -143,8 +138,7 @@ final class GitLabSwift_CommitsTests: XCTestCase {
     public func test_mergeRequestsLinkedWithCommit() async throws {
         let result = await catchErrors {
             let response = try await gitlab.commits.mergeRequests(sha: "b5c08ac015c53a76ef747652c2eb04d12c11ac07", project: anyProjectID)
-            response.writeRawResponse("mrs")
-            guard let mrs = try response.model() else {
+            guard let mrs = try response.decode() else {
                 XCTFail()
                 return
             }
@@ -158,8 +152,7 @@ final class GitLabSwift_CommitsTests: XCTestCase {
     public func test_commitGPGSignature() async throws {
         let result = await catchErrors {
             let response = try await gitlab.commits.gpgSignature(sha: "b5c08ac015c53a76ef747652c2eb04d12c11ac07", project: anyProjectID)
-            response.writeRawResponse("gpg")
-            guard let signature = try response.model() else {
+            guard let signature = try response.decode() else {
                 XCTFail()
                 return
             }

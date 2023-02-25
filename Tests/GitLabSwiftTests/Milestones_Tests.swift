@@ -22,8 +22,7 @@ final class GitLabSwift_MilestonesTests: XCTestCase {
                 $0.includeParent = true
                 $0.state = .activate
             })
-            response.writeRawResponse("allmr")
-            guard let activeMilestones = try response.model() else {
+            guard let activeMilestones = try response.decode() else {
                 XCTFail()
                 return
             }
@@ -40,8 +39,7 @@ final class GitLabSwift_MilestonesTests: XCTestCase {
     public func test_milestoneDetails() async throws {
         let result = await catchErrors {
             let response = try await gitlab.milestones.get(milestone: 585, project: .id(1097))
-            response.writeRawResponse("single_mr")
-            guard let milestone = try response.model() else {
+            guard let milestone = try response.decode() else {
                 XCTFail()
                 return
             }
@@ -55,8 +53,7 @@ final class GitLabSwift_MilestonesTests: XCTestCase {
     public func test_milestoneLinkedIssues() async throws {
         let result = await catchErrors {
             let response = try await gitlab.milestones.issuesAssignedTo(milestone: 585, project: .id(1097))
-            response.writeRawResponse("issues_milestone")
-            guard let issues = try response.model() else {
+            guard let issues = try response.decode() else {
                 XCTFail()
                 return
             }
@@ -73,8 +70,7 @@ final class GitLabSwift_MilestonesTests: XCTestCase {
     public func test_milestoneLinkedMergeRequests() async throws {
         let result = await catchErrors {
             let response = try await gitlab.milestones.mergeRequestsAssignedTo(milestone: 585, project: .id(1097))
-            response.writeRawResponse("issues_milestone")
-            guard let mrList = try response.model() else {
+            guard let mrList = try response.decode() else {
                 XCTFail()
                 return
             }
@@ -95,8 +91,7 @@ final class GitLabSwift_MilestonesTests: XCTestCase {
                 $0.startDate = .init(date: Date(timeIntervalSinceNow: -60*60*24*7))
                 $0.dueDate = .init(date: Date(timeIntervalSinceNow: 60*60*24*2))
             })
-            response.writeRawResponse("create_milestone")
-            guard let milestone = try response.model() else {
+            guard let milestone = try response.decode() else {
                 XCTFail()
                 return
             }
@@ -109,7 +104,7 @@ final class GitLabSwift_MilestonesTests: XCTestCase {
     
     public func test_editMilestone() async throws {
         let result = await catchErrors {
-            guard let anyMilestone = try await gitlab.milestones.list(project: .id(2008)).model()?.first else {
+            guard let anyMilestone = try await gitlab.milestones.list(project: .id(2008)).decode()?.first else {
                 return
             }
             
@@ -118,8 +113,7 @@ final class GitLabSwift_MilestonesTests: XCTestCase {
                 $0.title = "Modified title"
             })
             
-            response.writeRawResponse("modified_milestone")
-            guard let milestone = try response.model() else {
+            guard let milestone = try response.decode() else {
                 XCTFail()
                 return
             }

@@ -25,8 +25,7 @@ final class GitLabSwift_IssuesTests: XCTestCase {
                 $0.confidential = false
                 // $0.iids = [3080,3067]
             })
-            response.writeRawResponse("issues_list")
-            guard let issues = try response.model() else {
+            guard let issues = try response.decode() else {
                 XCTFail()
                 return
             }
@@ -39,8 +38,7 @@ final class GitLabSwift_IssuesTests: XCTestCase {
     public func test_getIssue() async throws {
         let result = await catchErrors {
             let response = try await gitlab.issues.get(issue: 3080, project: .id(1097))
-            response.writeRawResponse("single_issue")
-            guard let issue = try response.model() else {
+            guard let issue = try response.decode() else {
                 XCTFail()
                 return
             }

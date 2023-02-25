@@ -29,7 +29,7 @@ final class GitLabSwift_BranchesTests: XCTestCase {
     public func test_branchesOfProject() async throws {
         let result = await catchErrors {
             let response = try await gitlab.branches.list(project: anyProjectID)
-            guard let branches = try response.model() else {
+            guard let branches = try response.decode() else {
                 XCTFail()
                 return
             }
@@ -45,11 +45,11 @@ final class GitLabSwift_BranchesTests: XCTestCase {
     
     public func test_branchInProject() async throws {
         let result = await catchErrors {
-            let anyBranch = try await gitlab.branches.list(project: anyProjectID).model()?.randomElement()
+            let anyBranch = try await gitlab.branches.list(project: anyProjectID).decode()?.randomElement()
             XCTAssertNotNil(anyBranch)
             print("Getting info about branch: '\(anyBranch!.name)' of project id: \(anyProjectID.description)...")
             let response = try await gitlab.branches.get(anyBranch!.name, project: anyProjectID)
-            guard let branch = try response.model() else {
+            guard let branch = try response.decode() else {
                 XCTFail()
                 return
             }
@@ -65,7 +65,7 @@ final class GitLabSwift_BranchesTests: XCTestCase {
         let result = await catchErrors {
             let response = try await gitlab.protectedBranches.list(project: anyProjectID)
             XCTAssertNotNil(response)
-            guard let protectedBranches = try response.model() else {
+            guard let protectedBranches = try response.decode() else {
                 XCTFail()
                 return
             }
@@ -81,15 +81,14 @@ final class GitLabSwift_BranchesTests: XCTestCase {
     
     public func test_getProtectedBranch() async throws {
         let result = await catchErrors {
-            guard let anyBranch = try await gitlab.protectedBranches.list(project: self.anyProjectID).model()?.randomElement() else {
+            guard let anyBranch = try await gitlab.protectedBranches.list(project: self.anyProjectID).decode()?.randomElement() else {
                 XCTFail()
                 return
             }
             
             print("Getting details for protected branch named \(anyBranch.name) in project \(anyProjectID.description)")
             let response = try await gitlab.protectedBranches.get(anyBranch.name, project: anyProjectID)
-            response.writeRawResponse("detail_protected")
-            guard let protectedBranch = try response.model() else {
+            guard let protectedBranch = try response.decode() else {
                 XCTFail()
                 return
             }
@@ -112,8 +111,7 @@ final class GitLabSwift_BranchesTests: XCTestCase {
                 $0.codeOwnerApprovalRequired = false
             })
             
-            response.writeRawResponse("protect_action")
-            guard let protectedBranch = try response.model() else {
+            guard let protectedBranch = try response.decode() else {
                 XCTFail()
                 return
             }
@@ -131,7 +129,6 @@ final class GitLabSwift_BranchesTests: XCTestCase {
             }
             
             let response = try await gitlab.protectedBranches.unprotect(branchName, project: .id(1183))
-            response.writeRawResponse("unprotect_action")
         }
         XCTAssertTrue(result)
     }
@@ -143,11 +140,8 @@ final class GitLabSwift_BranchesTests: XCTestCase {
             let respCreate = try await gitlab.branches.create(name: branchName,
                                                               fromRef: sourceBranch,
                                                               project: .id(2008))
-            respCreate.writeRawResponse("create_branch")
-           
             // delete branch
             let respDel = try await gitlab.branches.delete(name: branchName, project: .id(2008))
-            respDel.writeRawResponse("delete_branch")
         }
         XCTAssertTrue(result)
     }
@@ -155,7 +149,6 @@ final class GitLabSwift_BranchesTests: XCTestCase {
     public func test_deleteMergedBranches() async throws {
         let result = await catchErrors {
             let response = try await gitlab.branches.deleteMergedBranches(project: .id(2008))
-            response.writeRawResponse("delete_merged_branches")
         }
         XCTAssertTrue(result)
     }

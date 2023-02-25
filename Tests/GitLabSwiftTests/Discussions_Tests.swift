@@ -22,8 +22,7 @@ final class GitLabSwift_DiscussionsTests: XCTestCase {
                 issue: 3010,
                 project: .id(1097)
             )
-            response.writeRawResponse("discussions_list")
-            guard let discussions = try response.model() else {
+            guard let discussions = try response.decode() else {
                 XCTFail()
                 return
             }
@@ -41,8 +40,7 @@ final class GitLabSwift_DiscussionsTests: XCTestCase {
                 issue: 3010,
                 project: .id(1097)
             )
-            response.writeRawResponse("discussions_get")
-            guard let discussion = try response.model() else {
+            guard let discussion = try response.decode() else {
                 XCTFail()
                 return
             }
@@ -56,8 +54,7 @@ final class GitLabSwift_DiscussionsTests: XCTestCase {
     public func test_createThread() async throws {
         let result = await catchErrors {
             let response = try await gitlab.discussions.create(issue: 3010, body: "New thread message", project: .id(1097))
-            response.writeRawResponse("discussions_newthread")
-            guard let discussion = try response.model() else {
+            guard let discussion = try response.decode() else {
                 XCTFail()
                 return
             }
@@ -71,8 +68,7 @@ final class GitLabSwift_DiscussionsTests: XCTestCase {
     public func test_listSnippetDiscussions() async throws {
         let result = await catchErrors {
             let response = try await gitlab.discussions.list(snippet: 372, project: .id(2008))
-            response.writeRawResponse("discussions_listsnippets")
-            guard let discussion = try response.model() else {
+            guard let discussion = try response.decode() else {
                 XCTFail()
                 return
             }
@@ -86,8 +82,7 @@ final class GitLabSwift_DiscussionsTests: XCTestCase {
     public func test_getSnippetDiscussionItem() async throws {
         let result = await catchErrors {
             let response = try await gitlab.discussions.get(discussion: "584630", issue: 372, project: .id(2008))
-            response.writeRawResponse("discussions_snippetdiscussionitem")
-            guard let discussion = try response.model() else {
+            guard let discussion = try response.decode() else {
                 XCTFail()
                 return
             }

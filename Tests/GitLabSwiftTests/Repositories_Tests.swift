@@ -21,8 +21,7 @@ final class GitLabSwift_RepositoriesTests: XCTestCase {
             let response = try await gitlab.repositories.list(project: .id(1097), options: {
                 $0.recursive = true
             })
-            response.writeRawResponse("repository_tree")
-            guard let tree = try response.model() else {
+            guard let tree = try response.decode() else {
                 XCTFail()
                 return
             }
@@ -36,7 +35,6 @@ final class GitLabSwift_RepositoriesTests: XCTestCase {
     public func test_blob() async throws {
         let result = await catchErrors {
             let response = try await gitlab.repositories.blob(sha: "6e9d06ed953ab2b02763e4514296090f09cd145e", project: .id(1097))
-            response.writeRawResponse("repository_blob")
             XCTAssertNotNil(response)
             print(response.httpResponse.data?.asString ?? "")
         }
@@ -46,7 +44,6 @@ final class GitLabSwift_RepositoriesTests: XCTestCase {
     public func test_archive() async throws {
         let result = await catchErrors {
             let response = try await gitlab.repositories.fileArchive(project: .id(1097))
-            response.writeRawResponse("archive")
             XCTAssertNotNil(response)
             print("\(response.httpResponse.data?.count ?? 0) bytes")
         }
@@ -61,8 +58,7 @@ final class GitLabSwift_RepositoriesTests: XCTestCase {
                 toSha: "89fbaaf60d22358ba607d7f3d38fc47360b706a9",
                 straight: false
             )
-            response.writeRawResponse("compare")
-            guard let comparisonResult = try response.model() else {
+            guard let comparisonResult = try response.decode() else {
                 XCTFail()
                 return
             }
@@ -80,8 +76,7 @@ final class GitLabSwift_RepositoriesTests: XCTestCase {
                 orderBy: .commits,
                 sort: .asc
             )
-            response.writeRawResponse("contributors")
-            guard let contributors = try response.model() else {
+            guard let contributors = try response.decode() else {
                 XCTFail()
                 return
             }
@@ -101,8 +96,7 @@ final class GitLabSwift_RepositoriesTests: XCTestCase {
                     "89fbaaf60d22358ba607d7f3d38fc47360b706a9"
                 ]
             )
-            response.writeRawResponse("merge_base")
-            guard let info = try response.model() else {
+            guard let info = try response.decode() else {
                 XCTFail()
                 return
             }

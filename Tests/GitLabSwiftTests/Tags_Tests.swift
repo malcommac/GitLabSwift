@@ -19,8 +19,7 @@ final class GitLabSwift_TagsTests: XCTestCase {
     public func test_tags() async throws {
         let result = await catchErrors {
             let response = try await gitlab.tags.list(project: .id(1097))
-            response.writeRawResponse("tags")
-            guard let tags = try response.model() else {
+            guard let tags = try response.decode() else {
                 XCTFail()
                 return
             }
@@ -34,8 +33,7 @@ final class GitLabSwift_TagsTests: XCTestCase {
     public func test_get() async throws {
         let result = await catchErrors {
             let response = try await gitlab.tags.get(name: "", project: .id(1097))
-            response.writeRawResponse("tag")
-            guard let tag = try response.model() else {
+            guard let tag = try response.decode() else {
                 XCTFail()
                 return
             }

@@ -28,7 +28,7 @@ final class GitLabSwift_ProjectsTests: XCTestCase {
     public func test_allProjects() async throws {
         let result = await catchErrors {
             let response = try await gitlab.projects.list()
-            guard let projects = try response.model() else {
+            guard let projects = try response.decode() else {
                 XCTFail()
                 return
             }
@@ -45,13 +45,13 @@ final class GitLabSwift_ProjectsTests: XCTestCase {
     
     public func test_projectsById() async throws {
         let result = await catchErrors {
-            guard let anyProject = try await gitlab.projects.list().model()?.randomElement() else {
+            guard let anyProject = try await gitlab.projects.list().decode()?.randomElement() else {
                 XCTFail()
                 return
             }
 
             let response = try await gitlab.projects.get(project: .id(anyProject.id))
-            let foundProject = try response.model()
+            let foundProject = try response.decode()
             XCTAssertNotNil(foundProject?.id)
             print("Searching for project info with id \(anyProject.id): \(foundProject!.name)")
         }
@@ -60,14 +60,14 @@ final class GitLabSwift_ProjectsTests: XCTestCase {
     
     public func test_ownedProjects() async throws {
         let result = await catchErrors {
-            let meUser = try await gitlab.users.me().model()
+            let meUser = try await gitlab.users.me().decode()
             let response = try await gitlab.projects.listUsersProjects(meUser!.id, {
                 $0.sort = .desc
                 $0.statistics = true
             })
             print("\(meUser!.username) owns \(response.totalItems ?? 0) projects")
             if (response.totalItems ?? 0) > 0 {
-                let ownedProject = try response.model()?.randomElement()
+                let ownedProject = try response.decode()?.randomElement()
                 XCTAssertNotNil(ownedProject?.id)
                 XCTAssertNotNil(ownedProject?.name)
                 print("Random project is \(ownedProject!.name) - \(ownedProject?.web_url?.absoluteString ?? "-")")
@@ -78,11 +78,11 @@ final class GitLabSwift_ProjectsTests: XCTestCase {
     
     public func test_starredProjects() async throws {
         let result = await catchErrors {
-            let meUser = try await gitlab.users.me().model()
+            let meUser = try await gitlab.users.me().decode()
             let response = try await gitlab.projects.listUserStarredProjects(meUser!.id)
             print("\(meUser!.username) starred \(response.totalItems ?? 0) projects")
             if (response.totalItems ?? 0) > 0 {
-                let starredProject = try response.model()?.randomElement()
+                let starredProject = try response.decode()?.randomElement()
                 XCTAssertNotNil(starredProject?.id)
                 XCTAssertNotNil(starredProject?.name)
                 print("Random starred project is \(starredProject!.name) - \(starredProject?.web_url?.absoluteString ?? "-")")
@@ -93,11 +93,11 @@ final class GitLabSwift_ProjectsTests: XCTestCase {
     
     public func test_usersForProject() async throws {
         let result = await catchErrors {
-            if let anyProject = try await gitlab.projects.list().model()?.randomElement() {
+            if let anyProject = try await gitlab.projects.list().decode()?.randomElement() {
                 let response = try await gitlab.projects.usersList(project: .id(2707))
                 print("Project ID \(anyProject.id) has \(response.totalItems ?? 0) members")
                 if (response.totalItems ?? 0) > 0 {
-                    let allUsers = try response.model()
+                    let allUsers = try response.decode()
                     let anyUser = allUsers?.randomElement()
                     XCTAssertNotNil(anyUser?.id)
                     XCTAssertNotNil(anyUser?.name)
@@ -117,7 +117,7 @@ final class GitLabSwift_ProjectsTests: XCTestCase {
             })
             print("Found \(response.totalItems ?? 0) project on \(response.totalPages)")
             if (response.totalItems ?? 0) > 1 {
-                let foundProjects = try response.model()
+                let foundProjects = try response.decode()
                 XCTAssertTrue(foundProjects![0].id > foundProjects![1].id)
             }
         }
@@ -135,7 +135,7 @@ final class GitLabSwift_ProjectsTests: XCTestCase {
     public func test_languagesOfProject() async throws {
         let result = await catchErrors {
             let response = try await gitlab.projects.languagesOfProject(.id(1097))
-            let result = try response.model()
+            let result = try response.decode()
             XCTAssertNotNil(result)
         }
         XCTAssertTrue(result)

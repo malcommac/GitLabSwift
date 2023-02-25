@@ -22,8 +22,7 @@ final class GitLabSwift_PipelinesTests: XCTestCase {
                 ["key": "VAR1", "value": "hello"],
                 ["key": "VAR2", "value": "world"]
             ])
-            response.writeRawResponse("discussions_list")
-            guard let discussions = try response.model() else {
+            guard let discussions = try response.decode() else {
                 XCTFail()
                 return
             }

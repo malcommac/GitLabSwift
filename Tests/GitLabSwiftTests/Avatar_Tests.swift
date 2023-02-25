@@ -19,8 +19,7 @@ final class GitLabSwift_AvatarTests: XCTestCase {
     public func test_avatar() async throws {
         let result = await catchErrors {
             let response = try await gitlab.avatar.url(email: "daniele.margutti@immobiliare.it")
-            response.writeRawResponse("avatar")
-            guard let avatar = try response.model() else {
+            guard let avatar = try response.decode() else {
                 XCTFail()
                 return
             }

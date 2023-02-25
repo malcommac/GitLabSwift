@@ -16,12 +16,14 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/immobiliare/RealHTTP.git", from: "1.0.0"),
+        .package(url: "https://github.com/immobiliare/Glider", from: "2.0.0")
     ],
     targets: [
         .target(
             name: "GitLabSwift",
             dependencies: [
-                "RealHTTP"
+                "RealHTTP",
+                "Glider"
             ]),
         .testTarget(
             name: "GitLabSwiftTests",

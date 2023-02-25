@@ -24,8 +24,7 @@ final class GitLabSwift_RepositoryFilesTests: XCTestCase {
                 ref: "89fbaaf60d22358ba607d7f3d38fc47360b706a9",
                 project: .id(1097)
             )
-            response.writeRawResponse("file_info")
-            guard let fileInfo = try response.model() else {
+            guard let fileInfo = try response.decode() else {
                 XCTFail()
                 return
             }
