@@ -14,20 +14,23 @@ import Foundation
 
 extension APIService {
     
+    /// Repository files API.
+    ///
     /// [API Documentation](https://docs.gitlab.com/ee/api/repository_files.html)
     public class RepositoryFiles: APIService {
         
         /// Allows you to receive information about file in repository like name, size, and content. File content is Base64 encoded.
+        ///
         /// [API Documentation](https://docs.gitlab.com/ee/api/repository_files.html#get-file-from-repository)
         ///
         /// - Parameters:
-        ///   - path: URL encoded full path to new file, such as lib%2Fclass%2Erb.
+        ///   - path: URL encoded full path to new file.
         ///   - ref: The name of branch, tag or commit.
         ///   - project: The ID or URL-encoded path of the project owned by the authenticated user.
         /// - Returns: file
         public func fileInfo(path: String,
-                      ref: String,
-                      project: DataTypes.ProjectID) async throws -> GitLabResponse<Model.File> {
+                             ref: String,
+                             project: DataTypes.ProjectID) async throws -> GitLabResponse<Model.File> {
             let options = APIOptionsCollection([
                 APIOption(key: "id", project),
                 APIOption(key: "ref", ref),
@@ -37,15 +40,7 @@ extension APIService {
         }
         
         /// Allows you to receive blame information. Each blame range contains lines and corresponding commit information.
-        /// [API Documentation](https://docs.gitlab.com/ee/api/repository_files.html#get-file-blame-from-repository)
         ///
-        /// - Parameters:
-        ///   - path: URL-encoded full path to new file, such aslib%2Fclass%2Erb.
-        ///   - ref: The name of branch, tag or commit.
-        ///   - project: The ID or URL-encoded path of the project owned by the authenticated user.
-
-        
-        /// Allows you to receive blame information. Each blame range contains lines and corresponding commit information.
         /// [API Documentation](https://docs.gitlab.com/ee/api/repository_files.html#get-file-blame-from-repository)
         ///
         /// - Parameters:
@@ -57,11 +52,11 @@ extension APIService {
         ///   - project: The ID or URL-encoded path of the project owned by the authenticated user.
         /// - Returns: file blame
         public func blame(path: String,
-                   ref: String,
-                   filePath: String,
-                   rangeStart: Int,
-                   rangeEnd: Int,
-                   project: DataTypes.ProjectID) async throws -> GitLabResponse<Model.FileBlame> {
+                          ref: String,
+                          filePath: String,
+                          rangeStart: Int,
+                          rangeEnd: Int,
+                          project: DataTypes.ProjectID) async throws -> GitLabResponse<Model.FileBlame> {
             let options = APIOptionsCollection([
                 APIOption(key: "id", project),
                 APIOption(key: "ref", ref),
@@ -73,6 +68,7 @@ extension APIService {
         }
         
         /// Get raw file from repository.
+        ///
         /// [API Documentation](https://docs.gitlab.com/ee/api/repository_files.html#get-raw-file-from-repository)
         ///
         /// - Parameters:
@@ -82,9 +78,9 @@ extension APIService {
         ///   - project: The ID or URL-encoded path of the project owned by the authenticated user.
         /// - Returns: generic response.
         public func file(path: String,
-                  ref: String,
-                  lfs: Bool? = nil,
-                  project: DataTypes.ProjectID) async throws -> GitLabResponse<Model.NoResponse> {
+                         ref: String,
+                         lfs: Bool? = nil,
+                         project: DataTypes.ProjectID) async throws -> GitLabResponse<Model.NoResponse> {
             let options = APIOptionsCollection([
                 APIOption(key: "id", project),
                 APIOption(key: "file_path", path),
@@ -95,6 +91,7 @@ extension APIService {
         }
         
         /// Allows you to create a single file.
+        ///
         /// [API Documentation](https://docs.gitlab.com/ee/api/repository_files.html#create-new-file-in-repository)
         ///
         /// - Parameters:
@@ -103,26 +100,27 @@ extension APIService {
         ///   - content: The file’s content.
         ///   - filePath: The file’s content.
         ///   - project: The ID or URL-encoded path of the project owned by the authenticated user.
-        ///   - callback: configuration callback.
+        ///   - options: configuration callback.
         /// - Returns: generic response
         public func createFile(branch: String,
-                        commit: String,
-                        content: String,
-                        filePath: String,
-                        project: DataTypes.ProjectID,
-                        _ callback: ((APIOptions.CreateFile) -> Void)? = nil) async throws -> GitLabResponse<Model.NoResponse> {
-            let options = APIOptions.CreateFile(
+                               commit: String,
+                               content: String,
+                               filePath: String,
+                               project: DataTypes.ProjectID,
+                               options: ((CreateOptions) -> Void)? = nil) async throws -> GitLabResponse<Model.NoResponse> {
+            let options = CreateOptions(
                 branch: branch,
                 commit: commit,
                 content: content,
                 filePath: filePath,
                 project: project,
-                callback
+                options
             )
             return try await gitlab.execute(.init(.post, endpoint: Endpoints.RepositoryFiles.get, options: options))
         }
         
         /// Allows you to update a single file.
+        ///
         /// [API Documentation](https://docs.gitlab.com/ee/api/repository_files.html#update-existing-file-in-repository)
         ///
         /// - Parameters:
@@ -131,21 +129,21 @@ extension APIService {
         ///   - content: The file’s content.
         ///   - filePath: The file’s content.
         ///   - project: The ID or URL-encoded path of the project owned by the authenticated user.
-        ///   - callback: configuration callback.
+        ///   - options: configuration callback.
         /// - Returns: generic response
         public func updateFile(branch: String,
-                        commit: String,
-                        content: String,
-                        filePath: String,
-                        project: DataTypes.ProjectID,
-                        _ callback: ((APIOptions.CreateFile) -> Void)? = nil) async throws -> GitLabResponse<Model.NoResponse> {
-            let options = APIOptions.CreateFile(
+                               commit: String,
+                               content: String,
+                               filePath: String,
+                               project: DataTypes.ProjectID,
+                               options: ((CreateOptions) -> Void)? = nil) async throws -> GitLabResponse<Model.NoResponse> {
+            let options = CreateOptions(
                 branch: branch,
                 commit: commit,
                 content: content,
                 filePath: filePath,
                 project: project,
-                callback
+                options
             )
             return try await gitlab.execute(.init(.put, endpoint: Endpoints.RepositoryFiles.get, options: options))
         }
@@ -158,21 +156,21 @@ extension APIService {
         ///   - content: The file’s content.
         ///   - filePath: The file’s content.
         ///   - project: The ID or URL-encoded path of the project owned by the authenticated user.
-        ///   - callback: configuration callback.
+        ///   - options: configuration callback.
         /// - Returns: generic response
         public func deleteFile(branch: String,
-                        commit: String,
-                        content: String,
-                        filePath: String,
-                        project: DataTypes.ProjectID,
-                        _ callback: ((APIOptions.CreateFile) -> Void)? = nil) async throws -> GitLabResponse<Model.NoResponse> {
-            let options = APIOptions.CreateFile(
+                               commit: String,
+                               content: String,
+                               filePath: String,
+                               project: DataTypes.ProjectID,
+                               options: ((CreateOptions) -> Void)? = nil) async throws -> GitLabResponse<Model.NoResponse> {
+            let options = CreateOptions(
                 branch: branch,
                 commit: commit,
                 content: content,
                 filePath: filePath,
                 project: project,
-                callback
+                options
             )
             return try await gitlab.execute(.init(.delete, endpoint: Endpoints.RepositoryFiles.get, options: options))
         }

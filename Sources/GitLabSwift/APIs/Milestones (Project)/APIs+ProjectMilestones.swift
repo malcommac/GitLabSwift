@@ -14,28 +14,37 @@ import Foundation
 
 extension APIService {
     
+    /// Project milestones API
+    ///
+    /// [API Documentation](https://docs.gitlab.com/ee/api/milestones.html)
+    ///
+    /// MISSING APIs:
+    /// - https://docs.gitlab.com/ee/api/milestones.html#get-all-burndown-chart-events-for-a-single-milestone
     public class ProjectMilestones: APIService {
   
         /// Return all visible projects across GitLab for the authenticated user.
-        /// [API Documentation](https://docs.gitlab.com/ee/api/milestones.html#list-project-milestones).
+        ///
+        /// [API Documentation](https://docs.gitlab.com/ee/api/milestones.html#list-project-milestones)
         ///
         /// - Returns: list of projects.
-        public func list(id: DataTypes.ProjectID, _ callback: ((APIOptions.ListMilestones) -> Void)? = nil) async throws -> GitLabResponse<[Model.Milestone]> {
-            let options = APIOptions.ListMilestones(callback)
-            options.projectID = id
+        public func list(project: DataTypes.ProjectID,
+                         options: ((ListOptions) -> Void)? = nil) async throws -> GitLabResponse<[Model.Milestone]> {
+            let options = ListOptions(project: project, options)
             return try await gitlab.execute(.init(endpoint: Endpoints.Milestones.milestones, options: options))
         }
         
         /// Gets a single project milestone.
-        /// [API Documentation](https://docs.gitlab.com/ee/api/milestones.html#get-single-milestone).
+        ///
+        /// [API Documentation](https://docs.gitlab.com/ee/api/milestones.html#get-single-milestone)
         ///
         /// - Parameters:
-        ///   - id: The ID of the project’s milestone
-        ///   - project: The ID or URL-encoded path of the project owned by the authenticated user
-        /// - Returns: milestone object
-        public func detail(id: Int, project: DataTypes.ProjectID) async throws -> GitLabResponse<Model.Milestone> {
+        ///   - milestone: The ID of the project’s milestone.
+        ///   - project: The ID or URL-encoded path of the project owned by the authenticated user.
+        /// - Returns: milestone object.
+        public func detail(milestone: Int,
+                           project: DataTypes.ProjectID) async throws -> GitLabResponse<Model.Milestone> {
             let options = APIOptionsCollection([
-                APIOption(key: "milestone_id", id),
+                APIOption(key: "milestone_id", milestone),
                 APIOption(key: "id", project)
             ])
             return try await gitlab.execute(.init(endpoint: Endpoints.Milestones.milestoneId, options: options))
@@ -45,82 +54,96 @@ extension APIService {
         /// [API Documentation](https://docs.gitlab.com/ee/api/milestones.html#create-new-milestone).
         ///
         /// - Parameters:
-        ///   - title: The title of a milestone
-        ///   - project: The ID or URL-encoded path of the project owned by the authenticated user
+        ///   - title: The title of a milestone.
+        ///   - project: The ID or URL-encoded path of the project owned by the authenticated user.
         /// - Returns: created milestone object.
-        public func create(title: String, project: DataTypes.ProjectID, _ callback: @escaping ((APIOptions.CreateMilestone) -> Void)) async throws -> GitLabResponse<Model.Milestone> {
-            let options = APIOptions.CreateMilestone(projectID: project, title: title, callback)
+        public func create(title: String,
+                           project: DataTypes.ProjectID,
+                           options: @escaping ((CreateOptions) -> Void)) async throws -> GitLabResponse<Model.Milestone> {
+            let options = CreateOptions(project: project, title: title, options)
             return try await gitlab.execute(.init(.post, endpoint: Endpoints.Milestones.milestones, options: options))
         }
         
         /// Updates an existing project milestone.
-        /// [API Documentation](https://docs.gitlab.com/ee/api/milestones.html#delete-project-milestone).
+        ///
+        /// [API Documentation](https://docs.gitlab.com/ee/api/milestones.html#delete-project-milestone)
         ///
         /// - Parameters:
-        ///   - id: The ID of the project’s milestone.
-        ///   - project: The ID or URL-encoded path of the project owned by the authenticated user
-        ///   - callback: configuration callback.
+        ///   - milestone: The ID of the project’s milestone.
+        ///   - project: The ID or URL-encoded path of the project owned by the authenticated user.
+        ///   - options: configuration callback.
         /// - Returns: edited milestone
-        public func edit(id: String, project: DataTypes.ProjectID, _ callback: @escaping ((APIOptions.EditMilestone) -> Void)) async throws -> GitLabResponse<Model.Milestone> {
-            let options = APIOptions.EditMilestone(milestoneId: id, projectID: project, callback)
+        public func edit(milestone: String,
+                         project: DataTypes.ProjectID,
+                         options: @escaping ((EditOptions) -> Void)) async throws -> GitLabResponse<Model.Milestone> {
+            let options = EditOptions(milestone: milestone, project: project, options)
             return try await gitlab.execute(.init(.put, endpoint: Endpoints.Milestones.milestoneId, options: options))
         }
         
         /// Delete project milestone.
         /// Only for users with at least the Reporter role in the project.
         ///
+        /// [API Documentation](https://docs.gitlab.com/ee/api/milestones.html#delete-project-milestone)
+        ///
         /// - Parameters:
-        ///   - id: The ID of the project’s milestone
+        ///   - milestone: The ID of the project’s milestone
         ///   - project: The ID or URL-encoded path of the project owned by the authenticated user
         /// - Returns: generic response
-        public func delete(id: String, project: DataTypes.ProjectID) async throws -> GitLabResponse<Model.NoResponse> {
+        public func delete(milestone: String,
+                           project: DataTypes.ProjectID) async throws -> GitLabResponse<Model.NoResponse> {
             let options = APIOptionsCollection([
-                APIOption(key: "milestone_id", id),
+                APIOption(key: "milestone_id", milestone),
                 APIOption(key: "id", project)
             ])
             return try await gitlab.execute(.init(.delete, endpoint: Endpoints.Milestones.milestoneId, options: options))
         }
         
         /// Gets all issues assigned to a single project milestone.
-        /// [API Documentation](https://docs.gitlab.com/ee/api/milestones.html#get-all-issues-assigned-to-a-single-milestone).
+        ///
+        /// [API Documentation](https://docs.gitlab.com/ee/api/milestones.html#get-all-issues-assigned-to-a-single-milestone)
         /// 
         /// - Parameters:
-        ///   - id: The ID of the project’s milestone
-        ///   - project: The ID or URL-encoded path of the project owned by the authenticated user
+        ///   - milestone: The ID of the project’s milestone.
+        ///   - project: The ID or URL-encoded path of the project owned by the authenticated user.
         /// - Returns: array of `Models.Issue`
-        public func issues(id: Int, project: DataTypes.ProjectID) async throws -> GitLabResponse<[Model.Issue]> {
+        public func issuesAssignedTo(milestone: Int,
+                                     project: DataTypes.ProjectID) async throws -> GitLabResponse<[Model.Issue]> {
             let options = APIOptionsCollection([
-                APIOption(key: "milestone_id", id),
+                APIOption(key: "milestone_id", milestone),
                 APIOption(key: "id", project)
             ])
             return try await gitlab.execute(.init(endpoint: Endpoints.Milestones.issues, options: options))
         }
         
-        /// Get all merge requests assigned to a single milestone
-        /// [API Documentation](https://docs.gitlab.com/ee/api/milestones.html#get-all-merge-requests-assigned-to-a-single-milestone).
+        /// Get all merge requests assigned to a single milestone.
+        ///
+        /// [API Documentation](https://docs.gitlab.com/ee/api/milestones.html#get-all-merge-requests-assigned-to-a-single-milestone)
         ///
         /// - Parameters:
-        ///   - id: The ID of the project’s milestone
+        ///   - milestone: The ID of the project’s milestone
         ///   - project: The ID or URL-encoded path of the project owned by the authenticated user
         /// - Returns: array of `Models.MergeRequest`
-        public func mergeRequests(id: Int, project: DataTypes.ProjectID) async throws -> GitLabResponse<[Model.MergeRequest]> {
+        public func mergeRequestsAssignedTo(milestone: Int,
+                                            project: DataTypes.ProjectID) async throws -> GitLabResponse<[Model.MergeRequest]> {
             let options = APIOptionsCollection([
-                APIOption(key: "milestone_id", id),
+                APIOption(key: "milestone_id", milestone),
                 APIOption(key: "id", project)
             ])
             return try await gitlab.execute(.init(endpoint: Endpoints.Milestones.mergeRequests, options: options))
         }
         
         /// Promote project milestone to a group milestone.
-        /// [API Documentation](https://docs.gitlab.com/ee/api/milestones.html#promote-project-milestone-to-a-group-milestone).
+        ///
+        /// [API Documentation](https://docs.gitlab.com/ee/api/milestones.html#promote-project-milestone-to-a-group-milestone)
         ///
         /// - Parameters:
-        ///   - id: The ID of the project’s milestone
+        ///   - milestone: The ID of the project’s milestone
         ///   - project: The ID or URL-encoded path of the project owned by the authenticated user
         /// - Returns: generic response.
-        public func promoteToGroupMilestone(id: Int, project: DataTypes.ProjectID) async throws -> GitLabResponse<Model.NoResponse> {
+        public func promoteToGroupMilestone(_ milestone: Int,
+                                            project: DataTypes.ProjectID) async throws -> GitLabResponse<Model.NoResponse> {
             let options = APIOptionsCollection([
-                APIOption(key: "milestone_id", id),
+                APIOption(key: "milestone_id", milestone),
                 APIOption(key: "id", project)
             ])
             return try await gitlab.execute(.init(.post, endpoint: Endpoints.Milestones.promote, options: options))

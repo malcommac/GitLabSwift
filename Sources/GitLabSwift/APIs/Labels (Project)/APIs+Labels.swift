@@ -14,59 +14,74 @@ import Foundation
 
 extension APIService {
     
+    /// Labels API
+    ///
+    /// [API Documentation](https://docs.gitlab.com/ee/api/labels.html#list-labels)
     public class Labels: APIService {
         
         /// Search for user with passed configuration.
-        /// [API Documentation](https://docs.gitlab.com/ee/api/labels.html#list-labels).
         ///
-        /// - Parameter configure: configuration callback.
-        /// - Returns: found users.
-        public func list(project: DataTypes.ProjectID, _ callback: ((APIOptions.ListLabels) -> Void)? = nil) async throws -> GitLabResponse<[Model.Label]> {
-            let options = APIOptions.ListLabels(callback)
+        /// [API Documentation](https://docs.gitlab.com/ee/api/labels.html#list-labels)
+        ///
+        /// - Parameters:
+        ///   - project: The ID or URL-encoded path of the project owned by the authenticated user
+        ///   - options: Options callback configuration.
+        /// - Returns: found labels.
+        public func list(project: DataTypes.ProjectID,
+                         _ options: ((ListOptions) -> Void)? = nil) async throws -> GitLabResponse<[Model.Label]> {
+            let options = ListOptions(options)
             options.projectID = project
             return try await gitlab.execute(.init(endpoint: Endpoints.labels, options: options))
         }
         
         /// Get a single label for a given project.
-        /// [API Documentation](https://docs.gitlab.com/ee/api/labels.html#get-a-single-project-label).
+        ///
+        /// [API Documentation](https://docs.gitlab.com/ee/api/labels.html#get-a-single-project-label)
         ///
         /// - Parameters:
-        ///   - id: The ID or title of a project’s label.
+        ///   - label: The ID or title of a project’s label.
         ///   - includeAncestor: Include ancestor groups. Defaults to true.
         ///   - project: The ID or URL-encoded path of the project owned by the authenticated user
         /// - Returns: label info.
-        public func get(id: Int, includeAncestor: Bool? = nil, project: DataTypes.ProjectID) async throws -> GitLabResponse<[Model.Label]> {
+        public func get(_ label: Int,
+                        includeAncestor: Bool? = nil,
+                        project: DataTypes.ProjectID) async throws -> GitLabResponse<[Model.Label]> {
             let options = APIOptionsCollection([
                 APIOption(key: "id", project),
-                APIOption(key: "label_id", id),
+                APIOption(key: "label_id", label),
                 APIOption(key: "include_ancestor_groups", includeAncestor)
             ])
             return try await gitlab.execute(.init(endpoint: Endpoints.labels_single, options: options))
         }
         
         /// Creates a new label for the given repository with the given name and color.
-        /// [API Documentation](https://docs.gitlab.com/ee/api/labels.html#create-a-new-label).
+        ///
+        /// [API Documentation](https://docs.gitlab.com/ee/api/labels.html#create-a-new-label)
         ///
         /// - Parameters:
         ///   - name: name of the label.
         ///   - color: The color of the label given in 6-digit hex notation with leading ‘#’ sign.
         ///   - project: The ID or URL-encoded path of the project owned by the authenticated user
-        ///   - callback: configuration callback.
+        ///   - options: configuration callback.
         /// - Returns: Created label object.
-        public func create(name: String, color: String, project: DataTypes.ProjectID, _ callback: @escaping ((APIOptions.CreateLabel) -> Void)) async throws -> GitLabResponse<Model.Label> {
-            let options = APIOptions.CreateLabel(name: name, color: color, project: project, callback)
+        public func create(name: String,
+                           color: String,
+                           project: DataTypes.ProjectID,
+                           options: @escaping ((CreateOptions) -> Void)) async throws -> GitLabResponse<Model.Label> {
+            let options = CreateOptions(name: name, color: color, project: project, options)
             return try await gitlab.execute(.init(.post, endpoint: Endpoints.labels, options: options))
         }
         
-        
         /// Deletes a label with a given name.
-        /// [API Documentation](https://docs.gitlab.com/ee/api/labels.html#delete-a-label).
+        ///
+        /// [API Documentation](https://docs.gitlab.com/ee/api/labels.html#delete-a-label)
         ///
         /// - Parameters:
         ///   - name: The ID or title of a group’s label.
         ///   - project: The ID or URL-encoded path of the project owned by the authenticated user
         /// - Returns: generic response
-        public func delete(_ id: String, project: DataTypes.ProjectID) async throws -> GitLabResponse<Model.NoResponse> {
+        public func delete(_ id: String,
+                           project: DataTypes.ProjectID) async throws -> GitLabResponse<Model.NoResponse> {
             let options = APIOptionsCollection([
                 APIOption(key: "id", project),
                 APIOption(key: "label_id", id)
@@ -77,30 +92,35 @@ extension APIService {
         
         /// Updates an existing label with new name or new color.
         /// At least one parameter is required, to update the label.
-        /// [API Documentation](https://docs.gitlab.com/ee/api/labels.html#edit-an-existing-label).
+        ///
+        /// [API Documentation](https://docs.gitlab.com/ee/api/labels.html#edit-an-existing-label)
         ///
         /// - Parameters:
-        ///   - id: The ID or title of a group’s label.
+        ///   - label: The ID or title of a group’s label.
         ///   - project: The ID or URL-encoded path of the project owned by the authenticated user
-        ///   - callback: configuration callback. At least one parameter is required, to update the label.
+        ///   - options: configuration callback. At least one parameter is required, to update the label.
         /// - Returns: updated label
-        public func edit(_ id: String, project: DataTypes.ProjectID, _ callback: @escaping ((APIOptions.EditLabel) -> Void)) async throws -> GitLabResponse<Model.Label> {
-            let options = APIOptions.EditLabel(id: id, project: project, callback)
+        public func edit(_ label: String,
+                         project: DataTypes.ProjectID,
+                         options: @escaping ((EditOptions) -> Void)) async throws -> GitLabResponse<Model.Label> {
+            let options = EditOptions(label: label, project: project, options)
             return try await gitlab.execute(.init(.put, endpoint: Endpoints.labels_single, options: options))
         }
         
         
         /// Promotes a project label to a group label.
         /// The label keeps its ID.
-        /// [API Documentation](https://docs.gitlab.com/ee/api/labels.html#promote-a-project-label-to-a-group-label).
+        ///
+        /// [API Documentation](https://docs.gitlab.com/ee/api/labels.html#promote-a-project-label-to-a-group-label)
         ///
         /// - Parameters:
-        ///   - id: The ID or title of a group’s label.
+        ///   - label: The ID or title of a group’s label.
         ///   - project: The ID or URL-encoded path of the project owned by the authenticated user
-        public func promoteToGroup(_ id: String, project: DataTypes.ProjectID) async throws -> GitLabResponse<Model.Label> {
+        public func promoteToGroup(label: String,
+                                   project: DataTypes.ProjectID) async throws -> GitLabResponse<Model.Label> {
             let options = APIOptionsCollection([
                 APIOption(key: "id", project),
-                APIOption(key: "label_id", id)
+                APIOption(key: "label_id", label)
             ])
             return try await gitlab.execute(.init(.put, endpoint: Endpoints.labels_promote, options: options))
         }
@@ -108,31 +128,35 @@ extension APIService {
         
         /// Subscribes the authenticated user to a label to receive notifications.  
         /// If the user is already subscribed to the label, the status code 304 is returned.
-        /// [API Documentation](https://docs.gitlab.com/ee/api/labels.html#subscribe-to-a-label).
+        ///
+        /// [API Documentation](https://docs.gitlab.com/ee/api/labels.html#subscribe-to-a-label)
         ///
         /// - Parameters:
-        ///   - id: The ID or title of a group’s label.
+        ///   - label: The ID or title of a group’s label.
         ///   - project: The ID or URL-encoded path of the project owned by the authenticated user
-        public func subscribe(_ id: String, project: DataTypes.ProjectID) async throws -> GitLabResponse<Model.NoResponse> {
+        public func subscribe(label: String,
+                              project: DataTypes.ProjectID) async throws -> GitLabResponse<Model.NoResponse> {
             let options = APIOptionsCollection([
                 APIOption(key: "id", project),
-                APIOption(key: "label_id", id)
+                APIOption(key: "label_id", label)
             ])
             return try await gitlab.execute(.init(.post, endpoint: Endpoints.labels_subscribe, options: options))
         }
         
         /// Unsubscribes the authenticated user from a label to not receive notifications from it.
         /// If the user is not subscribed to the label, the status code 304 is returned.
+        ///
         /// [API Documentation](https://docs.gitlab.com/ee/api/labels.html#unsubscribe-from-a-label)
         ///
         /// - Parameters:
         ///   - id: The ID or title of a group’s label.
         ///   - project: The ID or URL-encoded path of the project owned by the authenticated user
         /// - Returns: generic response
-        public func unsubscribe(_ id: String, project: DataTypes.ProjectID) async throws -> GitLabResponse<Model.NoResponse> {
+        public func unsubscribe(label: String,
+                                project: DataTypes.ProjectID) async throws -> GitLabResponse<Model.NoResponse> {
             let options = APIOptionsCollection([
                 APIOption(key: "id", project),
-                APIOption(key: "label_id", id)
+                APIOption(key: "label_id", label)
             ])
             return try await gitlab.execute(.init(.post, endpoint: Endpoints.labels_unsubscribe, options: options))
         }

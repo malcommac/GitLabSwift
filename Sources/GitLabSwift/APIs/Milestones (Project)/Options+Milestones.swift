@@ -12,31 +12,33 @@
 
 import Foundation
 
-extension APIOptions {
+extension APIService.ProjectMilestones {
     
-    public class EditMilestone: CreateMilestone {
+    public class EditOptions: CreateOptions {
         
         /// The ID of the project’s milestone.
         @APIOption(key: "milestone_id", location: .parameterInQueryURL)
-        public var milestoneId: String?
+        public var milestone: String?
         
         /// The state event of the milestone (`close` or `activate`).
         @APIOption(key: "state_event")
         public var stateEvent: DataTypes.MilestoneEditState?
      
-        public init(milestoneId: String, projectID: DataTypes.ProjectID, _ configure: ((EditMilestone) -> Void)?) {
-            super.init(projectID: projectID, nil)
-            self.milestoneId = milestoneId
+        public init(milestone: String,
+                    project: DataTypes.ProjectID,
+                    _ configure: ((EditOptions) -> Void)?) {
+            super.init(project: project, nil)
+            self.milestone = milestone
             configure?(self)
         }
         
     }
         
-    public class CreateMilestone: APIOptionsCollection {
+    public class CreateOptions: APIOptionsCollection {
         
         /// The ID or URL-encoded path of the project.
         @APIOption(key: "id")
-        public var projectID: DataTypes.ProjectID?
+        public var project: DataTypes.ProjectID?
         
         /// The title of a milestone.
         @APIOption(key: "title")
@@ -54,38 +56,47 @@ extension APIOptions {
         @APIOption(key: "due_date")
         public var dueDate: DataTypes.DateOnly?
      
-        public init(projectID: DataTypes.ProjectID, title: String? = nil, _ configure: ((CreateMilestone) -> Void)?) {
+        public init(project: DataTypes.ProjectID,
+                    title: String? = nil,
+                    _ configure: ((CreateOptions) -> Void)?) {
             super.init()
             self.title = title
-            self.projectID = projectID
+            self.project = project
             configure?(self)
         }
         
     }
     
-    public class ListMilestones: APIOptionsCollection {
+    public class ListOptions: APIOptionsCollection {
         
         /// The ID or URL-encoded path of the project.
         @APIOption(key: "id")
-        public var projectID: DataTypes.ProjectID?
+        public var project: DataTypes.ProjectID?
         
         /// Return only the milestones having the given iid.
-        @APIOption(key: "iids") public var iids: [Int]?
+        @APIOption(key: "iids")
+        public var iids: [Int]?
         
         /// Return only active or closed milestones.
-        @APIOption(key: "state") public var state: DataTypes.MilestoneState?
+        @APIOption(key: "state")
+        public var state: DataTypes.MilestoneState?
         
         /// Return only the milestones having the given title.
-        @APIOption(key: "title") public var title: String?
+        @APIOption(key: "title")
+        public var title: String?
         
         /// Return only milestones with a title or description matching the provided string.
-        @APIOption(key: "search") public var search: String?
+        @APIOption(key: "search")
+        public var search: String?
         
         /// Include group milestones from parent group and its ancestors.
-        @APIOption(key: "include_parent_milestones") public var includeParent: Bool?
+        @APIOption(key: "include_parent_milestones")
+        public var includeParent: Bool?
         
-        public init(_ configure: ((ListMilestones) -> Void)?) {
+        public init(project: DataTypes.ProjectID,
+                    _ configure: ((ListOptions) -> Void)?) {
             super.init()
+            self.project = project
             configure?(self)
         }
         
