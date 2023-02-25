@@ -12,28 +12,33 @@
 
 import Foundation
 
-extension APIOptions {
+extension APIService.GroupLabels {
     
-    public class ListGroupsLabels: APIOptionsCollection {
+    public class ListOptions: APIOptionsCollection {
         
         /// Whether or not to include issue and merge request counts.
-        @APIOption(key: "with_counts") public var withCounts: Bool?
+        @APIOption(key: "with_counts")
+        public var withCounts: Bool?
         
         /// Include ancestor groups.
-        @APIOption(key: "include_ancestor_groups") public var includeAncestorGroups: Bool?
+        @APIOption(key: "include_ancestor_groups")
+        public var includeAncestorGroups: Bool?
         
         /// Include descendant groups.
-        @APIOption(key: "include_descendant_groups") public var includeDescendantGroups: Bool?
+        @APIOption(key: "include_descendant_groups")
+        public var includeDescendantGroups: Bool?
         
         /// Toggle to include only group labels or also project labels.
-        @APIOption(key: "only_group_labels") public var onlyGroupLabels: Bool?
+        @APIOption(key: "only_group_labels")
+        public var onlyGroupLabels: Bool?
         
         /// Keyword to filter labels by.
-        @APIOption(key: "search") public var search: String?
+        @APIOption(key: "search")
+        public var search: String?
         
         // MARK: - Initialization
         
-        public init( _ configure: ((ListGroupsLabels) -> Void)?) {
+        public init( _ configure: ((ListOptions) -> Void)?) {
             super.init()
             configure?(self)
         }

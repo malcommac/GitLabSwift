@@ -14,29 +14,33 @@ import Foundation
 
 extension APIService {
     
-    /// [API Documentation](https://docs.gitlab.com/ee/api/issues_statistics.html).
+    /// Issues statistics API
+    /// 
+    /// [API Documentation](https://docs.gitlab.com/ee/api/issues_statistics.html)
     public class IssuesStatistics: APIService {
         
         /// Gets issues count statistics on all issues.
+        ///
         /// [API Documentation](https://docs.gitlab.com/ee/api/issues_statistics.html#get-issues-statistics)
         ///
-        /// - Parameter callback: configuration callback.
+        /// - Parameter options: configuration callback.
         /// - Returns: list of issues
-        public func list(_ callback: ((APIOptions.IssueStatisticsSearch) -> Void)? = nil) async throws -> GitLabResponse<[Model.Issue]> {
-            let options = APIOptions.IssueStatisticsSearch(callback)
+        public func list(options: ((SearchOptions) -> Void)? = nil) async throws -> GitLabResponse<[Model.Issue]> {
+            let options = SearchOptions(options)
             return try await gitlab.execute(.init(endpoint: Endpoints.IssuesStatistics.list, options: options))
         }
         
         /// Gets issues count statistics for given group.
+        ///
         /// [API Documentation](https://docs.gitlab.com/ee/api/issues_statistics.html#get-group-issues-statistics)
         ///
         /// - Parameters:
         ///   - group: The ID or URL-encoded path of the group owned by the authenticated user
-        ///   - callback: configuration callback.
+        ///   - options: configuration callback.
         /// - Returns: issues
         public func list(group: Int,
-                         _ callback: ((APIOptions.IssueStatisticsSearch) -> Void)? = nil) async throws -> GitLabResponse<[Model.Issue]> {
-            let options = APIOptions.IssueStatisticsSearch(callback)
+                         options: ((SearchOptions) -> Void)? = nil) async throws -> GitLabResponse<[Model.Issue]> {
+            let options = SearchOptions(options)
             options.customOptions = [
                 APIOption(key: "id", group)
             ]
@@ -48,11 +52,11 @@ extension APIService {
         ///
         /// - Parameters:
         ///   - project: The ID or URL-encoded path of the project owned by the authenticated user
-        ///   - callback: configuration callback.
+        ///   - options: configuration callback.
         /// - Returns: issues list
         public func list(project: DataTypes.ProjectID,
-                         _ callback: ((APIOptions.IssueStatisticsSearch) -> Void)? = nil) async throws -> GitLabResponse<[Model.Issue]> {
-            let options = APIOptions.IssueStatisticsSearch(callback)
+                         options: ((SearchOptions) -> Void)? = nil) async throws -> GitLabResponse<[Model.Issue]> {
+            let options = SearchOptions(options)
             options.customOptions = [
                 APIOption(key: "id", project)
             ]

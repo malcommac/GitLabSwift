@@ -24,7 +24,8 @@ extension APIService {
         ///   - id: ID or URL-encoded path of the project owned by the authenticated user.
         ///   - search: Return list of branches containing the search string.
         /// - Returns: array of `Models.Branch`
-        public func list(project id: DataTypes.ProjectID, search: DataTypes.Search? = nil) async throws -> GitLabResponse<[Model.Branch]> {
+        public func list(project id: DataTypes.ProjectID,
+                         search: DataTypes.Search? = nil) async throws -> GitLabResponse<[Model.Branch]> {
             let options = APIOptionsCollection([
                 APIOption(key: "id", id),
                 APIOption(key: "search", search)
@@ -39,7 +40,8 @@ extension APIService {
         ///   - name: name of the branch.
         ///   - id: ID or URL-encoded path of the project owned by the authenticated user.
         /// - Returns: `Models.Branch`
-        public func get(_ name: String, project id: DataTypes.ProjectID) async throws -> GitLabResponse<Model.Branch> {
+        public func get(_ name: String,
+                        project id: DataTypes.ProjectID) async throws -> GitLabResponse<Model.Branch> {
             let options = APIOptionsCollection([
                 APIOption(key: "id", id),
                 APIOption(key: "branch", name)
@@ -54,7 +56,9 @@ extension APIService {
         ///   - ref: Branch name or commit SHA to create branch from.
         ///   - id: The ID or URL-encoded path of the project owned by the authenticated user.
         /// - Returns: Branch
-        public func create(name: String, from ref: String, project id: DataTypes.ProjectID) async throws -> GitLabResponse<Model.Branch> {
+        public func create(name: String,
+                           fromRef ref: String,
+                           project id: DataTypes.ProjectID) async throws -> GitLabResponse<Model.Branch> {
             let options = APIOptionsCollection([
                 APIOption(key: "id", id),
                 APIOption(key: "branch", name),
@@ -68,7 +72,8 @@ extension APIService {
         /// - Parameters:
         ///   - name: name of the branch to remove.
         ///   - id: The ID or URL-encoded path of the project owned by the authenticated user.
-        public func delete(name: String, project id: DataTypes.ProjectID) async throws -> GitLabResponse<Model.NoResponse> {
+        public func delete(name: String,
+                           project id: DataTypes.ProjectID) async throws -> GitLabResponse<Model.NoResponse> {
             let options = APIOptionsCollection([
                 APIOption(key: "id", id),
                 APIOption(key: "branch", name),
@@ -81,7 +86,7 @@ extension APIService {
         ///
         /// - Parameter id: The ID or URL-encoded path of the project owned by the authenticated user.
         /// - Returns: generic response
-        public func delete(mergedBranchesOfProject id: DataTypes.ProjectID) async throws -> GitLabResponse<Model.NoResponse> {
+        public func deleteMergedBranches(project id: DataTypes.ProjectID) async throws -> GitLabResponse<Model.NoResponse> {
             let options = APIOptionsCollection([
                 APIOption(key: "id", id)
             ])

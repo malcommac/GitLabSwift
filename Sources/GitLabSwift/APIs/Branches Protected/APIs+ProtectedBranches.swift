@@ -14,12 +14,15 @@ import Foundation
 
 extension APIService {
     
+    /// Protected branches API.
+    ///
     /// [API Documentation](https://docs.gitlab.com/ee/api/protected_branches.html)
     public class ProtectedBranches: APIService {
         
         /// Gets a list of protected branches from a project as they are defined in the UI.
         /// If a wildcard is set, it is returned instead of the exact name of the branches that match that wildcard.
-        /// [Documentation](https://docs.gitlab.com/ee/api/protected_branches.html#list-protected-branches).
+        ///
+        /// [API Documentation](https://docs.gitlab.com/ee/api/protected_branches.html#list-protected-branches).
         ///
         /// - Parameters:
         ///   - id: The ID or URL-encoded path of the project owned by the authenticated user
@@ -35,7 +38,8 @@ extension APIService {
         }
         
         /// Gets a single protected branch or wildcard protected branch.
-        /// [Documentation](https://docs.gitlab.com/ee/api/protected_branches.html#get-a-single-protected-branch-or-wildcard-protected-branch)
+        ///
+        /// [API Documentation](https://docs.gitlab.com/ee/api/protected_branches.html#get-a-single-protected-branch-or-wildcard-protected-branch)
         ///
         /// - Parameters:
         ///   - name: The name of the branch or wildcard
@@ -52,21 +56,24 @@ extension APIService {
         
         
         /// Protects a single repository branch or several project repository branches using a wildcard protected branch.
-        /// [Documentation](https://docs.gitlab.com/ee/api/protected_branches.html#protect-repository-branches)
+        ///
+        /// [API Documentation](https://docs.gitlab.com/ee/api/protected_branches.html#protect-repository-branches)
         ///
         /// - Parameters:
         ///   - name: The name of the branch or wildcard
-        ///   - id: The ID or URL-encoded path of the project owned by the authenticated user.
-        /// - Returns: `Models.ProtectedBranch`
+        ///   - project: The ID or URL-encoded path of the project owned by the authenticated user.
+        ///   - options: Configuration options.
+        /// - Returns: protected branch.
         public func protect(_ name: String,
                             project: DataTypes.ProjectID,
-                            _ callback: @escaping ((APIOptions.ProtectBranch) -> Void)) async throws -> GitLabResponse<Model.ProtectedBranch> {
-            let options = APIOptions.ProtectBranch(name: name, project: project, callback)
+                            options: @escaping ((ProtectBranchOptions) -> Void)) async throws -> GitLabResponse<Model.ProtectedBranch> {
+            let options = ProtectBranchOptions(name: name, project: project, options)
             return try await gitlab.execute(.init(.post, endpoint: Endpoints.Branches.protectedList, options: options))
         }
         
         /// Unprotects the given protected branch or wildcard protected branch.
-        /// [Documentation](https://docs.gitlab.com/ee/api/protected_branches.html#unprotect-repository-branches).
+        ///
+        /// [API Documentation](https://docs.gitlab.com/ee/api/protected_branches.html#unprotect-repository-branches).
         ///
         /// - Parameters:
         ///   - name: The name of the branch
@@ -81,17 +88,18 @@ extension APIService {
         }
         
         /// Updates a protected branch.
+        ///
         /// [API Documentation](https://docs.gitlab.com/ee/api/protected_branches.html#update-a-protected-branch)
         ///
         /// - Parameters:
         ///   - name: The name of the branch
         ///   - id: The ID or URL-encoded path of the project owned by the authenticated user
-        ///   - callback: configuration callbaxck.
+        ///   - options: Configuration options.
         /// - Returns: updated protected branch
         public func update(_ name: String,
                            project: DataTypes.ProjectID,
-                           _ callback: @escaping ((APIOptions.ProtectBranch) -> Void)) async throws -> GitLabResponse<Model.ProtectedBranch> {
-            let options = APIOptions.ProtectBranch(name: name, project: project, callback)
+                           options: @escaping ((UpdateBranchOptions) -> Void)) async throws -> GitLabResponse<Model.ProtectedBranch> {
+            let options = UpdateBranchOptions(name: name, project: project, options)
             return try await gitlab.execute(.init(.patch, endpoint: Endpoints.Branches.detailProtected, options: options))
         }
         

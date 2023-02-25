@@ -14,9 +14,15 @@ import Foundation
 
 extension APIService {
     
-    /// [API Documentation](https://docs.gitlab.com/ee/api/jobs.html).
+    /// Jobs API
+    ///
+    /// [API Documentation](https://docs.gitlab.com/ee/api/jobs.html)
+    ///
+    /// MISSING APIs:
+    /// - https://docs.gitlab.com/ee/api/jobs.html#list-pipeline-bridges
+    /// - https://docs.gitlab.com/ee/api/jobs.html#get-job-tokens-job
+    /// - https://docs.gitlab.com/ee/api/jobs.html#get-a-log-file
     public class Jobs: APIService {
-
         
         /// Get a list of jobs in a project.
         /// Jobs are sorted in descending order of their IDs.
@@ -38,6 +44,7 @@ extension APIService {
         
         
         /// Get a list of jobs for a pipeline.
+        ///
         /// [API Documentation](https://docs.gitlab.com/ee/api/jobs.html#list-pipeline-jobs)
         ///
         /// - Parameters:
@@ -47,7 +54,7 @@ extension APIService {
         ///   - includeRetried: Include retried jobs in the response.
         /// - Returns: jobs.
         public func list(pipeline: Int,
-                         ofProject project: DataTypes.ProjectID,
+                         project: DataTypes.ProjectID,
                          scopes: [DataTypes.JobScope],
                          includeRetried: Bool? = nil) async throws -> GitLabResponse<[Model.Job]> {
             let options = APIOptionsCollection([
@@ -63,46 +70,48 @@ extension APIService {
         ///  API Documentation](https://docs.gitlab.com/ee/api/jobs.html#get-a-single-job)
         ///
         /// - Parameters:
-        ///   - id: ID of a job.
+        ///   - job: ID of a job.
         ///   - project: ID or URL-encoded path of the project owned by the authenticated user.
         /// - Returns: job
-        public func get(id: Int,
-                        ofProject project: DataTypes.ProjectID) async throws -> GitLabResponse<Model.Job> {
+        public func get(job: Int,
+                        project: DataTypes.ProjectID) async throws -> GitLabResponse<Model.Job> {
             let options = APIOptionsCollection([
                 APIOption(key: "id", project),
-                APIOption(key: "job_id", id)
+                APIOption(key: "job_id", job)
             ])
             return try await gitlab.execute(.init(endpoint: Endpoints.Jobs.single, options: options))
         }
         
         /// Cancel a single job of a project.
+        ///
         /// [API Documentation](https://docs.gitlab.com/ee/api/jobs.html#cancel-a-job)
         ///
         /// - Parameters:
-        ///   - id: ID of a job.
+        ///   - job: ID of a job.
         ///   - project: ID or URL-encoded path of the project owned by the authenticated user.
         /// - Returns: cancelled job
-        public func cancel(id: Int,
-                           ofProject project: DataTypes.ProjectID) async throws -> GitLabResponse<Model.Job> {
+        public func cancel(job: Int,
+                           project: DataTypes.ProjectID) async throws -> GitLabResponse<Model.Job> {
             let options = APIOptionsCollection([
                 APIOption(key: "id", project),
-                APIOption(key: "job_id", id)
+                APIOption(key: "job_id", job)
             ])
             return try await gitlab.execute(.init(.post, endpoint: Endpoints.Jobs.cancel, options: options))
         }
         
         /// Retry a single job of a project.
+        ///
         /// [API Documentation](https://docs.gitlab.com/ee/api/jobs.html#retry-a-job)
         ///
         /// - Parameters:
-        ///   - id: ID of a job.
+        ///   - job: ID of a job.
         ///   - project: ID or URL-encoded path of the project owned by the authenticated user.
         /// - Returns: retried job
-        public func retry(id: Int,
-                          ofProject project: DataTypes.ProjectID) async throws -> GitLabResponse<Model.Job> {
+        public func retry(job: Int,
+                          project: DataTypes.ProjectID) async throws -> GitLabResponse<Model.Job> {
             let options = APIOptionsCollection([
                 APIOption(key: "id", project),
-                APIOption(key: "job_id", id)
+                APIOption(key: "job_id", job)
             ])
             return try await gitlab.execute(.init(.post, endpoint: Endpoints.Jobs.retry, options: options))
         }
@@ -111,14 +120,14 @@ extension APIService {
         /// [API Documentation](https://docs.gitlab.com/ee/api/jobs.html#erase-a-job)
         ///
         /// - Parameters:
-        ///   - id: ID of a job.
+        ///   - job: ID of a job.
         ///   - project: ID or URL-encoded path of the project owned by the authenticated user.
         /// - Returns: erased job
-        public func erase(id: Int,
-                          ofProject project: DataTypes.ProjectID) async throws -> GitLabResponse<Model.Job> {
+        public func erase(job: Int,
+                          project: DataTypes.ProjectID) async throws -> GitLabResponse<Model.Job> {
             let options = APIOptionsCollection([
                 APIOption(key: "id", project),
-                APIOption(key: "job_id", id)
+                APIOption(key: "job_id", job)
             ])
             return try await gitlab.execute(.init(.post, endpoint: Endpoints.Jobs.erase, options: options))
         }
@@ -127,22 +136,17 @@ extension APIService {
         /// [API Documentation](https://docs.gitlab.com/ee/api/jobs.html#run-a-job)
         ///
         /// - Parameters:
-        ///   - id: ID of a job.
+        ///   - job: ID of a job.
         ///   - project: ID or URL-encoded path of the project owned by the authenticated user.
         /// - Returns: runned job
-        public func run(id: Int,
-                        ofProject project: DataTypes.ProjectID) async throws -> GitLabResponse<Model.Job> {
+        public func run(job: Int,
+                        project: DataTypes.ProjectID) async throws -> GitLabResponse<Model.Job> {
             let options = APIOptionsCollection([
                 APIOption(key: "id", project),
-                APIOption(key: "job_id", id)
+                APIOption(key: "job_id", job)
             ])
             return try await gitlab.execute(.init(.post, endpoint: Endpoints.Jobs.play, options: options))
         }
-        
-        // TODO: Missing APIs Calls
-        // - https://docs.gitlab.com/ee/api/jobs.html#list-pipeline-bridges
-        // - https://docs.gitlab.com/ee/api/jobs.html#get-job-tokens-job
-        // - https://docs.gitlab.com/ee/api/jobs.html#get-a-log-file
         
     }
     

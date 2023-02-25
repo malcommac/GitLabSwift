@@ -28,7 +28,7 @@ final class GitLabSwift_CommitsTests: XCTestCase {
     
     public func test_projectCommits() async throws {
         let result = await catchErrors {
-            let response = try await gitlab.commits.list(project: anyProjectID, {
+            let response = try await gitlab.commits.list(project: anyProjectID, options: {
                 $0.since = Date().addingTimeInterval(-60*60*24*5)
                 $0.until = Date()
                 $0.includeStats = true
@@ -94,7 +94,7 @@ final class GitLabSwift_CommitsTests: XCTestCase {
 
     public func test_postComment() async throws {
         let result = await catchErrors {
-            let response = try await gitlab.commits.postComment(sha: "98ce87a2", project: anyProjectID, {
+            let response = try await gitlab.commits.postComment(sha: "98ce87a2", project: anyProjectID, options: {
                 $0.note = "note"
                 $0.path = "Frameworks/IndomioControls/Sources/IndomioControls/Classes/Indomio/UI Controllers/Visit/Views/Controller/Styles/VisitDaysController+Style.swift"
                 $0.line = 47
