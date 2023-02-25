@@ -63,10 +63,10 @@ public final class GitLab {
     ///
     /// - Parameter request: request to execute.
     /// - Returns: response.
-    public func execute<T>(_ request: GitLabRequest) async throws -> GitLabResponse<T> {
+    public func execute<T>(_ request: GLRequest) async throws -> GLResponse<T> {
         let httpRequest = try request.httpRequest(forClient: self)
-        let response = try await GitLabResponse<T>(httpResponse: httpRequest.fetch(httpClient), decoder: config.jsonDecoder)
-        if let error = GitlabError(response: response, request: request) {
+        let response = try await GLResponse<T>(httpResponse: httpRequest.fetch(httpClient), decoder: config.jsonDecoder)
+        if let error = GLError(response: response, request: request) {
             throw error
         }
         return response

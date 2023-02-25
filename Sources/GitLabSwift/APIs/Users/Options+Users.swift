@@ -14,54 +14,54 @@ import Foundation
 
 extension APIService.Users {
     
-    public class SearchOptions: APIOptionsCollection {
+    public class SearchOptions: OutputParamsCollection {
         
         /// Search for users by name, username, or public email.
-        @APIOption(key: "search")
+        @OutputParam(key: "search")
         public var search: String?
 
         /// Lookup users by username.
-        @APIOption(key: "username")
+        @OutputParam(key: "username")
         public var searchByUsername: String?
         
         /// Lookup users by external UID and provider:
-        @APIOption(key: "extern_uid")
+        @OutputParam(key: "extern_uid")
         public var searchByExternUID: String?
         
         /// Filter users based on the `active` state.
-        @APIOption(key: "active")
+        @OutputParam(key: "active")
         public var onlyActive: String?
 
         /// You can search for external users only.
-        @APIOption(key: "external")
+        @OutputParam(key: "external")
         public var onlyExternal: String?
         
         /// Return only administrators. By default it returns all users.
-        @APIOption(key: "admins")
+        @OutputParam(key: "admins")
         public var onlyAdmins: Bool?
         
         /// Filter users without projects.
         /// Default is `false`, which means that all users are returned, with and without projects.
-        @APIOption(key: "without_projects")
+        @OutputParam(key: "without_projects")
         public var withoutProjects: Bool?
         
         /// Filter users by Two-factor authentication.
         /// By default it returns all users.
-        @APIOption(key: "two_factor")
-        public var twoFactor: DataTypes.Flag?
+        @OutputParam(key: "two_factor")
+        public var twoFactor: InputParams.Flag?
 
         /// Filter users by Two-factor authentication.
         /// By default it returns all users.
-        @APIOption(key: "sort")
-        public var sort: DataTypes.Sort?
+        @OutputParam(key: "sort")
+        public var sort: InputParams.Sort?
         
         /// Return users ordered by type. Default is `id`.
-        @APIOption(key: "order_by")
-        public var orderBy: DataTypes.UsersOrder?
+        @OutputParam(key: "order_by")
+        public var orderBy: InputParams.UsersOrder?
 
         /// Return only users created by the specified SAML provider ID.
         /// If not included, it returns all users.
-        @APIOption(key: "saml_provider_id")
+        @OutputParam(key: "saml_provider_id")
         public var samlProviderId: Int?
         
         public init(_ configure: ((SearchOptions) -> Void)?) {

@@ -12,6 +12,33 @@
 
 import Foundation
 
+// MARK: - Projects + URLs
+
+extension APIService.Projects {
+    
+    fileprivate enum URLs: String, GLEndpoint {
+        case all = "/projects"
+        case users = "/projects/{id}/users"
+        case groups = "/projects/{id}/groups"
+        case detail = "/projects/{id}"
+        case starred_projects = "/users/{user_id}/starred_projects"
+        case user_projects = "/users/{user_id}/projects"
+        case fork = "/projects/{id}/fork"
+        case star = "/projects/{id}/star"
+        case unstar = "/projects/{id}/unstar"
+        case languages = "/projects/{id}/languages"
+        case starrers = "/projects/{id}/starrers"
+        case archive = "/projects/{id}/archive"
+        case unarchive = "/projects/{id}/unarchive"
+        case upload = "/projects/{id}/uploads"
+
+        public var value: String { rawValue }
+    }
+    
+}
+
+// MARK: - Projects + APIs
+
 extension APIService {
     
     /// Interact with projects using the REST API.
@@ -63,9 +90,9 @@ extension APIService {
         ///
         /// - Parameter options: search configuration callback.
         /// - Returns: list of projects.
-        public func list(options: ((SearchOptions) -> Void)? = nil) async throws -> GitLabResponse<[Model.Project]> {
+        public func list(options: ((SearchOptions) -> Void)? = nil) async throws -> GLResponse<[Model.Project]> {
             let options = SearchOptions(options)
-            try await gitlab.execute(.init(endpoint: Endpoints.Projects.all, options: options))
+            return try await gitlab.execute(.init(endpoint: URLs.all, options: options))
         }
         
         /// Return the list of projects eventually owned by the user.
@@ -78,9 +105,9 @@ extension APIService {
         ///   - callback: options configuration.
         /// - Returns: list of projects.
         public func listUsersProjects(_ user: Int,
-                                  _ callback: ((UserProjectsOptions) -> Void)? = nil) async throws -> GitLabResponse<[Model.Project]> {
+                                  _ callback: ((UserProjectsOptions) -> Void)? = nil) async throws -> GLResponse<[Model.Project]> {
             let options = UserProjectsOptions(user: user, callback)
-            return try await gitlab.execute(.init(endpoint: Endpoints.Projects.user_projects, options: options))
+            return try await gitlab.execute(.init(endpoint: URLs.user_projects, options: options))
         }
         
         /// Get a list of visible projects starred by the given user.
@@ -90,11 +117,11 @@ extension APIService {
         ///
         /// - Parameter user: user identifier.
         /// - Returns: list of projects.
-        public func listUserStarredProjects(_ user: Int) async throws -> GitLabResponse<[Model.Project]> {
-            let options = APIOptionsCollection([
-                APIOption(key: "user_id", user)
+        public func listUserStarredProjects(_ user: Int) async throws -> GLResponse<[Model.Project]> {
+            let options = OutputParamsCollection([
+                OutputParam(key: "user_id", user)
             ])
-            return try await gitlab.execute(.init(endpoint: Endpoints.Projects.starred_projects, options: options))
+            return try await gitlab.execute(.init(endpoint: URLs.starred_projects, options: options))
         }
         
         /// Get a specific project.
@@ -106,10 +133,10 @@ extension APIService {
         ///   - projectID: The ID or URL-encoded path of the project.
         ///   - options: options configuration.
         /// - Returns: found project, if any.
-        public func get(project: DataTypes.ProjectID,
-                        options: ((SearchProjectOptions) -> Void)? = nil) async throws -> GitLabResponse<Model.Project> {
+        public func get(project: InputParams.ProjectID,
+                        options: ((SearchProjectOptions) -> Void)? = nil) async throws -> GLResponse<Model.Project> {
             let options = SearchProjectOptions(project: project, options)
-            return try await gitlab.execute(.init(endpoint: Endpoints.Projects.detail, options: options))
+            return try await gitlab.execute(.init(endpoint: URLs.detail, options: options))
         }
         
         /// Get the users list of a project.
@@ -120,10 +147,10 @@ extension APIService {
         ///   - project: The ID or URL-encoded path of the project.
         ///   - callback: configuration callback.
         /// - Returns: `[Models.User]`
-        public func usersList(project: DataTypes.ProjectID,
-                              options: ((ProjectUsersOptions) -> Void)? = nil) async throws -> GitLabResponse<[Model.User]> {
+        public func usersList(project: InputParams.ProjectID,
+                              options: ((ProjectUsersOptions) -> Void)? = nil) async throws -> GLResponse<[Model.User]> {
             let options = ProjectUsersOptions(project: project, options)
-            return try await gitlab.execute(.init(endpoint: Endpoints.Projects.users, options: options))
+            return try await gitlab.execute(.init(endpoint: URLs.users, options: options))
         }
         
         /// Get a list of ancestor groups for this project.
@@ -134,10 +161,10 @@ extension APIService {
         ///   - project: The ID or URL-encoded path of the project.
         ///   - options: configuration callback.
         /// - Returns: array of `Models.Group`
-        public func groupsOfProject(_ project: DataTypes.ProjectID,
-                                    options: ((ProjectGroupsOptions) -> Void)? = nil) async throws -> GitLabResponse<[Model.Group]> {
+        public func groupsOfProject(_ project: InputParams.ProjectID,
+                                    options: ((ProjectGroupsOptions) -> Void)? = nil) async throws -> GLResponse<[Model.Group]> {
             let options = ProjectGroupsOptions(project: project, options)
-            return try await gitlab.execute(.init(endpoint: Endpoints.Projects.groups, options: options))
+            return try await gitlab.execute(.init(endpoint: URLs.groups, options: options))
         }
         
         /// Forks a project into the user namespace of the authenticated user or the one provided.
@@ -152,10 +179,10 @@ extension APIService {
         ///   - project: The ID or URL-encoded path of the project.
         ///   - options: configuration callback.
         /// - Returns: generic response
-        public func fork(project: DataTypes.ProjectID,
-                         options: ((ForkOptions) -> Void)? = nil) async throws -> GitLabResponse<Model.NoResponse> {
+        public func fork(project: InputParams.ProjectID,
+                         options: ((ForkOptions) -> Void)? = nil) async throws -> GLResponse<Model.NoResponse> {
             let options = ForkOptions(project: project, options)
-            return try await gitlab.execute(.init(.post, endpoint: Endpoints.Projects.fork, options: options))
+            return try await gitlab.execute(.init(.post, endpoint: URLs.fork, options: options))
         }
         
         /// List the projects accessible to the calling user that have an established,
@@ -167,10 +194,10 @@ extension APIService {
         ///   - project: The ID or URL-encoded path of the project.
         ///   - options: configuration callback.
         /// - Returns: `Models.Project`
-        public func forksOfProject(_ project: DataTypes.ProjectID,
-                                   options: ((ForksSearchOptions) -> Void)? = nil) async throws -> GitLabResponse<[Model.Project]> {
+        public func forksOfProject(_ project: InputParams.ProjectID,
+                                   options: ((ForksSearchOptions) -> Void)? = nil) async throws -> GLResponse<[Model.Project]> {
             let options = ForksSearchOptions(project: project, options)
-            return try await gitlab.execute(.init(endpoint: Endpoints.Projects.fork, options: options))
+            return try await gitlab.execute(.init(endpoint: URLs.fork, options: options))
         }
         
         /// Stars a given project.
@@ -180,11 +207,11 @@ extension APIService {
         ///
         /// - Parameter project: The ID or URL-encoded path of the project.
         /// - Returns: `Models.Project`
-        public func star(project: DataTypes.ProjectID) async throws -> GitLabResponse<Model.Project> {
-            let options = APIOptionsCollection([
-                APIOption(key: "id", project)
+        public func star(project: InputParams.ProjectID) async throws -> GLResponse<Model.Project> {
+            let options = OutputParamsCollection([
+                OutputParam(key: "id", project)
             ])
-            return try await gitlab.execute(.init(.post, endpoint: Endpoints.Projects.star, options: options))
+            return try await gitlab.execute(.init(.post, endpoint: URLs.star, options: options))
         }
         
         /// Unstars a given project. Returns status code 304 if the project is not starred.
@@ -193,11 +220,11 @@ extension APIService {
         ///
         /// - Parameter project: The ID or URL-encoded path of the project.
         /// - Returns: `Models.Project`
-        public func unstar(project: DataTypes.ProjectID) async throws -> GitLabResponse<Model.Project> {
-            let options = APIOptionsCollection([
-                APIOption(key: "id", project)
+        public func unstar(project: InputParams.ProjectID) async throws -> GLResponse<Model.Project> {
+            let options = OutputParamsCollection([
+                OutputParam(key: "id", project)
             ])
-            return try await gitlab.execute(.init(.post, endpoint: Endpoints.Projects.unstar, options: options))
+            return try await gitlab.execute(.init(.post, endpoint: URLs.unstar, options: options))
         }
         
         /// List the users who starred the specified project.
@@ -207,14 +234,14 @@ extension APIService {
         /// - Parameters:
         ///   - project: The ID or URL-encoded path of the project.
         ///   - search: Search for specific users.
-        public func starrersOfProject(_ project: DataTypes.ProjectID,
+        public func starrersOfProject(_ project: InputParams.ProjectID,
                                       search: String? = nil)
-        async throws -> GitLabResponse<[Model.User]> {
-            let options = APIOptionsCollection([
-                APIOption(key: "id", project),
-                APIOption(key: "search", search)
+        async throws -> GLResponse<[Model.User]> {
+            let options = OutputParamsCollection([
+                OutputParam(key: "id", project),
+                OutputParam(key: "search", search)
             ])
-            return try await gitlab.execute(.init(endpoint: Endpoints.Projects.starrers, options: options))
+            return try await gitlab.execute(.init(endpoint: URLs.starrers, options: options))
         }
         
         /// Get languages used in a project with percentage value.
@@ -223,11 +250,11 @@ extension APIService {
         ///
         /// - Parameter project: The ID or URL-encoded path of the project.
         /// - Returns: a dictionary with languages and their percentage
-        public func languagesOfProject(_ project: DataTypes.ProjectID) async throws ->  GitLabResponse<[String: Double]> {
-            let options = APIOptionsCollection([
-                APIOption(key: "id", project)
+        public func languagesOfProject(_ project: InputParams.ProjectID) async throws ->  GLResponse<[String: Double]> {
+            let options = OutputParamsCollection([
+                OutputParam(key: "id", project)
             ])
-            return try await gitlab.execute(.init(endpoint: Endpoints.Projects.languages, options: options))
+            return try await gitlab.execute(.init(endpoint: URLs.languages, options: options))
         }
         
         /// Archives the project if the user is either an administrator or the owner of this project.
@@ -237,11 +264,11 @@ extension APIService {
         ///
         /// - Parameter project: The ID or URL-encoded path of the project.
         /// - Returns: archived project
-        public func archive(project: DataTypes.ProjectID) async throws ->  GitLabResponse<Model.Project> {
-            let options = APIOptionsCollection([
-                APIOption(key: "id", project)
+        public func archive(project: InputParams.ProjectID) async throws ->  GLResponse<Model.Project> {
+            let options = OutputParamsCollection([
+                OutputParam(key: "id", project)
             ])
-            return try await gitlab.execute(.init(.post, endpoint: Endpoints.Projects.archive, options: options))
+            return try await gitlab.execute(.init(.post, endpoint: URLs.archive, options: options))
         }
         
         /// Unarchives the project if the user is either an administrator or the owner of this project.
@@ -251,11 +278,11 @@ extension APIService {
         ///
         /// - Parameter project: The ID or URL-encoded path of the project.
         /// - Returns: unarchived project.
-        public func unarchive(project: DataTypes.ProjectID) async throws ->  GitLabResponse<Model.Project> {
-            let options = APIOptionsCollection([
-                APIOption(key: "id", project)
+        public func unarchive(project: InputParams.ProjectID) async throws ->  GLResponse<Model.Project> {
+            let options = OutputParamsCollection([
+                OutputParam(key: "id", project)
             ])
-            return try await gitlab.execute(.init(.post, endpoint: Endpoints.Projects.unarchive, options: options))
+            return try await gitlab.execute(.init(.post, endpoint: URLs.unarchive, options: options))
         }
         
         /// Deletes a project including all associated resources (including issues and merge requests).
@@ -264,11 +291,11 @@ extension APIService {
         ///
         /// - Parameter project: The ID or URL-encoded path of the project.
         /// - Returns: generic response..
-        public func delete(project: DataTypes.ProjectID) async throws ->  GitLabResponse<Model.NoResponse> {
-            let options = APIOptionsCollection([
-                APIOption(key: "id", project)
+        public func delete(project: InputParams.ProjectID) async throws ->  GLResponse<Model.NoResponse> {
+            let options = OutputParamsCollection([
+                OutputParam(key: "id", project)
             ])
-            return try await gitlab.execute(.init(.delete, endpoint: Endpoints.Projects.detail, options: options))
+            return try await gitlab.execute(.init(.delete, endpoint: URLs.detail, options: options))
         }
         
         /// Restores project marked for deletion.
@@ -277,11 +304,11 @@ extension APIService {
         ///
         /// - Parameter project: The ID or URL-encoded path of the project.
         /// - Returns: generic response
-        public func restore(project: DataTypes.ProjectID) async throws ->  GitLabResponse<Model.NoResponse> {
-            let options = APIOptionsCollection([
-                APIOption(key: "id", project)
+        public func restore(project: InputParams.ProjectID) async throws ->  GLResponse<Model.NoResponse> {
+            let options = OutputParamsCollection([
+                OutputParam(key: "id", project)
             ])
-            return try await gitlab.execute(.init(.delete, endpoint: Endpoints.Projects.detail, options: options))
+            return try await gitlab.execute(.init(.delete, endpoint: URLs.detail, options: options))
         }
         
     }

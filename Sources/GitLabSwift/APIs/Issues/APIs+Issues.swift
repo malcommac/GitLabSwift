@@ -12,6 +12,40 @@
 
 import Foundation
 
+// MARK: - Issues + URLs
+
+extension APIService {
+    
+    fileprivate enum URLs: String, GLEndpoint {
+        case list = "/issues"
+        case list_groups = "/groups/{id}/issues"
+        case list_projects = "/projects/{id}/issues"
+        case get = "/issues/{id}"
+        case get_in_project = "/projects/{id}/issues/{issue_iid}"
+        case reorder = "/projects/{id}/issues/{issue_iid}/reorder"
+        case move = "/projects/{id}/issues/{issue_iid}/move"
+        case clone = "/projects/{id}/issues/{issue_iid}/clone"
+        case subscribe = "/projects/{id}/issues/{issue_iid}/subscribe"
+        case unsubscribe = "/projects/{id}/issues/{issue_iid}/unsubscribe"
+        case todo = "/projects/{id}/issues/{issue_iid}/todo"
+        case notes = "/projects/{id}/issues/{issue_iid}/notes"
+        case time_estimate = "/projects/{id}/issues/{issue_iid}/time_estimate"
+        case reset_time_estimate = "/projects/{id}/issues/{issue_iid}/reset_time_estimate"
+        case add_spent_time = "/projects/{id}/issues/{issue_iid}/add_spent_time"
+        case reset_spent_time = "/projects/{id}/issues/{issue_iid}/reset_spent_time"
+        case time_stats = "/projects/{id}/issues/{issue_iid}/time_stats"
+        case related_merge_requests = "/projects/{id}/issues/{issue_iid}/related_merge_requests"
+        case closed_by = "/projects/{id}/issues/{issue_iid}/closed_by"
+        case participants = "/projects/{id}/issues/{issue_iid}/participants"
+        case user_agent_detail = "/projects/{id}/issues/{issue_iid}/user_agent_detail"
+
+        public var value: String { rawValue }
+    }
+    
+}
+
+// MARK: - Issues + APIs
+
 extension APIService {
     
     /// Issues API.
@@ -34,9 +68,9 @@ extension APIService {
         ///
         /// - Parameter options: options callback.
         /// - Returns: found issues.
-        public func list(options: ((ListOptions) -> Void)? = nil) async throws -> GitLabResponse<[Model.Issue]> {
+        public func list(options: ((ListOptions) -> Void)? = nil) async throws -> GLResponse<[Model.Issue]> {
             let options = ListOptions(options)
-            return try await gitlab.execute(.init(endpoint: Endpoints.Issues.list, options: options))
+            return try await gitlab.execute(.init(endpoint: URLs.list, options: options))
         }
         
         /// Get a list of a group’s issues.
@@ -51,9 +85,9 @@ extension APIService {
         ///   - options: options for configuration.
         /// - Returns: found issues.
         public func list(group: Int,
-                         options: ((ListGroupOptions) -> Void)? = nil) async throws -> GitLabResponse<[Model.Issue]> {
+                         options: ((ListGroupOptions) -> Void)? = nil) async throws -> GLResponse<[Model.Issue]> {
             let options = ListGroupOptions(group: group, options)
-            return try await gitlab.execute(.init(endpoint: Endpoints.Issues.listGroups, options: options))
+            return try await gitlab.execute(.init(endpoint: URLs.list_groups, options: options))
         }
         
         /// Get a list of a project’s issues.
@@ -67,10 +101,10 @@ extension APIService {
         ///   - project: id of the project.
         ///   - callback: configuration callback.
         /// - Returns: found issues.
-        public func list(project: DataTypes.ProjectID,
-                         options: ((ListProjectOptions) -> Void)? = nil) async throws -> GitLabResponse<[Model.Issue]> {
+        public func list(project: InputParams.ProjectID,
+                         options: ((ListProjectOptions) -> Void)? = nil) async throws -> GLResponse<[Model.Issue]> {
             let options = ListProjectOptions(project: project, options)
-            return try await gitlab.execute(.init(endpoint: Endpoints.Issues.listProjects, options: options))
+            return try await gitlab.execute(.init(endpoint: URLs.list_projects, options: options))
         }
         
         /// Get a single issue.
@@ -79,11 +113,11 @@ extension APIService {
         ///
         /// - Parameter issue: id of the issue to retrive.
         /// - Returns: found issue.
-        public func get(issue: Int) async throws -> GitLabResponse<Model.Issue> {
-            let options = APIOptionsCollection([
-                APIOption(key: "id", issue)
+        public func get(issue: Int) async throws -> GLResponse<Model.Issue> {
+            let options = OutputParamsCollection([
+                OutputParam(key: "id", issue)
             ])
-            return try await gitlab.execute(.init(endpoint: Endpoints.Issues.get, options: options))
+            return try await gitlab.execute(.init(endpoint: URLs.get, options: options))
         }
         
         /// Get a single project issue.
@@ -93,13 +127,13 @@ extension APIService {
         ///   - iid: iid of the issue.
         ///   - project: The global ID or URL-encoded path of the project owned by the authenticated user.
         /// - Returns: found issue.
-        public func getProject(issue: Int,
-                               project: DataTypes.ProjectID?) async throws -> GitLabResponse<Model.Issue> {
-            let options = APIOptionsCollection([
-                APIOption(key: "id", project),
-                APIOption(key: "issue_iid", issue)
+        public func get(issue: Int,
+                        project: InputParams.ProjectID) async throws -> GLResponse<Model.Issue> {
+            let options = OutputParamsCollection([
+                OutputParam(key: "id", project),
+                OutputParam(key: "issue_iid", issue)
             ])
-            return try await gitlab.execute(.init(endpoint: Endpoints.Issues.getInProject, options: options))
+            return try await gitlab.execute(.init(endpoint: URLs.get_in_project, options: options))
         }
         
         /// Creates a new project issue.
@@ -111,10 +145,10 @@ extension APIService {
         ///   - project: parent project.
         ///   - callback: configuration callback.
         public func create(title: String,
-                           inProject project: DataTypes.ProjectID,
-                           _ callback: ((CreateOptions) -> Void)? = nil) async throws -> GitLabResponse<Model.Issue> {
+                           inProject project: InputParams.ProjectID,
+                           _ callback: ((CreateOptions) -> Void)? = nil) async throws -> GLResponse<Model.Issue> {
             let options = CreateOptions(title: title, project: project, callback)
-            return try await gitlab.execute(.init(.post, endpoint: Endpoints.Issues.listProjects, options: options))
+            return try await gitlab.execute(.init(.post, endpoint: URLs.list_projects, options: options))
         }
         
         /// Updates an existing project issue.
@@ -128,10 +162,10 @@ extension APIService {
         ///   - options: configuration callbaxck.
         /// - Returns: updated issue.
         public func edit(issue: Int,
-                         project: DataTypes.ProjectID,
-                         options: ((EditOptions) -> Void)? = nil) async throws -> GitLabResponse<Model.Issue> {
+                         project: InputParams.ProjectID,
+                         options: ((EditOptions) -> Void)? = nil) async throws -> GLResponse<Model.Issue> {
             let options = EditOptions(issue: issue, project: project, options)
-            return try await gitlab.execute(.init(.put, endpoint: Endpoints.Issues.listProjects, options: options))
+            return try await gitlab.execute(.init(.put, endpoint: URLs.list_projects, options: options))
         }
         
         /// Deletes an issue.
@@ -144,12 +178,12 @@ extension APIService {
         ///   - project: Reference project.
         /// - Returns: no response.
         public func delete(issue: Int,
-                           project: DataTypes.ProjectID) async throws -> GitLabResponse<Model.NoResponse> {
-            let options = APIOptionsCollection([
-                APIOption(key: "id", project),
-                APIOption(key: "issue_iid", issue)
+                           project: InputParams.ProjectID) async throws -> GLResponse<Model.NoResponse> {
+            let options = OutputParamsCollection([
+                OutputParam(key: "id", project),
+                OutputParam(key: "issue_iid", issue)
             ])
-            return try await gitlab.execute(.init(.delete, endpoint: Endpoints.Issues.getInProject, options: options))
+            return try await gitlab.execute(.init(.delete, endpoint: URLs.get_in_project, options: options))
         }
         
         /// Reorders an issue, you can see the results when sorting issues manually.
@@ -163,16 +197,16 @@ extension APIService {
         ///   - afterID: The global ID of a project’s issue that should be placed before this issue
         /// - Returns: no response.
         public func reorder(issue: Int,
-                            project: DataTypes.ProjectID,
+                            project: InputParams.ProjectID,
                             beforeID: Int? = nil,
-                            afterID: Int? = nil) async throws -> GitLabResponse<Model.NoResponse> {
-            let options = APIOptionsCollection([
-                APIOption(key: "id", project),
-                APIOption(key: "issue_iid", issue),
-                APIOption(key: "move_before_id", beforeID),
-                APIOption(key: "move_after_id", afterID)
+                            afterID: Int? = nil) async throws -> GLResponse<Model.NoResponse> {
+            let options = OutputParamsCollection([
+                OutputParam(key: "id", project),
+                OutputParam(key: "issue_iid", issue),
+                OutputParam(key: "move_before_id", beforeID),
+                OutputParam(key: "move_after_id", afterID)
             ])
-            return try await gitlab.execute(.init(.put, endpoint: Endpoints.Issues.reorder, options: options))
+            return try await gitlab.execute(.init(.put, endpoint: URLs.reorder, options: options))
         }
         
         /// Moves an issue to a different project.
@@ -188,14 +222,14 @@ extension APIService {
         ///   - destProject: The ID of the new project
         /// - Returns: no response.
         public func move(issue: Int,
-                         project: DataTypes.ProjectID,
-                         to destProject: DataTypes.ProjectID) async throws -> GitLabResponse<Model.NoResponse> {
-            let options = APIOptionsCollection([
-                APIOption(key: "id", project),
-                APIOption(key: "issue_iid", issue),
-                APIOption(key: "to_project_id", destProject)
+                         project: InputParams.ProjectID,
+                         to destProject: InputParams.ProjectID) async throws -> GLResponse<Model.NoResponse> {
+            let options = OutputParamsCollection([
+                OutputParam(key: "id", project),
+                OutputParam(key: "issue_iid", issue),
+                OutputParam(key: "to_project_id", destProject)
             ])
-            return try await gitlab.execute(.init(.post, endpoint: Endpoints.Issues.move, options: options))
+            return try await gitlab.execute(.init(.post, endpoint: URLs.move, options: options))
         }
         
         /// Clone the issue to given project.
@@ -212,16 +246,16 @@ extension APIService {
         ///   - withNotes: Clone the issue with notes.
         /// - Returns: new cloned issue
         public func clone(issue: Int,
-                          project: DataTypes.ProjectID,
-                          to destProject: DataTypes.ProjectID,
-                          notes: Bool? = nil) async throws -> GitLabResponse<Model.Issue> {
-            let options = APIOptionsCollection([
-                APIOption(key: "id", project),
-                APIOption(key: "issue_iid", issue),
-                APIOption(key: "to_project_id", destProject),
-                APIOption(key: "with_notes", notes)
+                          project: InputParams.ProjectID,
+                          to destProject: InputParams.ProjectID,
+                          notes: Bool? = nil) async throws -> GLResponse<Model.Issue> {
+            let options = OutputParamsCollection([
+                OutputParam(key: "id", project),
+                OutputParam(key: "issue_iid", issue),
+                OutputParam(key: "to_project_id", destProject),
+                OutputParam(key: "with_notes", notes)
             ])
-            return try await gitlab.execute(.init(.post, endpoint: Endpoints.Issues.clone, options: options))
+            return try await gitlab.execute(.init(.post, endpoint: URLs.clone, options: options))
         }
         
         /// Subscribes the authenticated user to an issue to receive notifications.
@@ -234,12 +268,12 @@ extension APIService {
         ///   - project: The global ID or URL-encoded path of the project owned by the authenticated user.
         /// - Returns: subscribed issue.
         public func subscribe(issue: Int,
-                              project: DataTypes.ProjectID) async throws -> GitLabResponse<Model.Issue> {
-            let options = APIOptionsCollection([
-                APIOption(key: "id", project),
-                APIOption(key: "issue_iid", issue)
+                              project: InputParams.ProjectID) async throws -> GLResponse<Model.Issue> {
+            let options = OutputParamsCollection([
+                OutputParam(key: "id", project),
+                OutputParam(key: "issue_iid", issue)
             ])
-            return try await gitlab.execute(.init(.post, endpoint: Endpoints.Issues.subscribe, options: options))
+            return try await gitlab.execute(.init(.post, endpoint: URLs.subscribe, options: options))
         }
         
         /// Unsubscribes the authenticated user from the issue to not receive notifications from it.
@@ -252,12 +286,12 @@ extension APIService {
         ///   - project: The global ID or URL-encoded path of the project owned by the authenticated user.
         /// - Returns: unbscribed issue.
         public func unsubscribe(issue: Int,
-                                project: DataTypes.ProjectID) async throws -> GitLabResponse<Model.Issue> {
-            let options = APIOptionsCollection([
-                APIOption(key: "id", project),
-                APIOption(key: "issue_iid", issue)
+                                project: InputParams.ProjectID) async throws -> GLResponse<Model.Issue> {
+            let options = OutputParamsCollection([
+                OutputParam(key: "id", project),
+                OutputParam(key: "issue_iid", issue)
             ])
-            return try await gitlab.execute(.init(.post, endpoint: Endpoints.Issues.unsubscribe, options: options))
+            return try await gitlab.execute(.init(.post, endpoint: URLs.unsubscribe, options: options))
         }
         
         /// Manually creates a to-do item for the current user on an issue.
@@ -270,12 +304,12 @@ extension APIService {
         ///   - project: The global ID or URL-encoded path of the project owned by the authenticated user.
         /// - Returns: issue
         public func createToDo(issue: Int,
-                               project: DataTypes.ProjectID) async throws -> GitLabResponse<Model.Issue> {
-            let options = APIOptionsCollection([
-                APIOption(key: "id", project),
-                APIOption(key: "issue_iid", issue)
+                               project: InputParams.ProjectID) async throws -> GLResponse<Model.Issue> {
+            let options = OutputParamsCollection([
+                OutputParam(key: "id", project),
+                OutputParam(key: "issue_iid", issue)
             ])
-            return try await gitlab.execute(.init(.post, endpoint: Endpoints.Issues.todo, options: options))
+            return try await gitlab.execute(.init(.post, endpoint: URLs.todo, options: options))
         }
         
         /// Promotes an issue to an epic by adding a comment.
@@ -288,14 +322,14 @@ extension APIService {
         ///   - note: The content of a note. Must contain `/promote` at the start of a new line.
         /// - Returns: note.
         public func promoteToEpic(issue: Int,
-                                  project: DataTypes.ProjectID,
-                                  note: String) async throws -> GitLabResponse<Model.Note> {
-            let options = APIOptionsCollection([
-                APIOption(key: "id", project),
-                APIOption(key: "issue_iid", issue),
-                APIOption(key: "body", note)
+                                  project: InputParams.ProjectID,
+                                  note: String) async throws -> GLResponse<Model.Note> {
+            let options = OutputParamsCollection([
+                OutputParam(key: "id", project),
+                OutputParam(key: "issue_iid", issue),
+                OutputParam(key: "body", note)
             ])
-            return try await gitlab.execute(.init(.post, endpoint: Endpoints.Issues.notes, options: options))
+            return try await gitlab.execute(.init(.post, endpoint: URLs.notes, options: options))
         }
         
         /// Sets an estimated time of work for this issue.
@@ -309,16 +343,16 @@ extension APIService {
         /// - Returns: estimate stat
         public func setEstimate(_ duration: TimeInterval,
                                 issue: Int,
-                                project: DataTypes.ProjectID) async throws -> GitLabResponse<Model.TimeStats> {
+                                project: InputParams.ProjectID) async throws -> GLResponse<Model.TimeStats> {
             let formatter = DateComponentsFormatter()
             formatter.unitsStyle = .brief
             formatter.allowedUnits = [.day, .hour]
-            let options = APIOptionsCollection([
-                APIOption(key: "id", project),
-                APIOption(key: "issue_iid", issue),
-                APIOption(key: "duration", formatter.string(from: duration)!)
+            let options = OutputParamsCollection([
+                OutputParam(key: "id", project),
+                OutputParam(key: "issue_iid", issue),
+                OutputParam(key: "duration", formatter.string(from: duration)!)
             ])
-            return try await gitlab.execute(.init(.post, endpoint: Endpoints.Issues.timeEstimate, options: options))
+            return try await gitlab.execute(.init(.post, endpoint: URLs.time_estimate, options: options))
         }
         
         /// Resets the estimated time for this issue to 0 seconds.
@@ -330,12 +364,12 @@ extension APIService {
         ///   - project: The global ID or URL-encoded path of the project owned by the authenticated user.
         /// - Returns: estimate stat
         public func resetEstimate(issue: Int,
-                                  project: DataTypes.ProjectID) async throws -> GitLabResponse<Model.TimeStats> {
-            let options = APIOptionsCollection([
-                APIOption(key: "id", project),
-                APIOption(key: "issue_iid", issue)
+                                  project: InputParams.ProjectID) async throws -> GLResponse<Model.TimeStats> {
+            let options = OutputParamsCollection([
+                OutputParam(key: "id", project),
+                OutputParam(key: "issue_iid", issue)
             ])
-            return try await gitlab.execute(.init(.post, endpoint: Endpoints.Issues.resetTimeEstimate, options: options))
+            return try await gitlab.execute(.init(.post, endpoint: URLs.reset_time_estimate, options: options))
         }
         
         /// Adds spent time for this issue.
@@ -350,18 +384,18 @@ extension APIService {
         /// - Returns: spent time stat
         public func setSpentTime(_ duration: TimeInterval,
                                  issue: Int,
-                                 project: DataTypes.ProjectID,
-                                 summary: String? = nil) async throws -> GitLabResponse<Model.TimeStats> {
+                                 project: InputParams.ProjectID,
+                                 summary: String? = nil) async throws -> GLResponse<Model.TimeStats> {
             let formatter = DateComponentsFormatter()
             formatter.unitsStyle = .brief
             formatter.allowedUnits = [.day, .hour]
-            let options = APIOptionsCollection([
-                APIOption(key: "id", project),
-                APIOption(key: "issue_iid", issue),
-                APIOption(key: "duration", formatter.string(from: duration)!),
-                APIOption(key: "summary", summary)
+            let options = OutputParamsCollection([
+                OutputParam(key: "id", project),
+                OutputParam(key: "issue_iid", issue),
+                OutputParam(key: "duration", formatter.string(from: duration)!),
+                OutputParam(key: "summary", summary)
             ])
-            return try await gitlab.execute(.init(.post, endpoint: Endpoints.Issues.addSpentTime, options: options))
+            return try await gitlab.execute(.init(.post, endpoint: URLs.add_spent_time, options: options))
         }
         
         /// Resets the total spent time for this issue to 0 seconds.
@@ -373,12 +407,12 @@ extension APIService {
         ///   - project: The global ID or URL-encoded path of the project owned by the authenticated user
         /// - Returns: spent time stat.
         public func resetSpentTime(issue: Int,
-                                   project: DataTypes.ProjectID) async throws -> GitLabResponse<Model.TimeStats> {
-            let options = APIOptionsCollection([
-                APIOption(key: "id", project),
-                APIOption(key: "issue_iid", issue)
+                                   project: InputParams.ProjectID) async throws -> GLResponse<Model.TimeStats> {
+            let options = OutputParamsCollection([
+                OutputParam(key: "id", project),
+                OutputParam(key: "issue_iid", issue)
             ])
-            return try await gitlab.execute(.init(.post, endpoint: Endpoints.Issues.resetSpentTime, options: options))
+            return try await gitlab.execute(.init(.post, endpoint: URLs.reset_spent_time, options: options))
         }
         
         /// Get time tracking stats.
@@ -389,12 +423,12 @@ extension APIService {
         ///   - project: The global ID or URL-encoded path of the project owned by the authenticated user
         /// - Returns: time stat.
         public func getTimeTracking(issue: Int,
-                                    project: DataTypes.ProjectID) async throws -> GitLabResponse<Model.TimeStats> {
-            let options = APIOptionsCollection([
-                APIOption(key: "id", project),
-                APIOption(key: "issue_iid", issue)
+                                    project: InputParams.ProjectID) async throws -> GLResponse<Model.TimeStats> {
+            let options = OutputParamsCollection([
+                OutputParam(key: "id", project),
+                OutputParam(key: "issue_iid", issue)
             ])
-            return try await gitlab.execute(.init(endpoint: Endpoints.Issues.timeStats, options: options))
+            return try await gitlab.execute(.init(endpoint: URLs.time_stats, options: options))
         }
         
         /// Get all the merge requests that are related to the issue.
@@ -406,12 +440,12 @@ extension APIService {
         ///   - project: The global ID or URL-encoded path of the project owned by the authenticated user.
         /// - Returns: list of merge requests linked to the issue
         public func mergeRequestsForIssue(_ issue: Int,
-                                          project: DataTypes.ProjectID) async throws -> GitLabResponse<[Model.MergeRequest]> {
-            let options = APIOptionsCollection([
-                APIOption(key: "id", project),
-                APIOption(key: "issue_iid", issue)
+                                          project: InputParams.ProjectID) async throws -> GLResponse<[Model.MergeRequest]> {
+            let options = OutputParamsCollection([
+                OutputParam(key: "id", project),
+                OutputParam(key: "issue_iid", issue)
             ])
-            return try await gitlab.execute(.init(endpoint: Endpoints.Issues.relatedMergeRequests, options: options))
+            return try await gitlab.execute(.init(endpoint: URLs.related_merge_requests, options: options))
         }
         
         /// Get all merge requests that close a particular issue when merged.
@@ -423,12 +457,12 @@ extension APIService {
         ///   - project: The global ID or URL-encoded path of the project owned by the authenticated user.
         /// - Returns: merge requests.
         public func mergeRequestsClosesIssue(_ issue: Int,
-                                             project: DataTypes.ProjectID) async throws -> GitLabResponse<[Model.MergeRequest]> {
-            let options = APIOptionsCollection([
-                APIOption(key: "id", project),
-                APIOption(key: "issue_iid", issue)
+                                             project: InputParams.ProjectID) async throws -> GLResponse<[Model.MergeRequest]> {
+            let options = OutputParamsCollection([
+                OutputParam(key: "id", project),
+                OutputParam(key: "issue_iid", issue)
             ])
-            return try await gitlab.execute(.init(endpoint: Endpoints.Issues.closedBy, options: options))
+            return try await gitlab.execute(.init(endpoint: URLs.closed_by, options: options))
         }
         
         /// Participants on issues.
@@ -440,12 +474,12 @@ extension APIService {
         ///   - project: The global ID or URL-encoded path of the project owned by the authenticated user
         /// - Returns: list of users
         public func participantsOnIssue(_ issue: Int,
-                                        project: DataTypes.ProjectID) async throws -> GitLabResponse<[Model.User]> {
-            let options = APIOptionsCollection([
-                APIOption(key: "id", project),
-                APIOption(key: "issue_iid", issue)
+                                        project: InputParams.ProjectID) async throws -> GLResponse<[Model.User]> {
+            let options = OutputParamsCollection([
+                OutputParam(key: "id", project),
+                OutputParam(key: "issue_iid", issue)
             ])
-            return try await gitlab.execute(.init(endpoint: Endpoints.Issues.participants, options: options))
+            return try await gitlab.execute(.init(endpoint: URLs.participants, options: options))
         }
         
         // MARK: - Comments on issue
@@ -459,12 +493,12 @@ extension APIService {
         ///   - project: The global ID or URL-encoded path of the project owned by the authenticated user
         /// - Returns: agent detail
         public func userAgentsDetails(issue: Int,
-                                      project: DataTypes.ProjectID) async throws -> GitLabResponse<Model.UserAgentDetail> {
-            let options = APIOptionsCollection([
-                APIOption(key: "id", project),
-                APIOption(key: "issue_iid", issue)
+                                      project: InputParams.ProjectID) async throws -> GLResponse<Model.UserAgentDetail> {
+            let options = OutputParamsCollection([
+                OutputParam(key: "id", project),
+                OutputParam(key: "issue_iid", issue)
             ])
-            return try await gitlab.execute(.init(endpoint: Endpoints.Issues.userAgentDetail, options: options))
+            return try await gitlab.execute(.init(endpoint: URLs.user_agent_detail, options: options))
         }
         
     }

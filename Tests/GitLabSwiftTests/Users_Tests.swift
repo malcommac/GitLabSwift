@@ -35,7 +35,7 @@ final class GitLabSwift_UsersTests: XCTestCase {
     public func test_userById() async throws {
         let result = await catchErrors {
             let meUser = try await gitlab.users.me().model()
-            let response = try await gitlab.users.user(id: meUser!.id)
+            let response = try await gitlab.users.user(meUser!.id)
             guard let foundUser = try response.model() else {
                 XCTFail()
                 return
@@ -52,7 +52,7 @@ final class GitLabSwift_UsersTests: XCTestCase {
         let searchTerm = "mario"
         
         let result = await catchErrors {
-            let response = try await gitlab.users.search({
+            let response = try await gitlab.users.search(options: {
                 $0.orderBy = .id
                 $0.search = searchTerm
             })

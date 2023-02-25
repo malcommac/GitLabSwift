@@ -22,7 +22,7 @@ public protocol Response {
 }
 
 /// GitLab response.
-public class GitLabResponse<Object: Decodable>: Response {
+public class GLResponse<Object: Decodable>: Response {
     
     // MARK: - Public Properties
     
@@ -90,7 +90,7 @@ public class GitLabResponse<Object: Decodable>: Response {
         }
         
         guard let data = httpResponse.data else {
-            throw GitlabError(message: "Empty data received", response: self, request: nil)
+            throw GLError(message: "Empty data received", response: self, request: nil)
         }
                 
         _value = try jsonDecoder.decode(Object.self, from: data)

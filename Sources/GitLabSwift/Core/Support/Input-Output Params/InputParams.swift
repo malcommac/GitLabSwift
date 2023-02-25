@@ -12,7 +12,7 @@
 
 import Foundation
 
-public enum DataTypes {}
+public enum InputParams {}
 
 public protocol APIRequestsURLConvertible {
     var options: OptionsConvertible { get }
@@ -21,6 +21,8 @@ public protocol APIRequestsURLConvertible {
 public protocol URLEncodable: Any {
     var encodedValue: String { get }
 }
+
+// MARK: - Standard Swift Types Support
 
 extension String: URLEncodable {
     public var encodedValue: String {
@@ -52,9 +54,9 @@ extension Array: URLEncodable where Element == Int {
     }
 }
 
-// MARK: - Data Types (All Types)
+// MARK: - Custom Types Support
 
-public extension DataTypes {
+public extension InputParams {
     
     /// The state event of the milestone
     enum MilestoneState: String, URLEncodable {

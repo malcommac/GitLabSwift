@@ -12,6 +12,20 @@
 
 import Foundation
 
+// MARK: - Avatar + URLs
+
+extension APIService.Avatar {
+    
+    fileprivate enum URLs: String, GLEndpoint {
+        case get = "/avatar"
+            
+        public var value: String { rawValue }
+    }
+    
+}
+
+// MARK: - Avatar + APIs
+
 extension APIService {
     
     /// [API Documentation](https://docs.gitlab.com/ee/api/avatar.html)
@@ -23,12 +37,12 @@ extension APIService {
         ///   - email: Public email address of the user.
         ///   - size: Single pixel dimension (because images are squares).
         /// - Returns: avatar.
-        public func url(email: String, size: Int? = nil) async throws -> GitLabResponse<Model.Avatar> {
-            let options = APIOptionsCollection([
-                APIOption(key: "email", email),
-                APIOption(key: "size", size)
+        public func url(email: String, size: Int? = nil) async throws -> GLResponse<Model.Avatar> {
+            let options = OutputParamsCollection([
+                OutputParam(key: "email", email),
+                OutputParam(key: "size", size)
             ])
-            return try await gitlab.execute(.init(endpoint: Endpoints.Avatar.get, options: options))
+            return try await gitlab.execute(.init(endpoint: URLs.get, options: options))
         }
         
     }

@@ -18,7 +18,7 @@ final class GitLabSwift_IssuesTests: XCTestCase {
     
     public func test_list() async throws {
         let result = await catchErrors {
-            let response = try await gitlab.issues.list({
+            let response = try await gitlab.issues.list(options: {
                 //$0.authorUsername = "margutti"
                 //$0.assigneeUsernames = ["margutti","durso"]
                 $0.sort = .desc
@@ -38,7 +38,7 @@ final class GitLabSwift_IssuesTests: XCTestCase {
     
     public func test_getIssue() async throws {
         let result = await catchErrors {
-            let response = try await gitlab.issues.get(3080, inProject: .id(1097))
+            let response = try await gitlab.issues.get(issue: 3080, project: .id(1097))
             response.writeRawResponse("single_issue")
             guard let issue = try response.model() else {
                 XCTFail()

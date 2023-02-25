@@ -18,7 +18,7 @@ final class GitLabSwift_LabelsTests: XCTestCase {
     
     public func test_list() async throws {
         let result = await catchErrors {
-            let response = try await gitlab.labels.list(project: .id(1097), {
+            let response = try await gitlab.labels.list(project: .id(1097), options: {
                 $0.withCounts = true
             })
             response.writeRawResponse("labels")
@@ -38,7 +38,7 @@ final class GitLabSwift_LabelsTests: XCTestCase {
     
     public func test_labelDetail() async throws {
         let result = await catchErrors {
-            let response = try await gitlab.labels.get(id: 1954, project: .id(1097))
+            let response = try await gitlab.labels.get(1954, project: .id(1097))
             response.writeRawResponse("label")
             guard let label = try response.model() else {
                 XCTFail()
@@ -54,11 +54,10 @@ final class GitLabSwift_LabelsTests: XCTestCase {
     public func test_createAndDeleteLabel() async throws {
         let result = await catchErrors {
             let labelName = "My New Label"
-            let response = try await gitlab.labels.create(
-                name: labelName,
-                color: "#0000CD",
-                project: .id(2008), {
-                    $0.description = "Description of the label"
+            let response = try await gitlab.labels.create(name: labelName,
+                                                          color: "#0000CD",
+                                                          project: .id(2008), options: {
+                $0.description = "Description of the label"
             })
             response.writeRawResponse("create_label")
             guard let label = try response.model() else {
@@ -87,7 +86,7 @@ final class GitLabSwift_LabelsTests: XCTestCase {
             print(anyLabel)
             
             // edit label
-            let response = try await gitlab.labels.edit(String(anyLabel.id), project: .id(2008), {
+            let response = try await gitlab.labels.edit(String(anyLabel.id), project: .id(2008), options: {
                 $0.description = "New Description"
                 $0.color = "#B22222"
                 $0.newName = "Modified Name"
@@ -108,7 +107,7 @@ final class GitLabSwift_LabelsTests: XCTestCase {
             print(anyLabel)
             
             // edit label
-            let _ = try await gitlab.labels.promoteToGroup(String(anyLabel.id), project: .id(2008))
+            let _ = try await gitlab.labels.promoteToGroup(label: String(anyLabel.id), project: .id(2008))
         }
         XCTAssertTrue(result)
     }

@@ -12,6 +12,22 @@
 
 import Foundation
 
+// MARK: - IssuesStatistics + URLs
+
+extension APIService.IssuesStatistics {
+    
+    fileprivate enum URLs: String, GLEndpoint {
+        case list = "/issues_statistics"
+        case groups = "/groups/{id}/issues_statistics"
+        case project = "/projects/{id}/issues_statistics"
+
+        public var value: String { rawValue }
+    }
+    
+}
+
+// MARK: - IssuesStatistics + APIs
+
 extension APIService {
     
     /// Issues statistics API
@@ -25,9 +41,9 @@ extension APIService {
         ///
         /// - Parameter options: configuration callback.
         /// - Returns: list of issues
-        public func list(options: ((SearchOptions) -> Void)? = nil) async throws -> GitLabResponse<[Model.Issue]> {
+        public func list(options: ((SearchOptions) -> Void)? = nil) async throws -> GLResponse<[Model.Issue]> {
             let options = SearchOptions(options)
-            return try await gitlab.execute(.init(endpoint: Endpoints.IssuesStatistics.list, options: options))
+            return try await gitlab.execute(.init(endpoint: URLs.list, options: options))
         }
         
         /// Gets issues count statistics for given group.
@@ -39,12 +55,12 @@ extension APIService {
         ///   - options: configuration callback.
         /// - Returns: issues
         public func list(group: Int,
-                         options: ((SearchOptions) -> Void)? = nil) async throws -> GitLabResponse<[Model.Issue]> {
+                         options: ((SearchOptions) -> Void)? = nil) async throws -> GLResponse<[Model.Issue]> {
             let options = SearchOptions(options)
             options.customOptions = [
-                APIOption(key: "id", group)
+                OutputParam(key: "id", group)
             ]
-            return try await gitlab.execute(.init(endpoint: Endpoints.IssuesStatistics.groups, options: options))
+            return try await gitlab.execute(.init(endpoint: URLs.groups, options: options))
         }
         
         /// Gets issues count statistics for given project.
@@ -54,13 +70,13 @@ extension APIService {
         ///   - project: The ID or URL-encoded path of the project owned by the authenticated user
         ///   - options: configuration callback.
         /// - Returns: issues list
-        public func list(project: DataTypes.ProjectID,
-                         options: ((SearchOptions) -> Void)? = nil) async throws -> GitLabResponse<[Model.Issue]> {
+        public func list(project: InputParams.ProjectID,
+                         options: ((SearchOptions) -> Void)? = nil) async throws -> GLResponse<[Model.Issue]> {
             let options = SearchOptions(options)
             options.customOptions = [
-                APIOption(key: "id", project)
+                OutputParam(key: "id", project)
             ]
-            return try await gitlab.execute(.init(endpoint: Endpoints.IssuesStatistics.project, options: options))
+            return try await gitlab.execute(.init(endpoint: URLs.project, options: options))
         }
     }
     

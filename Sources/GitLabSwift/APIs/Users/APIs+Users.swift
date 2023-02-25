@@ -12,6 +12,22 @@
 
 import Foundation
 
+// MARK: - Users + URLs
+
+extension APIService.Users {
+    
+    public enum URLs: String, GLEndpoint {
+        case userFromId = "/users/{id}"
+        case users = "/users"
+        case user = "/user"
+        case userStatus = "/user/status"
+        
+        public var value: String { rawValue }
+    }
+}
+
+// MARK: - Users + APIs
+
 extension APIService {
     
     /// Users API
@@ -79,27 +95,27 @@ extension APIService {
         ///
         /// - Parameter options: configuration callback.
         /// - Returns: found users.
-        public func search(options: @escaping ((SearchOptions) -> Void)) async throws -> GitLabResponse<[Model.User]> {
+        public func search(options: @escaping ((SearchOptions) -> Void)) async throws -> GLResponse<[Model.User]> {
             let options = SearchOptions(options)
-            return try await gitlab.execute(.init(endpoint: Endpoints.users, options: options))
+            return try await gitlab.execute(.init(endpoint: URLs.users, options: options))
         }
         
         /// Search user by a given iid.
         ///
         /// - Parameter id: id of the user.
         /// - Returns: found user, if any.
-        public func user(_ id: Int) async throws -> GitLabResponse<Model.User> {
-            let options = APIOptionsCollection([
-                APIOption(key: "id", id)
+        public func user(_ id: Int) async throws -> GLResponse<Model.User> {
+            let options = OutputParamsCollection([
+                OutputParam(key: "id", id)
             ])
-            return try await gitlab.execute(.init(endpoint: Endpoints.userFromId, options: options))
+            return try await gitlab.execute(.init(endpoint: URLs.userFromId, options: options))
         }
         
         /// Get the currently authenticated user.
         ///
         /// - Returns: this user.
-        public func me() async throws -> GitLabResponse<Model.User> {
-            return try await gitlab.execute(.init(endpoint: Endpoints.user))
+        public func me() async throws -> GLResponse<Model.User> {
+            return try await gitlab.execute(.init(endpoint: URLs.user))
         }
         
     }

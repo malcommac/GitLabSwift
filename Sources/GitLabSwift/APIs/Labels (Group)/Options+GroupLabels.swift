@@ -14,26 +14,26 @@ import Foundation
 
 extension APIService.GroupLabels {
     
-    public class ListOptions: APIOptionsCollection {
+    public class ListOptions: OutputParamsCollection {
         
         /// Whether or not to include issue and merge request counts.
-        @APIOption(key: "with_counts")
+        @OutputParam(key: "with_counts")
         public var withCounts: Bool?
         
         /// Include ancestor groups.
-        @APIOption(key: "include_ancestor_groups")
+        @OutputParam(key: "include_ancestor_groups")
         public var includeAncestorGroups: Bool?
         
         /// Include descendant groups.
-        @APIOption(key: "include_descendant_groups")
+        @OutputParam(key: "include_descendant_groups")
         public var includeDescendantGroups: Bool?
         
         /// Toggle to include only group labels or also project labels.
-        @APIOption(key: "only_group_labels")
+        @OutputParam(key: "only_group_labels")
         public var onlyGroupLabels: Bool?
         
         /// Keyword to filter labels by.
-        @APIOption(key: "search")
+        @OutputParam(key: "search")
         public var search: String?
         
         // MARK: - Initialization

@@ -12,6 +12,20 @@
 
 import Foundation
 
+// MARK: - Tags + URLs
+
+extension APIService.Tags {
+    
+    fileprivate enum URLs: String, GLEndpoint {
+        case list = "/projects/{id}/repository/tags"
+        case get = "/projects/{id}/repository/tags/{tag_name}"
+        
+        public var value: String { rawValue }
+    }
+}
+
+// MARK: Tags + APIs
+
 extension APIService {
     
     /// Tags API
@@ -33,17 +47,17 @@ extension APIService {
         ///   - sort: Return tags sorted by value.
         ///   - search: Return list of tags matching the search criteria.
         /// - Returns: tags
-        public func list(project: DataTypes.ProjectID,
-                         order: DataTypes.TagsOrder? = nil,
-                         sort: DataTypes.Sort? = nil,
-                         search: DataTypes.Search? = nil) async throws -> GitLabResponse<[Model.Tag]> {
-            let options = APIOptionsCollection([
-                APIOption(key: "id", project),
-                APIOption(key: "order_by", order),
-                APIOption(key: "sort", sort),
-                APIOption(key: "search", search)
+        public func list(project: InputParams.ProjectID,
+                         order: InputParams.TagsOrder? = nil,
+                         sort: InputParams.Sort? = nil,
+                         search: InputParams.Search? = nil) async throws -> GLResponse<[Model.Tag]> {
+            let options = OutputParamsCollection([
+                OutputParam(key: "id", project),
+                OutputParam(key: "order_by", order),
+                OutputParam(key: "sort", sort),
+                OutputParam(key: "search", search)
             ])
-            return try await gitlab.execute(.init(endpoint: Endpoints.Tags.list, options: options))
+            return try await gitlab.execute(.init(endpoint: URLs.list, options: options))
         }
         
         /// Get a specific repository tag determined by its name.
@@ -55,12 +69,12 @@ extension APIService {
         ///   - project: The ID or URL-encoded path of the project owned by the authenticated user
         /// - Returns: found tag
         public func get(name: String,
-                        project: DataTypes.ProjectID) async throws -> GitLabResponse<Model.Tag> {
-            let options = APIOptionsCollection([
-                APIOption(key: "id", project),
-                APIOption(key: "tag_name", name)
+                        project: InputParams.ProjectID) async throws -> GLResponse<Model.Tag> {
+            let options = OutputParamsCollection([
+                OutputParam(key: "id", project),
+                OutputParam(key: "tag_name", name)
             ])
-            return try await gitlab.execute(.init(endpoint: Endpoints.Tags.get, options: options))
+            return try await gitlab.execute(.init(endpoint: URLs.get, options: options))
         }
         
         /// Creates a new tag in the repository that points to the supplied ref.
@@ -75,15 +89,15 @@ extension APIService {
         /// - Returns: new tag
         public func create(name: String,
                            ref: String,
-                           project: DataTypes.ProjectID,
-                           message: String? = nil) async throws -> GitLabResponse<Model.Tag> {
-            let options = APIOptionsCollection([
-                APIOption(key: "id", project),
-                APIOption(key: "tag_name", name),
-                APIOption(key: "ref", ref),
-                APIOption(key: "message", message)
+                           project: InputParams.ProjectID,
+                           message: String? = nil) async throws -> GLResponse<Model.Tag> {
+            let options = OutputParamsCollection([
+                OutputParam(key: "id", project),
+                OutputParam(key: "tag_name", name),
+                OutputParam(key: "ref", ref),
+                OutputParam(key: "message", message)
             ])
-            return try await gitlab.execute(.init(.post, endpoint: Endpoints.Tags.list, options: options))
+            return try await gitlab.execute(.init(.post, endpoint: URLs.list, options: options))
         }
         
         /// Deletes a tag of a repository with given name.
@@ -95,12 +109,12 @@ extension APIService {
         ///   - project: The ID or URL-encoded path of the project owned by the authenticated user
         /// - Returns: no response
         public func delete(name: String,
-                           project: DataTypes.ProjectID) async throws -> GitLabResponse<Model.NoResponse> {
-            let options = APIOptionsCollection([
-                APIOption(key: "id", project),
-                APIOption(key: "tag_name", name)
+                           project: InputParams.ProjectID) async throws -> GLResponse<Model.NoResponse> {
+            let options = OutputParamsCollection([
+                OutputParam(key: "id", project),
+                OutputParam(key: "tag_name", name)
             ])
-            return try await gitlab.execute(.init(.delete, endpoint: Endpoints.Tags.get, options: options))
+            return try await gitlab.execute(.init(.delete, endpoint: URLs.get, options: options))
         }
 
     }

@@ -12,6 +12,26 @@
 
 import Foundation
 
+// MARK: - Discussions + URLs
+
+extension APIService {
+    
+    fileprivate enum URLs: String, GLEndpoint {
+        case discussions = "/projects/{id}/issues/{issue_iid}/discussions"
+        case detail = "/projects/{id}/issues/{issue_iid}/discussions/{discussion_id}"
+        case notes = "/projects/{id}/issues/{issue_iid}/discussions/{discussion_id}/notes"
+        case snippet = "/projects/{id}/snippets/{snippet_id}/discussions"
+        case snippet_discussion = "/projects/{id}/snippets/{snippet_id}/discussions/{discussion_id}"
+        case merge_requests = "/projects/{id}/merge_requests/{merge_request_iid}/discussions"
+        case merge_request = "/projects/{id}/merge_requests/{merge_request_iid}/discussions/{discussion_id}"
+
+        public var value: String { rawValue }
+    }
+    
+}
+
+// MARK: - Discussions + APIs
+
 extension APIService {
     
     /// Discussions APIs.
@@ -57,12 +77,12 @@ extension APIService {
         ///   - project: The ID or URL-encoded path of the project.
         /// - Returns: array of `Models.Discussion`.
         public func list(issue: Int,
-                         project: DataTypes.ProjectID) async throws -> GitLabResponse<[Model.Discussion]> {
-            let options = APIOptionsCollection([
-                APIOption(key: "id", project),
-                APIOption(key: "issue_iid", issue)
+                         project: InputParams.ProjectID) async throws -> GLResponse<[Model.Discussion]> {
+            let options = OutputParamsCollection([
+                OutputParam(key: "id", project),
+                OutputParam(key: "issue_iid", issue)
             ])
-            return try await gitlab.execute(.init(endpoint: Endpoints.Discussions.discussions, options: options))
+            return try await gitlab.execute(.init(endpoint: URLs.discussions, options: options))
         }
         
         /// Returns a single discussion item for a specific project issue-
@@ -76,13 +96,13 @@ extension APIService {
         /// - Returns: a single discussion.
         public func get(discussion: String,
                         issue: Int,
-                        project: DataTypes.ProjectID) async throws -> GitLabResponse<Model.Discussion> {
-            let options = APIOptionsCollection([
-                APIOption(key: "id", project),
-                APIOption(key: "issue_iid", issue),
-                APIOption(key: "discussion_id", discussion)
+                        project: InputParams.ProjectID) async throws -> GLResponse<Model.Discussion> {
+            let options = OutputParamsCollection([
+                OutputParam(key: "id", project),
+                OutputParam(key: "issue_iid", issue),
+                OutputParam(key: "discussion_id", discussion)
             ])
-            return try await gitlab.execute(.init(endpoint: Endpoints.Discussions.detail, options: options))
+            return try await gitlab.execute(.init(endpoint: URLs.detail, options: options))
         }
         
         /// Creates a new thread to a single project issue.
@@ -99,14 +119,14 @@ extension APIService {
         public func create(issue: Int,
                            body: String,
                            createdAt: Date? = nil,
-                           project: DataTypes.ProjectID) async throws -> GitLabResponse<Model.Discussion> {
-            let options = APIOptionsCollection([
-                APIOption(key: "id", project),
-                APIOption(key: "issue_iid", issue),
-                APIOption(key: "body", body),
-                APIOption(key: "created_at", createdAt)
+                           project: InputParams.ProjectID) async throws -> GLResponse<Model.Discussion> {
+            let options = OutputParamsCollection([
+                OutputParam(key: "id", project),
+                OutputParam(key: "issue_iid", issue),
+                OutputParam(key: "body", body),
+                OutputParam(key: "created_at", createdAt)
             ])
-            return try await gitlab.execute(.init(.post, endpoint: Endpoints.Discussions.detail, options: options))
+            return try await gitlab.execute(.init(.post, endpoint: URLs.detail, options: options))
         }
         
         /// Adds a new note to the thread.
@@ -128,16 +148,16 @@ extension APIService {
                             note: Int,
                             discussion: Int,
                             issue: Int,
-                            project: DataTypes.ProjectID) async throws -> GitLabResponse<Model.Discussion> {
-            let options = APIOptionsCollection([
-                APIOption(key: "id", project),
-                APIOption(key: "issue_iid", issue),
-                APIOption(key: "discussion_id", discussion),
-                APIOption(key: "note_id", note),
-                APIOption(key: "body", body),
-                APIOption(key: "created_at", createdAt)
+                            project: InputParams.ProjectID) async throws -> GLResponse<Model.Discussion> {
+            let options = OutputParamsCollection([
+                OutputParam(key: "id", project),
+                OutputParam(key: "issue_iid", issue),
+                OutputParam(key: "discussion_id", discussion),
+                OutputParam(key: "note_id", note),
+                OutputParam(key: "body", body),
+                OutputParam(key: "created_at", createdAt)
             ])
-            return try await gitlab.execute(.init(.post, endpoint: Endpoints.Discussions.notes, options: options))
+            return try await gitlab.execute(.init(.post, endpoint: URLs.notes, options: options))
         }
         
         /// Modify existing issue thread note.
@@ -155,15 +175,15 @@ extension APIService {
                                note: Int,
                                discussion: Int,
                                issue: Int,
-                               project: DataTypes.ProjectID) async throws -> GitLabResponse<Model.Discussion> {
-            let options = APIOptionsCollection([
-                APIOption(key: "id", project),
-                APIOption(key: "issue_iid", issue),
-                APIOption(key: "discussion_id", discussion),
-                APIOption(key: "note_id", note),
-                APIOption(key: "body", body)
+                               project: InputParams.ProjectID) async throws -> GLResponse<Model.Discussion> {
+            let options = OutputParamsCollection([
+                OutputParam(key: "id", project),
+                OutputParam(key: "issue_iid", issue),
+                OutputParam(key: "discussion_id", discussion),
+                OutputParam(key: "note_id", note),
+                OutputParam(key: "body", body)
             ])
-            return try await gitlab.execute(.init(.put, endpoint: Endpoints.Discussions.notes, options: options))
+            return try await gitlab.execute(.init(.put, endpoint: URLs.notes, options: options))
         }
         
         /// Deletes an existing thread note of an issue.
@@ -179,14 +199,14 @@ extension APIService {
         public func deleteNote(note: Int,
                                discussion: Int,
                                issue: Int,
-                               project: DataTypes.ProjectID) async throws -> GitLabResponse<Model.NoResponse> {
-            let options = APIOptionsCollection([
-                APIOption(key: "id", project),
-                APIOption(key: "issue_iid", issue),
-                APIOption(key: "discussion_id", discussion),
-                APIOption(key: "note_id", note)
+                               project: InputParams.ProjectID) async throws -> GLResponse<Model.NoResponse> {
+            let options = OutputParamsCollection([
+                OutputParam(key: "id", project),
+                OutputParam(key: "issue_iid", issue),
+                OutputParam(key: "discussion_id", discussion),
+                OutputParam(key: "note_id", note)
             ])
-            return try await gitlab.execute(.init(.delete, endpoint: Endpoints.Discussions.notes, options: options))
+            return try await gitlab.execute(.init(.delete, endpoint: URLs.notes, options: options))
         }
         
         // MARK: - Snippets
@@ -201,12 +221,12 @@ extension APIService {
         ///   - project: The ID or URL-encoded path of the project.
         /// - Returns: discussions
         public func list(snippet: Int,
-                         project: DataTypes.ProjectID) async throws -> GitLabResponse<[Model.Discussion]> {
-            let options = APIOptionsCollection([
-                APIOption(key: "id", project),
-                APIOption(key: "snippet_id", snippet)
+                         project: InputParams.ProjectID) async throws -> GLResponse<[Model.Discussion]> {
+            let options = OutputParamsCollection([
+                OutputParam(key: "id", project),
+                OutputParam(key: "snippet_id", snippet)
             ])
-            return try await gitlab.execute(.init(endpoint: Endpoints.Discussions.snippet, options: options))
+            return try await gitlab.execute(.init(endpoint: URLs.snippet, options: options))
         }
         
         /// Returns a single discussion item for a specific project snippet.
@@ -220,13 +240,13 @@ extension APIService {
         /// - Returns: discussion
         public func get(snippet: Int,
                         discussion: Int,
-                        project: DataTypes.ProjectID) async throws -> GitLabResponse<Model.Discussion> {
-            let options = APIOptionsCollection([
-                APIOption(key: "id", project),
-                APIOption(key: "snippet_id", snippet),
-                APIOption(key: "discussion_id", discussion)
+                        project: InputParams.ProjectID) async throws -> GLResponse<Model.Discussion> {
+            let options = OutputParamsCollection([
+                OutputParam(key: "id", project),
+                OutputParam(key: "snippet_id", snippet),
+                OutputParam(key: "discussion_id", discussion)
             ])
-            return try await gitlab.execute(.init(endpoint: Endpoints.Discussions.snippetDiscussion, options: options))
+            return try await gitlab.execute(.init(endpoint: URLs.snippet_discussion, options: options))
         }
         
         /// Creates a new thread to a single project snippet.
@@ -242,14 +262,14 @@ extension APIService {
         public func createSnippet(body: String,
                                   date: Date? = nil,
                                   snippet: Int,
-                                  project: DataTypes.ProjectID) async throws -> GitLabResponse<Model.Discussion> {
-            let options = APIOptionsCollection([
-                APIOption(key: "id", project),
-                APIOption(key: "snippet_id", snippet),
-                APIOption(key: "created_at", date),
-                APIOption(key: "body", body)
+                                  project: InputParams.ProjectID) async throws -> GLResponse<Model.Discussion> {
+            let options = OutputParamsCollection([
+                OutputParam(key: "id", project),
+                OutputParam(key: "snippet_id", snippet),
+                OutputParam(key: "created_at", date),
+                OutputParam(key: "body", body)
             ])
-            return try await gitlab.execute(.init(.post, endpoint: Endpoints.Discussions.snippet, options: options))
+            return try await gitlab.execute(.init(.post, endpoint: URLs.snippet, options: options))
         }
         
         /// Add note to existing snippet thread.
@@ -265,17 +285,17 @@ extension APIService {
         /// - Returns: discussion
         public func addNote(body: String,
                             date: Date? = nil,
-                            snippet: DataTypes.DiscussionSnippet,
-                            project: DataTypes.ProjectID) async throws -> GitLabResponse<Model.Discussion> {
-            let options = APIOptionsCollection([
-                APIOption(key: "id", project),
-                APIOption(key: "snippet_id", snippet.snippet_id),
-                APIOption(key: "discussion_id", snippet.discussion_id),
-                APIOption(key: "note_id", snippet.note_id),
-                APIOption(key: "created_at", date),
-                APIOption(key: "body", body)
+                            snippet: InputParams.DiscussionSnippet,
+                            project: InputParams.ProjectID) async throws -> GLResponse<Model.Discussion> {
+            let options = OutputParamsCollection([
+                OutputParam(key: "id", project),
+                OutputParam(key: "snippet_id", snippet.snippet_id),
+                OutputParam(key: "discussion_id", snippet.discussion_id),
+                OutputParam(key: "note_id", snippet.note_id),
+                OutputParam(key: "created_at", date),
+                OutputParam(key: "body", body)
             ])
-            return try await gitlab.execute(.init(.post, endpoint: Endpoints.Discussions.snippet, options: options))
+            return try await gitlab.execute(.init(.post, endpoint: URLs.snippet, options: options))
         }
         
         /// Modify existing snippet thread note.
@@ -288,16 +308,16 @@ extension APIService {
         ///   - project: The ID or URL-encoded path of the project.
         /// - Returns: modified snippet.
         public func modifySnippet(body: String,
-                                  snippet: DataTypes.DiscussionSnippet,
-                                  project: DataTypes.ProjectID) async throws -> GitLabResponse<Model.Discussion> {
-            let options = APIOptionsCollection([
-                APIOption(key: "id", project),
-                APIOption(key: "snippet_id", snippet.snippet_id),
-                APIOption(key: "discussion_id", snippet.discussion_id),
-                APIOption(key: "note_id", snippet.note_id),
-                APIOption(key: "body", body)
+                                  snippet: InputParams.DiscussionSnippet,
+                                  project: InputParams.ProjectID) async throws -> GLResponse<Model.Discussion> {
+            let options = OutputParamsCollection([
+                OutputParam(key: "id", project),
+                OutputParam(key: "snippet_id", snippet.snippet_id),
+                OutputParam(key: "discussion_id", snippet.discussion_id),
+                OutputParam(key: "note_id", snippet.note_id),
+                OutputParam(key: "body", body)
             ])
-            return try await gitlab.execute(.init(.put, endpoint: Endpoints.Discussions.snippet, options: options))
+            return try await gitlab.execute(.init(.put, endpoint: URLs.snippet, options: options))
         }
         
         /// Deletes an existing thread note of a snippet.
@@ -308,15 +328,15 @@ extension APIService {
         ///   - snippet: snippet to delete.
         ///   - project: The ID or URL-encoded path of the project.
         /// - Returns: generic response.
-        public func deleteSnippet(_ snippet: DataTypes.DiscussionSnippet,
-                                  project: DataTypes.ProjectID) async throws -> GitLabResponse<Model.NoResponse> {
-            let options = APIOptionsCollection([
-                APIOption(key: "id", project),
-                APIOption(key: "snippet_id", snippet.snippet_id),
-                APIOption(key: "discussion_id", snippet.discussion_id),
-                APIOption(key: "note_id", snippet.note_id),
+        public func deleteSnippet(_ snippet: InputParams.DiscussionSnippet,
+                                  project: InputParams.ProjectID) async throws -> GLResponse<Model.NoResponse> {
+            let options = OutputParamsCollection([
+                OutputParam(key: "id", project),
+                OutputParam(key: "snippet_id", snippet.snippet_id),
+                OutputParam(key: "discussion_id", snippet.discussion_id),
+                OutputParam(key: "note_id", snippet.note_id),
             ])
-            return try await gitlab.execute(.init(.delete, endpoint: Endpoints.Discussions.snippet, options: options))
+            return try await gitlab.execute(.init(.delete, endpoint: URLs.snippet, options: options))
         }
         
         // MARK: - Epics
@@ -334,12 +354,12 @@ extension APIService {
         ///   - project: The ID or URL-encoded path of the project.
         /// - Returns: all discussion items for a single merge request.
         public func list(mergeRequest: Int,
-                         project: DataTypes.ProjectID) async throws -> GitLabResponse<[Model.Discussion]> {
-            let options = APIOptionsCollection([
-                APIOption(key: "id", project),
-                APIOption(key: "merge_request_iid", mergeRequest)
+                         project: InputParams.ProjectID) async throws -> GLResponse<[Model.Discussion]> {
+            let options = OutputParamsCollection([
+                OutputParam(key: "id", project),
+                OutputParam(key: "merge_request_iid", mergeRequest)
             ])
-            return try await gitlab.execute(.init(endpoint: Endpoints.Discussions.mergeRequests, options: options))
+            return try await gitlab.execute(.init(endpoint: URLs.merge_requests, options: options))
         }
         
         /// Returns a single discussion item for a specific project merge request.
@@ -353,13 +373,13 @@ extension APIService {
         /// - Returns: single discussion item for a specific project merge request.
         public func get(mergeRequest: Int,
                         discussion: Int,
-                        project: DataTypes.ProjectID) async throws -> GitLabResponse<Model.Discussion> {
-            let options = APIOptionsCollection([
-                APIOption(key: "id", project),
-                APIOption(key: "merge_request_iid", mergeRequest),
-                APIOption(key: "discussion_id", discussion)
+                        project: InputParams.ProjectID) async throws -> GLResponse<Model.Discussion> {
+            let options = OutputParamsCollection([
+                OutputParam(key: "id", project),
+                OutputParam(key: "merge_request_iid", mergeRequest),
+                OutputParam(key: "discussion_id", discussion)
             ])
-            return try await gitlab.execute(.init(endpoint: Endpoints.Discussions.mergeRequest, options: options))
+            return try await gitlab.execute(.init(endpoint: URLs.merge_request, options: options))
         }
         
         // MARK: - Commits

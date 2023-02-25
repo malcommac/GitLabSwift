@@ -12,6 +12,26 @@
 
 import Foundation
 
+// MARK: - Jobs + URLs
+
+extension APIService.Jobs {
+    
+    fileprivate enum URLs: String, GLEndpoint {
+        case list = "/projects/{id}/jobs"
+        case pipeline = "/projects/{id}/pipelines/{pipeline_id}/jobs"
+        case single = "/projects/{id}/jobs/{job_id}"
+        case cancel = "/projects/{id}/jobs/{job_id}/cancel"
+        case retry = "/projects/{id}/jobs/{job_id}/retry"
+        case erase = "/projects/{id}/jobs/{job_id}/erase"
+        case play = "/projects/{id}/jobs/{job_id}/play"
+
+        public var value: String { rawValue }
+    }
+    
+}
+
+// MARK: - Jobs + APIs
+
 extension APIService {
     
     /// Jobs API
@@ -33,13 +53,13 @@ extension APIService {
         ///   - project: ID or URL-encoded path of the project owned by the authenticated user.
         ///   - scopes: Scope(s) of jobs to show.
         /// - Returns: jobs list
-        public func list(project: DataTypes.ProjectID,
-                         scopes: [DataTypes.JobScope]) async throws -> GitLabResponse<[Model.Job]> {
-            let options = APIOptionsCollection([
-                APIOption(key: "id", project),
-                APIOption(key: "scope", scopes)
+        public func list(project: InputParams.ProjectID,
+                         scopes: [InputParams.JobScope]) async throws -> GLResponse<[Model.Job]> {
+            let options = OutputParamsCollection([
+                OutputParam(key: "id", project),
+                OutputParam(key: "scope", scopes)
             ])
-            return try await gitlab.execute(.init(endpoint: Endpoints.Jobs.list, options: options))
+            return try await gitlab.execute(.init(endpoint: URLs.list, options: options))
         }
         
         
@@ -54,16 +74,16 @@ extension APIService {
         ///   - includeRetried: Include retried jobs in the response.
         /// - Returns: jobs.
         public func list(pipeline: Int,
-                         project: DataTypes.ProjectID,
-                         scopes: [DataTypes.JobScope],
-                         includeRetried: Bool? = nil) async throws -> GitLabResponse<[Model.Job]> {
-            let options = APIOptionsCollection([
-                APIOption(key: "id", project),
-                APIOption(key: "pipeline_id", pipeline),
-                APIOption(key: "scope", scopes),
-                APIOption(key: "include_retried", includeRetried)
+                         project: InputParams.ProjectID,
+                         scopes: [InputParams.JobScope],
+                         includeRetried: Bool? = nil) async throws -> GLResponse<[Model.Job]> {
+            let options = OutputParamsCollection([
+                OutputParam(key: "id", project),
+                OutputParam(key: "pipeline_id", pipeline),
+                OutputParam(key: "scope", scopes),
+                OutputParam(key: "include_retried", includeRetried)
             ])
-            return try await gitlab.execute(.init(endpoint: Endpoints.Jobs.pipeline, options: options))
+            return try await gitlab.execute(.init(endpoint: URLs.pipeline, options: options))
         }
         
         /// Get a single job of a project.
@@ -74,12 +94,12 @@ extension APIService {
         ///   - project: ID or URL-encoded path of the project owned by the authenticated user.
         /// - Returns: job
         public func get(job: Int,
-                        project: DataTypes.ProjectID) async throws -> GitLabResponse<Model.Job> {
-            let options = APIOptionsCollection([
-                APIOption(key: "id", project),
-                APIOption(key: "job_id", job)
+                        project: InputParams.ProjectID) async throws -> GLResponse<Model.Job> {
+            let options = OutputParamsCollection([
+                OutputParam(key: "id", project),
+                OutputParam(key: "job_id", job)
             ])
-            return try await gitlab.execute(.init(endpoint: Endpoints.Jobs.single, options: options))
+            return try await gitlab.execute(.init(endpoint: URLs.single, options: options))
         }
         
         /// Cancel a single job of a project.
@@ -91,12 +111,12 @@ extension APIService {
         ///   - project: ID or URL-encoded path of the project owned by the authenticated user.
         /// - Returns: cancelled job
         public func cancel(job: Int,
-                           project: DataTypes.ProjectID) async throws -> GitLabResponse<Model.Job> {
-            let options = APIOptionsCollection([
-                APIOption(key: "id", project),
-                APIOption(key: "job_id", job)
+                           project: InputParams.ProjectID) async throws -> GLResponse<Model.Job> {
+            let options = OutputParamsCollection([
+                OutputParam(key: "id", project),
+                OutputParam(key: "job_id", job)
             ])
-            return try await gitlab.execute(.init(.post, endpoint: Endpoints.Jobs.cancel, options: options))
+            return try await gitlab.execute(.init(.post, endpoint: URLs.cancel, options: options))
         }
         
         /// Retry a single job of a project.
@@ -108,12 +128,12 @@ extension APIService {
         ///   - project: ID or URL-encoded path of the project owned by the authenticated user.
         /// - Returns: retried job
         public func retry(job: Int,
-                          project: DataTypes.ProjectID) async throws -> GitLabResponse<Model.Job> {
-            let options = APIOptionsCollection([
-                APIOption(key: "id", project),
-                APIOption(key: "job_id", job)
+                          project: InputParams.ProjectID) async throws -> GLResponse<Model.Job> {
+            let options = OutputParamsCollection([
+                OutputParam(key: "id", project),
+                OutputParam(key: "job_id", job)
             ])
-            return try await gitlab.execute(.init(.post, endpoint: Endpoints.Jobs.retry, options: options))
+            return try await gitlab.execute(.init(.post, endpoint: URLs.retry, options: options))
         }
         
         /// Erase a single job of a project (remove job artifacts and a job log).
@@ -124,12 +144,12 @@ extension APIService {
         ///   - project: ID or URL-encoded path of the project owned by the authenticated user.
         /// - Returns: erased job
         public func erase(job: Int,
-                          project: DataTypes.ProjectID) async throws -> GitLabResponse<Model.Job> {
-            let options = APIOptionsCollection([
-                APIOption(key: "id", project),
-                APIOption(key: "job_id", job)
+                          project: InputParams.ProjectID) async throws -> GLResponse<Model.Job> {
+            let options = OutputParamsCollection([
+                OutputParam(key: "id", project),
+                OutputParam(key: "job_id", job)
             ])
-            return try await gitlab.execute(.init(.post, endpoint: Endpoints.Jobs.erase, options: options))
+            return try await gitlab.execute(.init(.post, endpoint: URLs.erase, options: options))
         }
         
         /// For a job in manual status, trigger an action to start the job.
@@ -140,12 +160,12 @@ extension APIService {
         ///   - project: ID or URL-encoded path of the project owned by the authenticated user.
         /// - Returns: runned job
         public func run(job: Int,
-                        project: DataTypes.ProjectID) async throws -> GitLabResponse<Model.Job> {
-            let options = APIOptionsCollection([
-                APIOption(key: "id", project),
-                APIOption(key: "job_id", job)
+                        project: InputParams.ProjectID) async throws -> GLResponse<Model.Job> {
+            let options = OutputParamsCollection([
+                OutputParam(key: "id", project),
+                OutputParam(key: "job_id", job)
             ])
-            return try await gitlab.execute(.init(.post, endpoint: Endpoints.Jobs.play, options: options))
+            return try await gitlab.execute(.init(.post, endpoint: URLs.play, options: options))
         }
         
     }

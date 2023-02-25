@@ -11,6 +11,23 @@
 //
 
 import Foundation
+import RealHTTP
+
+// MARK: - RepositoryFiles + URLs
+
+extension APIService.RepositoryFiles {
+    
+    fileprivate enum URLs: String, GLEndpoint {
+        case get = "/projects/{id}/repository/files/{file_path}"
+        case blame = "/projects/{id}/repository/files/{file_path}/blame"
+        case raw = "/projects/{id}/repository/files/{file_path}/raw"
+
+        public var value: String { rawValue }
+    }
+
+}
+
+// MARK: - RepositoryFiles + APIs
 
 extension APIService {
     
@@ -30,13 +47,13 @@ extension APIService {
         /// - Returns: file
         public func fileInfo(path: String,
                              ref: String,
-                             project: DataTypes.ProjectID) async throws -> GitLabResponse<Model.File> {
-            let options = APIOptionsCollection([
-                APIOption(key: "id", project),
-                APIOption(key: "ref", ref),
-                APIOption(key: "file_path", path)
+                             project: InputParams.ProjectID) async throws -> GLResponse<Model.File> {
+            let options = OutputParamsCollection([
+                OutputParam(key: "id", project),
+                OutputParam(key: "ref", ref),
+                OutputParam(key: "file_path", path)
             ])
-            return try await gitlab.execute(.init(endpoint: Endpoints.RepositoryFiles.get, options: options))
+            return try await gitlab.execute(.init(endpoint: URLs.get, options: options))
         }
         
         /// Allows you to receive blame information. Each blame range contains lines and corresponding commit information.
@@ -56,15 +73,15 @@ extension APIService {
                           filePath: String,
                           rangeStart: Int,
                           rangeEnd: Int,
-                          project: DataTypes.ProjectID) async throws -> GitLabResponse<Model.FileBlame> {
-            let options = APIOptionsCollection([
-                APIOption(key: "id", project),
-                APIOption(key: "ref", ref),
-                APIOption(key: "file_path", filePath),
-                APIOption(key: "range[start]", rangeStart),
-                APIOption(key: "range[end]", rangeEnd)
+                          project: InputParams.ProjectID) async throws -> GLResponse<Model.FileBlame> {
+            let options = OutputParamsCollection([
+                OutputParam(key: "id", project),
+                OutputParam(key: "ref", ref),
+                OutputParam(key: "file_path", filePath),
+                OutputParam(key: "range[start]", rangeStart),
+                OutputParam(key: "range[end]", rangeEnd)
             ])
-            return try await gitlab.execute(.init(endpoint: Endpoints.RepositoryFiles.blame, options: options))
+            return try await gitlab.execute(.init(endpoint: URLs.blame, options: options))
         }
         
         /// Get raw file from repository.
@@ -80,14 +97,14 @@ extension APIService {
         public func file(path: String,
                          ref: String,
                          lfs: Bool? = nil,
-                         project: DataTypes.ProjectID) async throws -> GitLabResponse<Model.NoResponse> {
-            let options = APIOptionsCollection([
-                APIOption(key: "id", project),
-                APIOption(key: "file_path", path),
-                APIOption(key: "ref", ref),
-                APIOption(key: "lfs", lfs)
+                         project: InputParams.ProjectID) async throws -> GLResponse<Model.NoResponse> {
+            let options = OutputParamsCollection([
+                OutputParam(key: "id", project),
+                OutputParam(key: "file_path", path),
+                OutputParam(key: "ref", ref),
+                OutputParam(key: "lfs", lfs)
             ])
-            return try await gitlab.execute(.init(endpoint: Endpoints.RepositoryFiles.raw, options: options))
+            return try await gitlab.execute(.init(endpoint: URLs.raw, options: options))
         }
         
         /// Allows you to create a single file.
@@ -106,8 +123,8 @@ extension APIService {
                                commit: String,
                                content: String,
                                filePath: String,
-                               project: DataTypes.ProjectID,
-                               options: ((CreateOptions) -> Void)? = nil) async throws -> GitLabResponse<Model.NoResponse> {
+                               project: InputParams.ProjectID,
+                               options: ((CreateOptions) -> Void)? = nil) async throws -> GLResponse<Model.NoResponse> {
             let options = CreateOptions(
                 branch: branch,
                 commit: commit,
@@ -116,7 +133,7 @@ extension APIService {
                 project: project,
                 options
             )
-            return try await gitlab.execute(.init(.post, endpoint: Endpoints.RepositoryFiles.get, options: options))
+            return try await gitlab.execute(.init(.post, endpoint: URLs.get, options: options))
         }
         
         /// Allows you to update a single file.
@@ -135,8 +152,8 @@ extension APIService {
                                commit: String,
                                content: String,
                                filePath: String,
-                               project: DataTypes.ProjectID,
-                               options: ((CreateOptions) -> Void)? = nil) async throws -> GitLabResponse<Model.NoResponse> {
+                               project: InputParams.ProjectID,
+                               options: ((CreateOptions) -> Void)? = nil) async throws -> GLResponse<Model.NoResponse> {
             let options = CreateOptions(
                 branch: branch,
                 commit: commit,
@@ -145,7 +162,7 @@ extension APIService {
                 project: project,
                 options
             )
-            return try await gitlab.execute(.init(.put, endpoint: Endpoints.RepositoryFiles.get, options: options))
+            return try await gitlab.execute(.init(.put, endpoint: URLs.get, options: options))
         }
         
         /// This allows you to delete a single file.
@@ -162,8 +179,8 @@ extension APIService {
                                commit: String,
                                content: String,
                                filePath: String,
-                               project: DataTypes.ProjectID,
-                               options: ((CreateOptions) -> Void)? = nil) async throws -> GitLabResponse<Model.NoResponse> {
+                               project: InputParams.ProjectID,
+                               options: ((CreateOptions) -> Void)? = nil) async throws -> GLResponse<Model.NoResponse> {
             let options = CreateOptions(
                 branch: branch,
                 commit: commit,
@@ -172,7 +189,7 @@ extension APIService {
                 project: project,
                 options
             )
-            return try await gitlab.execute(.init(.delete, endpoint: Endpoints.RepositoryFiles.get, options: options))
+            return try await gitlab.execute(.init(.delete, endpoint: URLs.get, options: options))
         }
         
     }

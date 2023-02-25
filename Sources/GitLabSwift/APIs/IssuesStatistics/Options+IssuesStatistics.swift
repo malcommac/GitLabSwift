@@ -14,84 +14,84 @@ import Foundation
 
 extension APIService.IssuesStatistics {
     
-    public class SearchOptions: APIOptionsCollection {
+    public class SearchOptions: OutputParamsCollection {
         
         // Comma-separated list of label names, issues must have all labels to be returned.
-        @APIOption(key: "labels")
-        public var labels: DataTypes.LabelsSearch?
+        @OutputParam(key: "labels")
+        public var labels: InputParams.LabelsSearch?
         
         /// The milestone title.
         /// `None` lists all issues with no milestone.
         /// `Any` lists all issues that have an assigned milestone.
-        @APIOption(key: "milestone")
-        public var milestone: DataTypes.MilestoneIDSearch?
+        @OutputParam(key: "milestone")
+        public var milestone: InputParams.MilestoneIDSearch?
         
         /// Return issues for the given scope.
-        @APIOption(key: "scope")
-        public var scope: DataTypes.IssuesScope?
+        @OutputParam(key: "scope")
+        public var scope: InputParams.IssuesScope?
         
         /// Return issues created by the given user id.
         /// Mutually exclusive with `author_username`.
         /// Combine with `scope=all` or `scope=assigned_to_me`.
-        @APIOption(key: "author_id")
+        @OutputParam(key: "author_id")
         public var authorId: Int?
         
         /// Return issues created by the given username.
         /// Similar to `author_id` and mutually exclusive with `author_id`.
-        @APIOption(key: "author_username")
+        @OutputParam(key: "author_username")
         public var authorUsername: String?
         
         /// Return issues assigned to the given user.
-        @APIOption(key: "assignee_id")
-        public var assigneeId: DataTypes.IdSearch?
+        @OutputParam(key: "assignee_id")
+        public var assigneeId: InputParams.IdSearch?
         
         /// Return issues assigned to the given username.
         /// Similar to `assignee_id` and mutually exclusive with `assignee_id`.
-        @APIOption(key: "assignee_username")
+        @OutputParam(key: "assignee_username")
         public var assigneeUsername: String?
         
         /// Return issues associated with the given epic ID.
         /// `None` returns issues that are not associated with an epic.
         /// `Any` returns issues that are associated with an epic.
-        @APIOption(key: "epic_id")
-        public var epicId: DataTypes.IdSearch?
+        @OutputParam(key: "epic_id")
+        public var epicId: InputParams.IdSearch?
         
         /// Return issues reacted by the authenticated user by a given emoji.
         /// `None` returns issues not given a reaction.
         /// `Any` returns issues given at least one reaction.
-        @APIOption(key: "my_reaction_emoji")
-        public var myReactionEmoji: DataTypes.EmojiSearch?
+        @OutputParam(key: "my_reaction_emoji")
+        public var myReactionEmoji: InputParams.EmojiSearch?
         
         /// Return only the issues having the given iid.
-        @APIOption(key: "iids")
+        @OutputParam(key: "iids")
         public var iids: [Int]?
         
         /// Search issues against their `title` and `description`.
-        @APIOption(key: "search")
+        @OutputParam(key: "search")
         public var search: String?
         
         /// Modify the scope of the search attribute. `title`, `description` or both.
-        @APIOption(key: "in")
-        public var `in`: DataTypes.SearchInScope?
+        @OutputParam(key: "in")
+        public var `in`: InputParams.SearchInScope?
         
         /// Return issues created on or after the given time.
-        @APIOption(key: "created_after")
+        @OutputParam(key: "created_after")
         public var createdAfter: Date?
         
         /// Return issues created on or before the given time.
-        @APIOption(key: "created_before")
+        @OutputParam(key: "created_before")
         public var createdBefore: Date?
         
         /// Return issues updated on or after the given time.
-        @APIOption(key: "updated_after")
+        @OutputParam(key: "updated_after")
         public var updatedAfter: Date?
         
         /// Return issues updated on or before the given time
-        @APIOption(key: "updated_before")
+        @OutputParam(key: "updated_before")
         public var updatedBefore: Date?
         
         /// Filter confidential or public issues.
-        @APIOption(key: "confidential")
+        @OutputParam(key: "confidential")
         public var confidential: Bool?
         
         // MARK: - Initialization

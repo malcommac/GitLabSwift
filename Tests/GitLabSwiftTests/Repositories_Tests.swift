@@ -18,7 +18,7 @@ final class GitLabSwift_RepositoriesTests: XCTestCase {
     
     public func test_tree() async throws {
         let result = await catchErrors {
-            let response = try await gitlab.repositories.list(project: .id(1097), {
+            let response = try await gitlab.repositories.list(project: .id(1097), options: {
                 $0.recursive = true
             })
             response.writeRawResponse("repository_tree")

@@ -50,7 +50,7 @@ public enum APIOptionLocation {
 /// Define a single parameter you can send with a request to GitLab Rest API service.
 /// From a single parameter you may get one or more query URL parameters, expressed as
 /// `URLQueryItem`. It happens, for example, with integer arrays.
-public struct APIOption<Value/*: URLEncodable*/>: APIParameterURLConvertible {
+public struct OutputParam<Value/*: URLEncodable*/>: APIParameterURLConvertible {
     
     // MARK: - Public Properties
     

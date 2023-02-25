@@ -14,34 +14,34 @@ import Foundation
 
 extension APIService.Commits {
     
-    public class CommitStatusOptions: APIOptionsCollection {
+    public class CommitStatusOptions: OutputParamsCollection {
         
         /// The ID or URL-encoded path of the project.
-        @APIOption(key: "id")
-        public var project: DataTypes.ProjectID?
+        @OutputParam(key: "id")
+        public var project: InputParams.ProjectID?
         
         /// The commit SHA.
-        @APIOption(key: "sha")
+        @OutputParam(key: "sha")
         public var sha: String?
         
         /// The name of a repository branch or tag or, if not given, the default branch
-        @APIOption(key: "ref")
+        @OutputParam(key: "ref")
         public var ref: String?
         
         /// Filter by build stage, for example, `test`.
-        @APIOption(key: "stage")
+        @OutputParam(key: "stage")
         public var stage: String?
         
         /// Filter by job name, for example, `bundler:audit`.
-        @APIOption(key: "name")
+        @OutputParam(key: "name")
         public var name: String?
         
         /// Return all statuses, not only the latest ones
-        @APIOption(key: "all")
+        @OutputParam(key: "all")
         public var all: Bool?
         
         public init(sha: String,
-                    project: DataTypes.ProjectID,
+                    project: InputParams.ProjectID,
                     _ configure: ((CommitStatusOptions) -> Void)?) {
             super.init()
             self.sha = sha
@@ -51,34 +51,34 @@ extension APIService.Commits {
         
     }
     
-    public class PostCommentOptions: APIOptionsCollection {
+    public class PostCommentOptions: OutputParamsCollection {
         
         /// The ID or URL-encoded path of the project.
-        @APIOption(key: "id")
-        public var project: DataTypes.ProjectID?
+        @OutputParam(key: "id")
+        public var project: InputParams.ProjectID?
         
         /// The commit SHA or name of a repository branch or tag
-        @APIOption(key: "sha")
+        @OutputParam(key: "sha")
         public var sha: String?
     
         /// The text of the comment
-        @APIOption(key: "note")
+        @OutputParam(key: "note")
         public var note: String?
         
         /// The file path relative to the repository
-        @APIOption(key: "path")
+        @OutputParam(key: "path")
         public var path: String?
         
         /// The line number where the comment should be placed
-        @APIOption(key: "line")
+        @OutputParam(key: "line")
         public var line: Int?
         
         /// The line type. Takes new or old as arguments.
-        @APIOption(key: "line_type")
-        public var line_type: DataTypes.CommitCommentLineType?
+        @OutputParam(key: "line_type")
+        public var line_type: InputParams.CommitCommentLineType?
         
         public init(sha: String,
-                    project: DataTypes.ProjectID,
+                    project: InputParams.ProjectID,
                     _ configure: ((PostCommentOptions) -> Void)?) {
             super.init()
             self.sha = sha
@@ -88,31 +88,31 @@ extension APIService.Commits {
         
     }
     
-    public class CherryPickOptions: APIOptionsCollection {
+    public class CherryPickOptions: OutputParamsCollection {
         
         /// The ID or URL-encoded path of the project.
-        @APIOption(key: "id")
-        public var project: DataTypes.ProjectID?
+        @OutputParam(key: "id")
+        public var project: InputParams.ProjectID?
         
         /// The commit hash
-        @APIOption(key: "sha")
+        @OutputParam(key: "sha")
         public var sha: String?
         
         /// The name of the branch
-        @APIOption(key: "branch")
+        @OutputParam(key: "branch")
         public var branch: String?
         
         /// Does not commit any changes. Default is false. Introduced in GitLab 13.3
-        @APIOption(key: "dry_run")
+        @OutputParam(key: "dry_run")
         public var dryRun: Bool?
         
         /// A custom commit message to use for the new commit. Introduced in GitLab 14.0
-        @APIOption(key: "message")
+        @OutputParam(key: "message")
         public var message: String?
         
         public init(sha: String,
                     branch: String,
-                    project: DataTypes.ProjectID,
+                    project: InputParams.ProjectID,
                     _ configure: ((CherryPickOptions) -> Void)?) {
             super.init()
             self.project = project
@@ -123,49 +123,49 @@ extension APIService.Commits {
         
     }
     
-    public class ListOptions: APIOptionsCollection {
+    public class ListOptions: OutputParamsCollection {
         
         /// The ID or URL-encoded path of the project.
-        @APIOption(key: "id")
-        public var project: DataTypes.ProjectID?
+        @OutputParam(key: "id")
+        public var project: InputParams.ProjectID?
         
         /// The name of a repository branch, tag or revision range, or if not given the default branch
-        @APIOption(key: "ref_name")
+        @OutputParam(key: "ref_name")
         public var refName: String?
         
         /// Only commits after or on this date are returned.
-        @APIOption(key: "since")
+        @OutputParam(key: "since")
         public var since: Date?
         
         /// Only commits before or on this date are returned.
-        @APIOption(key: "until")
+        @OutputParam(key: "until")
         public var until: Date?
         
         /// The file path.
-        @APIOption(key: "path")
+        @OutputParam(key: "path")
         public var path: String?
         
         /// Retrieve every commit from the repository.
-        @APIOption(key: "all")
+        @OutputParam(key: "all")
         public var all: Bool?
         
         /// Stats about each commit are added to the response.
-        @APIOption(key: "with_stats")
+        @OutputParam(key: "with_stats")
         public var includeStats: Bool?
         
         /// Follow only the first parent commit upon seeing a merge commit.
-        @APIOption(key: "first_parent")
+        @OutputParam(key: "first_parent")
         public var firstParent: Bool?
         
         /// List commits in order.
-        @APIOption(key: "first_parent")
-        public var order: DataTypes.CommitOrder?
+        @OutputParam(key: "first_parent")
+        public var order: InputParams.CommitOrder?
         
         /// Parse and include Git trailers for every commit.
-        @APIOption(key: "trailers")
+        @OutputParam(key: "trailers")
         public var includeTrailers: Bool?
         
-        public init(project: DataTypes.ProjectID,
+        public init(project: InputParams.ProjectID,
                     _ configure: ((ListOptions) -> Void)?) {
             super.init()
             self.project = project

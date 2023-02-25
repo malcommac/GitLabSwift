@@ -12,6 +12,21 @@
 
 import Foundation
 
+// MARK: - Protected Branches + URLs
+
+extension APIService.ProtectedBranches {
+    
+    fileprivate enum URLs: String, GLEndpoint {
+        case protectedList = "/projects/{id}/protected_branches"
+        case detailProtected = "/projects/{id}/protected_branches/{branch}"
+
+        public var value: String { rawValue }
+    }
+    
+}
+
+// MARK: - Protected Branches + APIs
+
 extension APIService {
     
     /// Protected branches API.
@@ -28,13 +43,13 @@ extension APIService {
         ///   - id: The ID or URL-encoded path of the project owned by the authenticated user
         ///   - search: Name or part of the name of protected branches to be searched for
         /// - Returns: array of `Models.Branch`
-        public func list(project: DataTypes.ProjectID,
-                         search: DataTypes.Search? = nil) async throws -> GitLabResponse<[Model.ProtectedBranch]> {
-            let options = APIOptionsCollection([
-                APIOption(key: "id", project),
-                APIOption(key: "search", search)
+        public func list(project: InputParams.ProjectID,
+                         search: InputParams.Search? = nil) async throws -> GLResponse<[Model.ProtectedBranch]> {
+            let options = OutputParamsCollection([
+                OutputParam(key: "id", project),
+                OutputParam(key: "search", search)
             ])
-            return try await gitlab.execute(.init(endpoint: Endpoints.Branches.protectedList, options: options))
+            return try await gitlab.execute(.init(endpoint: URLs.protectedList, options: options))
         }
         
         /// Gets a single protected branch or wildcard protected branch.
@@ -46,12 +61,12 @@ extension APIService {
         ///   - id: ID or URL-encoded path of the project owned by the authenticated user.
         /// - Returns: `Models.ProtectedBranch`
         public func get(_ name: String,
-                        project: DataTypes.ProjectID) async throws -> GitLabResponse<Model.ProtectedBranch> {
-            let options = APIOptionsCollection([
-                APIOption(key: "id", project),
-                APIOption(key: "branch", name)
+                        project: InputParams.ProjectID) async throws -> GLResponse<Model.ProtectedBranch> {
+            let options = OutputParamsCollection([
+                OutputParam(key: "id", project),
+                OutputParam(key: "branch", name)
             ])
-            return try await gitlab.execute(.init(endpoint: Endpoints.Branches.detailProtected, options: options))
+            return try await gitlab.execute(.init(endpoint: URLs.detailProtected, options: options))
         }
         
         
@@ -65,10 +80,10 @@ extension APIService {
         ///   - options: Configuration options.
         /// - Returns: protected branch.
         public func protect(_ name: String,
-                            project: DataTypes.ProjectID,
-                            options: @escaping ((ProtectBranchOptions) -> Void)) async throws -> GitLabResponse<Model.ProtectedBranch> {
+                            project: InputParams.ProjectID,
+                            options: @escaping ((ProtectBranchOptions) -> Void)) async throws -> GLResponse<Model.ProtectedBranch> {
             let options = ProtectBranchOptions(name: name, project: project, options)
-            return try await gitlab.execute(.init(.post, endpoint: Endpoints.Branches.protectedList, options: options))
+            return try await gitlab.execute(.init(.post, endpoint: URLs.protectedList, options: options))
         }
         
         /// Unprotects the given protected branch or wildcard protected branch.
@@ -79,12 +94,12 @@ extension APIService {
         ///   - name: The name of the branch
         ///   - id: The ID or URL-encoded path of the project owned by the authenticated user.
         public func unprotect(_ name: String,
-                              project: DataTypes.ProjectID) async throws -> GitLabResponse<Model.NoResponse> {
-            let options = APIOptionsCollection([
-                APIOption(key: "id", project),
-                APIOption(key: "branch", name)
+                              project: InputParams.ProjectID) async throws -> GLResponse<Model.NoResponse> {
+            let options = OutputParamsCollection([
+                OutputParam(key: "id", project),
+                OutputParam(key: "branch", name)
             ])
-            return try await gitlab.execute(.init(.delete, endpoint: Endpoints.Branches.detailProtected, options: options))
+            return try await gitlab.execute(.init(.delete, endpoint: URLs.detailProtected, options: options))
         }
         
         /// Updates a protected branch.
@@ -97,10 +112,10 @@ extension APIService {
         ///   - options: Configuration options.
         /// - Returns: updated protected branch
         public func update(_ name: String,
-                           project: DataTypes.ProjectID,
-                           options: @escaping ((UpdateBranchOptions) -> Void)) async throws -> GitLabResponse<Model.ProtectedBranch> {
+                           project: InputParams.ProjectID,
+                           options: @escaping ((UpdateBranchOptions) -> Void)) async throws -> GLResponse<Model.ProtectedBranch> {
             let options = UpdateBranchOptions(name: name, project: project, options)
-            return try await gitlab.execute(.init(.patch, endpoint: Endpoints.Branches.detailProtected, options: options))
+            return try await gitlab.execute(.init(.patch, endpoint: URLs.detailProtected, options: options))
         }
         
     }

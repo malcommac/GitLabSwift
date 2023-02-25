@@ -11,6 +11,24 @@
 //
 
 import Foundation
+import RealHTTP
+
+// MARK: - GroupMilestones + URLs
+
+extension APIService.GroupMilestones {
+    
+    fileprivate enum URLs: String, GLEndpoint {
+        case list = "/groups/{id}/milestones"
+        case get = "/groups/{id}/milestones/{milestone_id}"
+        case issues = "/groups/{id}/milestones/{milestone_id}/issues"
+        case mergeRequests = "/groups/{id}/milestones/{milestone_id}/merge_requests"
+
+        public var value: String { rawValue }
+    }
+    
+}
+
+// MARK: - GroupMilestones + APIs
 
 extension APIService {
     
@@ -30,9 +48,9 @@ extension APIService {
         ///   - options: configuration callback.
         /// - Returns: milestones.
         public func list(group: Int,
-                         options: ((ListOptions) -> Void)? = nil) async throws -> GitLabResponse<[Model.Milestone]> {
+                         options: ((ListOptions) -> Void)? = nil) async throws -> GLResponse<[Model.Milestone]> {
             let options = ListOptions(group: group, options)
-            return try await gitlab.execute(.init(endpoint: Endpoints.GroupMilestones.list, options: options))
+            return try await gitlab.execute(.init(endpoint: URLs.list, options: options))
         }
         
         /// Gets a single group milestone.
@@ -44,12 +62,12 @@ extension APIService {
         ///   - group: The ID of the group milestone
         /// - Returns: milestone
         public func get(milestone: Int,
-                        group: Int) async throws -> GitLabResponse<Model.Milestone> {
-            let options = APIOptionsCollection([
-                APIOption(key: "milestone_id", milestone),
-                APIOption(key: "id", group)
+                        group: Int) async throws -> GLResponse<Model.Milestone> {
+            let options = OutputParamsCollection([
+                OutputParam(key: "milestone_id", milestone),
+                OutputParam(key: "id", group)
             ])
-            return try await gitlab.execute(.init(endpoint: Endpoints.GroupMilestones.get, options: options))
+            return try await gitlab.execute(.init(endpoint: URLs.get, options: options))
         }
         
         /// Creates a new group milestone.
@@ -67,15 +85,15 @@ extension APIService {
                            description: String? = nil,
                            due: Date? = nil,
                            start: Date? = nil,
-                           group: Int) async throws -> GitLabResponse<Model.Milestone> {
-            let options = APIOptionsCollection([
-                APIOption(key: "id", group),
-                APIOption(key: "title", title),
-                APIOption(key: "description", description),
-                APIOption(key: "due_date", due),
-                APIOption(key: "start_date", start)
+                           group: Int) async throws -> GLResponse<Model.Milestone> {
+            let options = OutputParamsCollection([
+                OutputParam(key: "id", group),
+                OutputParam(key: "title", title),
+                OutputParam(key: "description", description),
+                OutputParam(key: "due_date", due),
+                OutputParam(key: "start_date", start)
             ])
-            return try await gitlab.execute(.init(endpoint: Endpoints.GroupMilestones.get, options: options))
+            return try await gitlab.execute(.init(endpoint: URLs.get, options: options))
         }
         
         /// Updates an existing group milestone.
@@ -97,17 +115,17 @@ extension APIService {
                          description: String? = nil,
                          due: Date? = nil,
                          start: Date? = nil,
-                         state: DataTypes.MilestoneState? = nil) async throws -> GitLabResponse<Model.Milestone> {
-            let options = APIOptionsCollection([
-                APIOption(key: "id", group),
-                APIOption(key: "milestone_id", milestone),
-                APIOption(key: "title", title),
-                APIOption(key: "description", description),
-                APIOption(key: "due_date", due),
-                APIOption(key: "start_date", start),
-                APIOption(key: "state_event", state)
+                         state: InputParams.MilestoneState? = nil) async throws -> GLResponse<Model.Milestone> {
+            let options = OutputParamsCollection([
+                OutputParam(key: "id", group),
+                OutputParam(key: "milestone_id", milestone),
+                OutputParam(key: "title", title),
+                OutputParam(key: "description", description),
+                OutputParam(key: "due_date", due),
+                OutputParam(key: "start_date", start),
+                OutputParam(key: "state_event", state)
             ])
-            return try await gitlab.execute(.init(.put, endpoint: Endpoints.GroupMilestones.get, options: options))
+            return try await gitlab.execute(.init(.put, endpoint: URLs.get, options: options))
         }
         
         /// Delete group milestone.
@@ -119,12 +137,12 @@ extension APIService {
         ///   - group: The ID or URL-encoded path of the group owned by the authenticated user
         /// - Returns: no response
         public func delete(milestone: Int,
-                           group: Int) async throws -> GitLabResponse<Model.NoResponse> {
-            let options = APIOptionsCollection([
-                APIOption(key: "id", group),
-                APIOption(key: "milestone_id", milestone)
+                           group: Int) async throws -> GLResponse<Model.NoResponse> {
+            let options = OutputParamsCollection([
+                OutputParam(key: "id", group),
+                OutputParam(key: "milestone_id", milestone)
             ])
-            return try await gitlab.execute(.init(.delete, endpoint: Endpoints.GroupMilestones.get, options: options))
+            return try await gitlab.execute(.init(.delete, endpoint: URLs.get, options: options))
         }
         
         /// Gets all issues assigned to a single group milestone.
@@ -136,12 +154,12 @@ extension APIService {
         ///   - project: The ID or URL-encoded path of the group owned by the authenticated user.
         /// - Returns: issues of the milestone (note: it doesn’t return issues from any subgroups)
         public func issuesAssignedTo(milestone: Int,
-                                     group: Int) async throws -> GitLabResponse<[Model.Issue]> {
-            let options = APIOptionsCollection([
-                APIOption(key: "id", group),
-                APIOption(key: "milestone_id", milestone)
+                                     group: Int) async throws -> GLResponse<[Model.Issue]> {
+            let options = OutputParamsCollection([
+                OutputParam(key: "id", group),
+                OutputParam(key: "milestone_id", milestone)
             ])
-            return try await gitlab.execute(.init(endpoint: Endpoints.GroupMilestones.issues, options: options))
+            return try await gitlab.execute(.init(endpoint: URLs.issues, options: options))
         }
         
         /// Gets all merge requests assigned to a single group milestone.
@@ -153,12 +171,12 @@ extension APIService {
         ///   - project: The ID or URL-encoded path of the group owned by the authenticated user.
         /// - Returns: list of merge requests.
         public func mergeRequestsAssignedTo(milestone: Int,
-                                            group: Int) async throws -> GitLabResponse<[Model.MergeRequest]> {
-            let options = APIOptionsCollection([
-                APIOption(key: "id", group),
-                APIOption(key: "milestone_id", milestone)
+                                            group: Int) async throws -> GLResponse<[Model.MergeRequest]> {
+            let options = OutputParamsCollection([
+                OutputParam(key: "id", group),
+                OutputParam(key: "milestone_id", milestone)
             ])
-            return try await gitlab.execute(.init(endpoint: Endpoints.GroupMilestones.mergeRequests, options: options))
+            return try await gitlab.execute(.init(endpoint: URLs.mergeRequests, options: options))
         }
   
     }

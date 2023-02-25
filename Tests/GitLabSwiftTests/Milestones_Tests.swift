@@ -18,7 +18,7 @@ final class GitLabSwift_MilestonesTests: XCTestCase {
     
     public func test_milestones() async throws {
         let result = await catchErrors {
-            let response = try await gitlab.milestones.list(id: .id(1097), {
+            let response = try await gitlab.milestones.list(project: .id(1097), options: {
                 $0.includeParent = true
                 $0.state = .activate
             })
@@ -39,7 +39,7 @@ final class GitLabSwift_MilestonesTests: XCTestCase {
     
     public func test_milestoneDetails() async throws {
         let result = await catchErrors {
-            let response = try await gitlab.milestones.detail(id: 585, project: .id(1097))
+            let response = try await gitlab.milestones.get(milestone: 585, project: .id(1097))
             response.writeRawResponse("single_mr")
             guard let milestone = try response.model() else {
                 XCTFail()
@@ -54,7 +54,7 @@ final class GitLabSwift_MilestonesTests: XCTestCase {
     
     public func test_milestoneLinkedIssues() async throws {
         let result = await catchErrors {
-            let response = try await gitlab.milestones.issues(id: 585, project: .id(1097))
+            let response = try await gitlab.milestones.issuesAssignedTo(milestone: 585, project: .id(1097))
             response.writeRawResponse("issues_milestone")
             guard let issues = try response.model() else {
                 XCTFail()
@@ -72,7 +72,7 @@ final class GitLabSwift_MilestonesTests: XCTestCase {
     
     public func test_milestoneLinkedMergeRequests() async throws {
         let result = await catchErrors {
-            let response = try await gitlab.milestones.mergeRequests(id: 585, project: .id(1097))
+            let response = try await gitlab.milestones.mergeRequestsAssignedTo(milestone: 585, project: .id(1097))
             response.writeRawResponse("issues_milestone")
             guard let mrList = try response.model() else {
                 XCTFail()
@@ -90,7 +90,7 @@ final class GitLabSwift_MilestonesTests: XCTestCase {
     
     public func test_createMilestone() async throws {
         let result = await catchErrors {
-            let response = try await gitlab.milestones.create(title: "My Milestone", project: .id(2008), {
+            let response = try await gitlab.milestones.create(title: "My Milestone", project: .id(2008), options: {
                 $0.description = "A new fantastic milestone"
                 $0.startDate = .init(date: Date(timeIntervalSinceNow: -60*60*24*7))
                 $0.dueDate = .init(date: Date(timeIntervalSinceNow: 60*60*24*2))
@@ -109,11 +109,11 @@ final class GitLabSwift_MilestonesTests: XCTestCase {
     
     public func test_editMilestone() async throws {
         let result = await catchErrors {
-            guard let anyMilestone = try await gitlab.milestones.list(id: .id(2008)).model()?.first else {
+            guard let anyMilestone = try await gitlab.milestones.list(project: .id(2008)).model()?.first else {
                 return
             }
             
-            let response = try await gitlab.milestones.edit(id: String(anyMilestone.id), project: .id(2008), {
+            let response = try await gitlab.milestones.edit(milestone: String(anyMilestone.id), project: .id(2008), options: {
                 $0.description = "Modified description"
                 $0.title = "Modified title"
             })

@@ -37,7 +37,7 @@ public func catchErrors(_ block: (() async throws -> Void)) async -> Bool {
         print("Type '\(type)' mismatch:", context.debugDescription)
         print("codingPath:", context.codingPath)
     } catch {
-        if let gitlabError = error as? GitlabError {
+        if let gitlabError = error as? GLError {
             if gitlabError.statusCode == .notFound {
                 print("This call is not supported by the WS. Cannot be tested.")
                 return true

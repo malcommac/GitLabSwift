@@ -11,11 +11,34 @@
 //
 
 import Foundation
+import RealHTTP
+
+// MARK: - Pipelines + URLs
+
+extension APIService.Pipelines {
+    
+    fileprivate enum URLs: String, GLEndpoint {
+        case list = "/projects/{id}/pipelines"
+        case get = "/projects/{id}/pipelines/{pipeline_id}"
+        case variables = "/projects/{id}/pipelines/{pipeline_id}/variables"
+        case test_report = "/projects/{id}/pipelines/{pipeline_id}/test_report"
+        case test_report_summary = "/projects/{id}/pipelines/{pipeline_id}/test_report_summary"
+        case latest = "/projects/{id}/pipelines/latest"
+        case create = "/projects/{id}/pipeline"
+        case retry = "/projects/{id}/pipelines/{pipeline_id}/retry"
+        case cancel = "/projects/{id}/pipelines/{pipeline_id}/cancel"
+
+        public var value: String { rawValue }
+    }
+    
+}
+
+// MARK: - Pipelines + APIs
 
 extension APIService {
     
     /// Pipelines API.
-    /// 
+    ///
     /// [API Documentation](https://docs.gitlab.com/ee/api/pipelines.html)
     public class Pipelines: APIService {
     
@@ -26,10 +49,10 @@ extension APIService {
         /// - Parameters:
         ///   - project: The ID or URL-encoded path of the project owned by the authenticated user
         ///   - options: configuration callback.
-        public func list(project: DataTypes.ProjectID,
-                         options: ((SearchOptions) -> Void)? = nil) async throws -> GitLabResponse<[Model.Pipeline]> {
+        public func list(project: InputParams.ProjectID,
+                         options: ((SearchOptions) -> Void)? = nil) async throws -> GLResponse<[Model.Pipeline]> {
             let options = SearchOptions(project: project, options)
-            return try await gitlab.execute(.init(endpoint: Endpoints.Pipelines.list, options: options))
+            return try await gitlab.execute(.init(endpoint: URLs.list, options: options))
         }
         
         /// Get one pipeline from a project.
@@ -41,12 +64,12 @@ extension APIService {
         ///   - project: The ID or URL-encoded path of the project owned by the authenticated user.
         /// - Returns: list of pipelines
         public func get(pipeline: Int,
-                        project: DataTypes.ProjectID) async throws -> GitLabResponse<[Model.Pipeline]> {
-            let options = APIOptionsCollection([
-                APIOption(key: "pipeline_id", pipeline),
-                APIOption(key: "id", project)
+                        project: InputParams.ProjectID) async throws -> GLResponse<[Model.Pipeline]> {
+            let options = OutputParamsCollection([
+                OutputParam(key: "pipeline_id", pipeline),
+                OutputParam(key: "id", project)
             ])
-            return try await gitlab.execute(.init(endpoint: Endpoints.Pipelines.get, options: options))
+            return try await gitlab.execute(.init(endpoint: URLs.get, options: options))
         }
         
         /// Get variables of a pipeline.
@@ -58,12 +81,12 @@ extension APIService {
         ///   - project: The ID or URL-encoded path of the project owned by the authenticated user.
         /// - Returns: list of variables
         public func variables(pipeline: Int,
-                              project: DataTypes.ProjectID) async throws -> GitLabResponse<[Model.Pipeline.Variable]> {
-            let options = APIOptionsCollection([
-                APIOption(key: "pipeline_id", pipeline),
-                APIOption(key: "id", project)
+                              project: InputParams.ProjectID) async throws -> GLResponse<[Model.Pipeline.Variable]> {
+            let options = OutputParamsCollection([
+                OutputParam(key: "pipeline_id", pipeline),
+                OutputParam(key: "id", project)
             ])
-            return try await gitlab.execute(.init(endpoint: Endpoints.Pipelines.variables, options: options))
+            return try await gitlab.execute(.init(endpoint: URLs.variables, options: options))
         }
         
         /// Get a pipeline’s test report.
@@ -75,12 +98,12 @@ extension APIService {
         ///   - project: The ID or URL-encoded path of the project owned by the authenticated user.
         /// - Returns: report of the test.
         public func testReport(pipeline: Int,
-                               project: DataTypes.ProjectID) async throws -> GitLabResponse<Model.Pipeline.TestReport> {
-            let options = APIOptionsCollection([
-                APIOption(key: "pipeline_id", pipeline),
-                APIOption(key: "id", project)
+                               project: InputParams.ProjectID) async throws -> GLResponse<Model.Pipeline.TestReport> {
+            let options = OutputParamsCollection([
+                OutputParam(key: "pipeline_id", pipeline),
+                OutputParam(key: "id", project)
             ])
-            return try await gitlab.execute(.init(endpoint: Endpoints.Pipelines.test_report, options: options))
+            return try await gitlab.execute(.init(endpoint: URLs.test_report, options: options))
         }
         
         /// Get a pipeline’s test report summary.
@@ -92,12 +115,12 @@ extension APIService {
         ///   - project: The ID or URL-encoded path of the project owned by the authenticated user.
         /// - Returns: summary
         public func testReportSummary(pipeline: Int,
-                                      project: DataTypes.ProjectID) async throws -> GitLabResponse<Model.Pipeline.TestSummary> {
-            let options = APIOptionsCollection([
-                APIOption(key: "pipeline_id", pipeline),
-                APIOption(key: "id", project)
+                                      project: InputParams.ProjectID) async throws -> GLResponse<Model.Pipeline.TestSummary> {
+            let options = OutputParamsCollection([
+                OutputParam(key: "pipeline_id", pipeline),
+                OutputParam(key: "id", project)
             ])
-            return try await gitlab.execute(.init(endpoint: Endpoints.Pipelines.test_report_summary, options: options))
+            return try await gitlab.execute(.init(endpoint: URLs.test_report_summary, options: options))
         }
         
         /// Get the latest pipeline for a specific ref in a project.
@@ -109,13 +132,13 @@ extension APIService {
         ///   - ref: The branch or tag to check for the latest pipeline.
         ///          Defaults to the default branch when not specified.
         /// - Returns: pipeline
-        public func latest(project: DataTypes.ProjectID,
-                           ref: String? = nil) async throws -> GitLabResponse<Model.Pipeline> {
-            let options = APIOptionsCollection([
-                APIOption(key: "ref", ref),
-                APIOption(key: "id", project)
+        public func latest(project: InputParams.ProjectID,
+                           ref: String? = nil) async throws -> GLResponse<Model.Pipeline> {
+            let options = OutputParamsCollection([
+                OutputParam(key: "ref", ref),
+                OutputParam(key: "id", project)
             ])
-            return try await gitlab.execute(.init(endpoint: Endpoints.Pipelines.latest, options: options))
+            return try await gitlab.execute(.init(endpoint: URLs.latest, options: options))
         }
         
         /// Create a new pipeline.
@@ -128,14 +151,14 @@ extension APIService {
         ///   - variables: variables available in the pipeline.
         /// - Returns: new created pipeline
         public func create(ref: String,
-                           project: DataTypes.ProjectID,
-                           variables: [[String: Any]]) async throws -> GitLabResponse<Model.Pipeline> {
-            let options = APIOptionsCollection([
-                APIOption(key: "ref", ref),
-                APIOption(key: "id", project),
-                APIOption(key: "variables", variables)
+                           project: InputParams.ProjectID,
+                           variables: [[String: Any]]) async throws -> GLResponse<Model.Pipeline> {
+            let options = OutputParamsCollection([
+                OutputParam(key: "ref", ref),
+                OutputParam(key: "id", project),
+                OutputParam(key: "variables", variables)
             ])
-            return try await gitlab.execute(.init(.post, endpoint: Endpoints.Pipelines.create, options: options))
+            return try await gitlab.execute(.init(.post, endpoint: URLs.create, options: options))
         }
         
         /// Retry jobs in a pipeline.
@@ -147,12 +170,12 @@ extension APIService {
         ///   - project: The ID or URL-encoded path of the project owned by the authenticated user.
         /// - Returns: retried pipeline
         public func retry(pipeline: Int,
-                          project: DataTypes.ProjectID) async throws -> GitLabResponse<Model.Pipeline> {
-            let options = APIOptionsCollection([
-                APIOption(key: "id", project),
-                APIOption(key: "pipeline_id", pipeline)
+                          project: InputParams.ProjectID) async throws -> GLResponse<Model.Pipeline> {
+            let options = OutputParamsCollection([
+                OutputParam(key: "id", project),
+                OutputParam(key: "pipeline_id", pipeline)
             ])
-            return try await gitlab.execute(.init(.post, endpoint: Endpoints.Pipelines.retry, options: options))
+            return try await gitlab.execute(.init(.post, endpoint: URLs.retry, options: options))
         }
         
         /// Cancel a pipeline’s jobs.
@@ -164,12 +187,12 @@ extension APIService {
         ///   - project: The ID or URL-encoded path of the project owned by the authenticated user.
         /// - Returns: cancelled pipeline
         public func cancel(pipeline: Int,
-                           project: DataTypes.ProjectID) async throws -> GitLabResponse<Model.Pipeline> {
-            let options = APIOptionsCollection([
-                APIOption(key: "id", project),
-                APIOption(key: "pipeline_id", pipeline)
+                           project: InputParams.ProjectID) async throws -> GLResponse<Model.Pipeline> {
+            let options = OutputParamsCollection([
+                OutputParam(key: "id", project),
+                OutputParam(key: "pipeline_id", pipeline)
             ])
-            return try await gitlab.execute(.init(.post, endpoint: Endpoints.Pipelines.cancel, options: options))
+            return try await gitlab.execute(.init(.post, endpoint: URLs.cancel, options: options))
         }
         
         /// Deleting a pipeline expires all pipeline caches, and deletes all immediately related objects,
@@ -183,12 +206,12 @@ extension APIService {
         ///   - project: The ID or URL-encoded path of the project owned by the authenticated user.
         /// - Returns: no response
         public func delete(pipeline: Int,
-                           project: DataTypes.ProjectID) async throws -> GitLabResponse<Model.NoResponse> {
-            let options = APIOptionsCollection([
-                APIOption(key: "id", project),
-                APIOption(key: "pipeline_id", pipeline)
+                           project: InputParams.ProjectID) async throws -> GLResponse<Model.NoResponse> {
+            let options = OutputParamsCollection([
+                OutputParam(key: "id", project),
+                OutputParam(key: "pipeline_id", pipeline)
             ])
-            return try await gitlab.execute(.init(.delete, endpoint: Endpoints.Pipelines.get, options: options))
+            return try await gitlab.execute(.init(.delete, endpoint: URLs.get, options: options))
         }
         
     }

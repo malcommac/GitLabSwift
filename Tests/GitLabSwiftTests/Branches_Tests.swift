@@ -17,7 +17,7 @@ import RealHTTP
 
 final class GitLabSwift_BranchesTests: XCTestCase {
     
-    private var anyProjectID: DataTypes.ProjectID!
+    private var anyProjectID: InputParams.ProjectID!
     
     override func setUp() async throws {
       //  let project = try await gitlab.projects.all().model()?.randomElement()

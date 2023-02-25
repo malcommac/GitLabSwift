@@ -1,8 +1,13 @@
 //
-//  File.swift
-//  
+//  GitLabSwift
+//  Async/Await client for GitLab API v4, for Swift
 //
-//  Created by daniele on 20/12/22.
+//  Created & Maintained by Daniele Margutti
+//  Email: hello@danielemargutti.com
+//  Web: http://www.danielemargutti.com
+//
+//  Copyright ©2023 Daniele Margutti.
+//  Licensed under MIT License.
 //
 
 import Foundation

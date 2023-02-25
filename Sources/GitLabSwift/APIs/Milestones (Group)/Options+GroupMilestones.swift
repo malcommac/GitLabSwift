@@ -14,30 +14,30 @@ import Foundation
 
 extension APIService.GroupMilestones {
     
-    public class ListOptions: APIOptionsCollection {
+    public class ListOptions: OutputParamsCollection {
         
         /// The ID of the project’s milestone.
-        @APIOption(key: "id")
+        @OutputParam(key: "id")
         public var group: Int?
         
         /// Return only the milestones having the given iid.
-        @APIOption(key: "iids")
+        @OutputParam(key: "iids")
         public var iids: [Int]?
         
         /// Return only `active` or `closed` milestones.
-        @APIOption(key: "state")
-        public var state: DataTypes.MilestoneState?
+        @OutputParam(key: "state")
+        public var state: InputParams.MilestoneState?
         
         /// Return only the milestones having the given title.
-        @APIOption(key: "title")
+        @OutputParam(key: "title")
         public var title: String?
         
         /// Return only milestones with a title or description matching the provided string
-        @APIOption(key: "search")
+        @OutputParam(key: "search")
         public var search: String?
         
         /// Include milestones from parent group and its ancestors. 
-        @APIOption(key: "include_parent_milestones")
+        @OutputParam(key: "include_parent_milestones")
         public var includeParentMilestones: Bool?
         
         public init(group: Int, _ configure: ((ListOptions) -> Void)?) {

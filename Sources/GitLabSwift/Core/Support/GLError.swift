@@ -13,7 +13,8 @@
 import Foundation
 import RealHTTP
 
-public struct GitlabError: LocalizedError {
+/// Represent an error of the GitLabSwift library.
+public struct GLError: LocalizedError {
     
     // MARK: - Public Properties
     
@@ -21,7 +22,7 @@ public struct GitlabError: LocalizedError {
     public let response: (any Response)?
     
     /// Origin request.
-    public let request: GitLabRequest?
+    public let request: GLRequest?
     
     /// Message received from gitlab in message field.
     public let message: String?
@@ -43,7 +44,7 @@ public struct GitlabError: LocalizedError {
     /// - Parameters:
     ///   - response: response received.
     ///   - request: origin request.
-    internal init?(response: any Response, request: GitLabRequest) {
+    internal init?(response: any Response, request: GLRequest) {
         guard (200...299).contains(response.httpResponse.statusCode.rawValue) == false else {
             return nil
         }
@@ -65,7 +66,7 @@ public struct GitlabError: LocalizedError {
     ///   - message: message to print.
     ///   - response: optional linked response.
     ///   - request: optional linked request.
-    internal init(message: String, response: (any Response)? = nil, request: GitLabRequest? = nil) {
+    internal init(message: String, response: (any Response)? = nil, request: GLRequest? = nil) {
         self.message = message
         self.response = response
         self.request = request

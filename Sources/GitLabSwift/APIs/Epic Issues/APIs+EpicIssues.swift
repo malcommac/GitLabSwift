@@ -12,6 +12,22 @@
 
 import Foundation
 
+// MARK: - EpicIssues + URLs
+
+extension APIService {
+    
+    fileprivate enum URLs: String, GLEndpoint {
+        case list = "/groups/{id}/epics/{epic_iid}/issues"
+        case assign = "/groups/{id}/epics/{epic_iid}/issues/{issue_id}"
+        case epic_issue_id = "/groups/{id}/epics/{epic_iid}/issues/{epic_issue_id}"
+        
+        public var value: String { rawValue }
+    }
+    
+}
+
+// MARK: - EpicIssues + APIs
+
 extension APIService {
     
     /// Epic Issues API.
@@ -28,12 +44,12 @@ extension APIService {
         ///   - project: The ID or URL-encoded path of the group owned by the authenticated user.
         /// - Returns: list of issues
         public func list(epic: Int,
-                         project: DataTypes.ProjectID) async throws -> GitLabResponse<[Model.Issue]> {
-            let options = APIOptionsCollection([
-                APIOption(key: "id", project),
-                APIOption(key: "epic_iid", epic)
+                         project: InputParams.ProjectID) async throws -> GLResponse<[Model.Issue]> {
+            let options = OutputParamsCollection([
+                OutputParam(key: "id", project),
+                OutputParam(key: "epic_iid", epic)
             ])
-            return try await gitlab.execute(.init(endpoint: Endpoints.EpicIssues.list, options: options))
+            return try await gitlab.execute(.init(endpoint: URLs.list, options: options))
         }
         
         /// Creates an epic - issue association.
@@ -48,13 +64,13 @@ extension APIService {
         /// - Returns: the link created
         public func assign(issue: Int,
                            epic: Int,
-                           project: DataTypes.ProjectID) async throws -> GitLabResponse<Model.EpicIssueAssociation> {
-            let options = APIOptionsCollection([
-                APIOption(key: "id", project),
-                APIOption(key: "epic_iid", epic),
-                APIOption(key: "issue_id", issue)
+                           project: InputParams.ProjectID) async throws -> GLResponse<Model.EpicIssueAssociation> {
+            let options = OutputParamsCollection([
+                OutputParam(key: "id", project),
+                OutputParam(key: "epic_iid", epic),
+                OutputParam(key: "issue_id", issue)
             ])
-            return try await gitlab.execute(.init(endpoint: Endpoints.EpicIssues.assign, options: options))
+            return try await gitlab.execute(.init(endpoint: URLs.assign, options: options))
         }
         
         /// Removes an epic - issue association.
@@ -67,13 +83,13 @@ extension APIService {
         /// - Returns: association
         public func removeIssueEpic(association: Int,
                                     epic: Int,
-                                    project: DataTypes.ProjectID) async throws -> GitLabResponse<Model.EpicIssueAssociation> {
-            let options = APIOptionsCollection([
-                APIOption(key: "id", project),
-                APIOption(key: "epic_iid", epic),
-                APIOption(key: "epic_issue_id", association)
+                                    project: InputParams.ProjectID) async throws -> GLResponse<Model.EpicIssueAssociation> {
+            let options = OutputParamsCollection([
+                OutputParam(key: "id", project),
+                OutputParam(key: "epic_iid", epic),
+                OutputParam(key: "epic_issue_id", association)
             ])
-            return try await gitlab.execute(.init(.delete, endpoint: Endpoints.EpicIssues.epicIssueId, options: options))
+            return try await gitlab.execute(.init(.delete, endpoint: URLs.epic_issue_id, options: options))
         }
         
         /// Updates an epic - issue association.
@@ -89,17 +105,17 @@ extension APIService {
         /// - Returns: ordered issues of the epic.
         public func updateIssueEpic(association : Int,
                                     epic: Int,
-                                    project: DataTypes.ProjectID,
+                                    project: InputParams.ProjectID,
                                     moveBefore: Int? = nil,
-                                    moveAfter: Int? = nil) async throws -> GitLabResponse<[Model.Issue]> {
-            let options = APIOptionsCollection([
-                APIOption(key: "id", project),
-                APIOption(key: "epic_iid", epic),
-                APIOption(key: "epic_issue_id", association),
-                APIOption(key: "move_before_id", moveBefore),
-                APIOption(key: "move_after_id", moveAfter)
+                                    moveAfter: Int? = nil) async throws -> GLResponse<[Model.Issue]> {
+            let options = OutputParamsCollection([
+                OutputParam(key: "id", project),
+                OutputParam(key: "epic_iid", epic),
+                OutputParam(key: "epic_issue_id", association),
+                OutputParam(key: "move_before_id", moveBefore),
+                OutputParam(key: "move_after_id", moveAfter)
             ])
-            return try await gitlab.execute(.init(.put, endpoint: Endpoints.EpicIssues.epicIssueId, options: options))
+            return try await gitlab.execute(.init(.put, endpoint: URLs.epic_issue_id, options: options))
         }
         
     }

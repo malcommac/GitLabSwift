@@ -14,77 +14,77 @@ import Foundation
 
 extension APIService.Issues {
     
-    public class EditOptions: APIOptionsCollection {
+    public class EditOptions: OutputParamsCollection {
         
         // Comma-separated label names to add to an issue.
-        @APIOption(key: "add_labels")
+        @OutputParam(key: "add_labels")
         public var addLabels: Int?
         
         /// The IDs of the users to assign the issue to.
-        @APIOption(key: "assignee_ids")
+        @OutputParam(key: "assignee_ids")
         public var assigneeIds: [Int]?
         
         /// Set an issue to be confidential.
-        @APIOption(key: "confidential")
+        @OutputParam(key: "confidential")
         public var confidential: Bool?
         
         /// The description of an issue. Limited to 1,048,576 characters.
-        @APIOption(key: "description")
+        @OutputParam(key: "description")
         public var description: String?
         
         // Flag indicating if the issue’s discussion is locked.
         // If the discussion is locked only project members can add or edit comments.
-        @APIOption(key: "discussion_locked")
+        @OutputParam(key: "discussion_locked")
         public var discussionLocked: Bool?
         
         /// The due date.
-        @APIOption(key: "due_date")
+        @OutputParam(key: "due_date")
         public var dueDate: Date?
         
         /// ID of the epic to add the issue to.
-        @APIOption(key: "epic_id")
+        @OutputParam(key: "epic_id")
         public var epicId: Int?
         
         /// IID of the epic to add the issue to.
-        @APIOption(key: "epic_iid")
+        @OutputParam(key: "epic_iid")
         public var epicIid: Int?
         
         /// The project reference.
-        @APIOption(key: "id")
-        public var project: DataTypes.ProjectID?
+        @OutputParam(key: "id")
+        public var project: InputParams.ProjectID?
         
         /// The internal ID of a project’s issue
-        @APIOption(key: "issue_iid")
+        @OutputParam(key: "issue_iid")
         public var issue: Int?
         
         /// The type of issue.
-        @APIOption(key: "issue_type")
-        public var issueType: DataTypes.IssueType?
+        @OutputParam(key: "issue_type")
+        public var issueType: InputParams.IssueType?
         
         /// Comma-separated label names for an issue.
-        @APIOption(key: "labels")
+        @OutputParam(key: "labels")
         public var labels: String?
         
         /// The global ID of a milestone to assign issue.
-        @APIOption(key: "milestone_id")
+        @OutputParam(key: "milestone_id")
         public var milestoneId: Int?
         
         /// The title of an issue.
-        @APIOption(key: "title")
+        @OutputParam(key: "title")
         public var title: String?
         
         /// When the issue was updated.
-        @APIOption(key: "updated_at")
+        @OutputParam(key: "updated_at")
         public var updatedAt: Date?
         
         /// The weight of the issue.
-        @APIOption(key: "weight")
+        @OutputParam(key: "weight")
         public var weight: Int?
         
         // MARK: - Initialization
         
         public init(issue: Int,
-                    project: DataTypes.ProjectID,
+                    project: InputParams.ProjectID,
                     _ configure: ((EditOptions) -> Void)?) {
             super.init()
             self.issue = issue
@@ -94,80 +94,80 @@ extension APIService.Issues {
         
     }
     
-    public class CreateOptions: APIOptionsCollection {
+    public class CreateOptions: OutputParamsCollection {
         
         // The ID of the user to assign the issue to. Only appears on GitLab Free.
-        @APIOption(key: "assignee_id")
+        @OutputParam(key: "assignee_id")
         public var assigneeId: Int?
         
         /// The IDs of the users to assign the issue to.
-        @APIOption(key: "assignee_ids")
+        @OutputParam(key: "assignee_ids")
         public var assigneeIds: [Int]?
         
         /// Set an issue to be confidential.
-        @APIOption(key: "confidential")
+        @OutputParam(key: "confidential")
         public var confidential: Bool?
         
         /// When the issue was created.
-        @APIOption(key: "created_at")
+        @OutputParam(key: "created_at")
         public var createdAt: Date?
         
         /// The description of an issue. Limited to 1,048,576 characters.
-        @APIOption(key: "description")
+        @OutputParam(key: "description")
         public var description: String?
         
         /// The ID of a discussion to resolve
-        @APIOption(key: "discussion_to_resolve")
+        @OutputParam(key: "discussion_to_resolve")
         public var discussionToResolve: String?
         
         /// The due date.
-        @APIOption(key: "due_date")
+        @OutputParam(key: "due_date")
         public var dueDate: Date?
         
         /// ID of the epic to add the issue to.
-        @APIOption(key: "epic_id")
+        @OutputParam(key: "epic_id")
         public var epicId: Int?
         
         /// IID of the epic to add the issue to.
-        @APIOption(key: "epic_iid")
+        @OutputParam(key: "epic_iid")
         public var epicIid: Int?
         
         /// The project reference.
-        @APIOption(key: "id")
-        public var project: DataTypes.ProjectID?
+        @OutputParam(key: "id")
+        public var project: InputParams.ProjectID?
         
         /// The project reference iid.
-        @APIOption(key: "iid")
+        @OutputParam(key: "iid")
         public var projectIid: Int?
         
         /// The type of issue.
-        @APIOption(key: "issue_type")
-        public var issueType: DataTypes.IssueType?
+        @OutputParam(key: "issue_type")
+        public var issueType: InputParams.IssueType?
         
         /// Comma-separated label names for an issue.
-        @APIOption(key: "labels")
+        @OutputParam(key: "labels")
         public var labels: String?
         
         /// The IID of a merge request in which to resolve all issues.
-        @APIOption(key: "merge_request_to_resolve_discussions_of")
+        @OutputParam(key: "merge_request_to_resolve_discussions_of")
         public var mrToResolveDiscussionOf: Int?
         
         /// The global ID of a milestone to assign issue.
-        @APIOption(key: "milestone_id")
+        @OutputParam(key: "milestone_id")
         public var milestoneId: Int?
         
         /// The title of an issue.
-        @APIOption(key: "title")
+        @OutputParam(key: "title")
         public var title: String?
         
         /// The weight of the issue.
-        @APIOption(key: "weight")
+        @OutputParam(key: "weight")
         public var weight: Int?
         
         // MARK: - Initialization
         
         public init(title: String,
-                    project: DataTypes.ProjectID,
+                    project: InputParams.ProjectID,
                     _ configure: ((CreateOptions) -> Void)?) {
             super.init()
             self.project = project
@@ -180,12 +180,12 @@ extension APIService.Issues {
     public class ListProjectOptions: ListOptions {
         
         /// Id of the group.
-        @APIOption(key: "id")
-        public var project: DataTypes.ProjectID?
+        @OutputParam(key: "id")
+        public var project: InputParams.ProjectID?
         
         // MARK: - Initialization
         
-        public init(project: DataTypes.ProjectID,
+        public init(project: InputParams.ProjectID,
                     _ configure: ((ListProjectOptions) -> Void)?) {
             super.init(nil)
             self.project = project
@@ -197,7 +197,7 @@ extension APIService.Issues {
     public class ListGroupOptions: ListOptions {
         
         /// Id of the group.
-        @APIOption(key: "id")
+        @OutputParam(key: "id")
         public var group: Int?
         
         // MARK: - Initialization
@@ -210,130 +210,130 @@ extension APIService.Issues {
         
     }
         
-    public class ListOptions: APIOptionsCollection {
+    public class ListOptions: OutputParamsCollection {
         
         /// Return issues assigned to the given user id.
         /// Mutually exclusive with assignee_username.
         /// None returns unassigned issues. Any returns issues with an assignee.
-        @APIOption(key: "assignee_id")
+        @OutputParam(key: "assignee_id")
         public var assigneeID: Int?
         
         /// Return issues assigned to the given username.
-        @APIOption(key: "assignee_username")
+        @OutputParam(key: "assignee_username")
         public var assigneeUsernames: [String]?
         
         /// Return issues created by the given user id.
         /// Mutually exclusive with `author_username`.
         /// Combine with `scope=all` or `scope=assigned_to_me`.
-        @APIOption(key: "author_id")
+        @OutputParam(key: "author_id")
         public var author: Int?
         
         /// Return issues created by the given username.
         /// Similar to `author_id` and mutually exclusive with `author_id`.
-        @APIOption(key: "author_username")
+        @OutputParam(key: "author_username")
         public var authorUsername: String?
         
         /// Filter confidential or public issues.
-        @APIOption(key: "confidential")
+        @OutputParam(key: "confidential")
         public var confidential: Bool?
         
         /// Return issues created on or after the given time.
-        @APIOption(key: "created_after")
+        @OutputParam(key: "created_after")
         public var createdAfter: Date?
         
         /// Return issues created on or before the given time.
-        @APIOption(key: "created_before")
+        @OutputParam(key: "created_before")
         public var createdBefore: Date?
         
         /// Return issues that have no due date, are overdue,
         /// or whose due date is this week, this month,
         /// or between two weeks ago and next month.
-        @APIOption(key: "due_date")
-        public var dueDate: DataTypes.DueDate?
+        @OutputParam(key: "due_date")
+        public var dueDate: InputParams.DueDate?
         
         /// Return issues associated with the given epic ID.
-        @APIOption(key: "epic_id")
+        @OutputParam(key: "epic_id")
         public var epic: Int?
         
         /// Return issues with the specified health_status.
-        @APIOption(key: "health_status")
-        public var healthStatus: DataTypes.HealthStatus?
+        @OutputParam(key: "health_status")
+        public var healthStatus: InputParams.HealthStatus?
         
         /// Return only the issues having the given iid.
-        @APIOption(key: "iids")
+        @OutputParam(key: "iids")
         public var iids: [Int]?
         
         /// Modify the scope of the search attribute.
-        @APIOption(key: "in")
-        public var `in`: DataTypes.SearchInScope?
+        @OutputParam(key: "in")
+        public var `in`: InputParams.SearchInScope?
         
         /// Filter to a given type of issue.
-        @APIOption(key: "issue_type")
-        public var issueType: DataTypes.IssueType?
+        @OutputParam(key: "issue_type")
+        public var issueType: InputParams.IssueType?
         
         /// Return issues assigned to the given iteration ID.
         /// Mutually exclusive with `iteration_title`.
-        @APIOption(key: "iteration_id")
+        @OutputParam(key: "iteration_id")
         public var iterationId: Int?
         
         /// Return issues assigned to the iteration with the given title.
         /// Mutually exclusive with `iteration_id`.
-        @APIOption(key: "iteration_title")
+        @OutputParam(key: "iteration_title")
         public var iterationTitle: String?
         
         /// Filter by issues with labels.
-        @APIOption(key: "labels")
-        public var labels: DataTypes.LabelsSearch?
+        @OutputParam(key: "labels")
+        public var labels: InputParams.LabelsSearch?
         
         /// Returns issues assigned to milestones with a given timebox value.
-        @APIOption(key: "milestone_id")
-        public var milestoneId: DataTypes.MilestoneIDSearch?
+        @OutputParam(key: "milestone_id")
+        public var milestoneId: InputParams.MilestoneIDSearch?
         
         /// Return issues reacted by the authenticated user by the given emoji.
-        @APIOption(key: "my_reaction_emoji")
-        public var myReactionEmoji: DataTypes.EmojiSearch?
+        @OutputParam(key: "my_reaction_emoji")
+        public var myReactionEmoji: InputParams.EmojiSearch?
         
         /// Return issues only from non-archived projects (by default is `true`).
         /// When `false`, the response returns issues from both archived and non-archived projects.
-        @APIOption(key: "non_archived")
+        @OutputParam(key: "non_archived")
         public var nonArchived: Bool?
         
-        //@APIOption(key: "not") public var not
+        //@OutputParam(key: "not") public var not
         
         /// Set the order of returned issues.
-        @APIOption(key: "order_by")
-        public var orderBy: DataTypes.IssuesOrder?
+        @OutputParam(key: "order_by")
+        public var orderBy: InputParams.IssuesOrder?
         
         /// Return issues for the given scope. Default is `created_by_me`.
-        @APIOption(key: "scope")
-        public var scope: DataTypes.IssuesScope?
+        @OutputParam(key: "scope")
+        public var scope: InputParams.IssuesScope?
         
         /// Search issues against their `title` and `description`.
-        @APIOption(key: "search")
+        @OutputParam(key: "search")
         public var search: String?
         
         /// Return issues sorted in asc or desc order.
-        @APIOption(key: "sort")
-        public var sort: DataTypes.Sort?
+        @OutputParam(key: "sort")
+        public var sort: InputParams.Sort?
         
         /// Return all issues or just those that are opened or closed.
-        @APIOption(key: "state")
-        public var state: DataTypes.IssuesState?
+        @OutputParam(key: "state")
+        public var state: InputParams.IssuesState?
         
         /// Return issues updated on or after the given time.
-        @APIOption(key: "updated_after")
+        @OutputParam(key: "updated_after")
         public var updatedAfter: Date?
         
         /// Return issues updated on or before the given time.
-        @APIOption(key: "updated_before")
+        @OutputParam(key: "updated_before")
         public var updatedBefore: Date?
         
         /// Return issues with the specified weight.
-        @APIOption(key: "weight")
-        public var weight: DataTypes.IssuesWeight?
+        @OutputParam(key: "weight")
+        public var weight: InputParams.IssuesWeight?
         
         /// If `true`, the response returns more details for each label in labels field.
-        @APIOption(key: "with_labels_details")
+        @OutputParam(key: "with_labels_details")
         public var withLabelsDetails: Bool?
         
         // MARK: - Initialization

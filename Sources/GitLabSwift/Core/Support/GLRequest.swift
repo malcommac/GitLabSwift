@@ -13,7 +13,8 @@
 import Foundation
 import RealHTTP
 
-public class GitLabRequest: APIRequestsURLConvertible {
+/// Represent a single request to GitLab APIs service.
+public class GLRequest: APIRequestsURLConvertible {
     
     // MARK: - Public Properties
 
@@ -21,7 +22,7 @@ public class GitLabRequest: APIRequestsURLConvertible {
     public var httpMethod: HTTPMethod
     
     /// Endpoint for the call.
-    public var endpoint: EndpointConvertible
+    public var endpoint: GLEndpoint
 
     // MARK: - Private Properties
     
@@ -40,7 +41,9 @@ public class GitLabRequest: APIRequestsURLConvertible {
     ///   - method: http method to use, default is `get`.
     ///   - endpoint: endpoint of the call.
     ///   - options: api options object.
-    public init(_ method: HTTPMethod = .get, endpoint: EndpointConvertible, options: OptionsConvertible = APIOptionsCollection()) {
+    public init(_ method: HTTPMethod = .get,
+                endpoint: GLEndpoint,
+                options: OptionsConvertible = OutputParamsCollection()) {
         self.httpMethod = method
         self.options = options
         self.endpoint = endpoint
@@ -67,7 +70,7 @@ public class GitLabRequest: APIRequestsURLConvertible {
         let fullURL = gitlab.config.baseURL.absoluteString.appending(fullPath)
 
         // Values not used to compose the URI template will be used as query items.
-        let URIUsedVariables = Set(GitLabRequest.urlTemplateCaptureRegEx.regExGroups(endpoint.value))
+        let URIUsedVariables = Set(GLRequest.urlTemplateCaptureRegEx.regExGroups(endpoint.value))
         let queryURLVariables: [URLQueryItem] = allVariables.filter {
             URIUsedVariables.contains($0.name) == false
         }
@@ -90,4 +93,14 @@ public class GitLabRequest: APIRequestsURLConvertible {
         }
     }
     
+}
+
+// MARK: - GLEndpoint0
+
+public protocol GLEndpoint {
+    
+    /// The raw endpoint path. It may contains variable for parameters
+    /// expressed as `{variable_name}`.
+    var value: String { get }
+
 }

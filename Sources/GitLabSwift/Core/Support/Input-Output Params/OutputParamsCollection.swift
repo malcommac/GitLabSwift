@@ -18,15 +18,15 @@ import RealHTTP
 /// This class represent a collection of API options to define the behaviour of a call.
 /// You can use this class to send custom variables set or create a subclass to have
 /// a typed class with options for a specific call.
-public class APIOptionsCollection: OptionsConvertible {
+public class OutputParamsCollection: OptionsConvertible {
     
     // MARK: - Pagination Options
     
     /// Results per page in response. When not specified `20` is used.
-    @APIOption(key: "per_page") public var perPage: Int?
+    @OutputParam(key: "per_page") public var perPage: Int?
     
     /// Current page number.
-    @APIOption(key: "page") public var page: Int?
+    @OutputParam(key: "page") public var page: Int?
     
     /// Any other custom variable not declared by the options class.
     public var customOptions: [APIParameterURLConvertible]

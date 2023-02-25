@@ -12,6 +12,27 @@
 
 import Foundation
 
+// MARK: - Repositories + URLs
+
+extension APIService.Repositories {
+    
+    fileprivate enum URLs: String, GLEndpoint {
+        case tree = "/projects/{id}/repository/tree"
+        case blob = "/projects/{id}/repository/blobs/{sha}"
+        case blob_raw = "/projects/{id}/repository/blobs/{sha}/raw"
+        case archive = "/projects/{id}/repository/archive{format}"
+        case compare = "/projects/{id}/repository/compare"
+        case contributors = "/projects/{id}/repository/contributors"
+        case merge_base = "/projects/{id}/repository/merge_base"
+        case changelog = "/projects/{id}/repository/changelog"
+
+        public var value: String { rawValue }
+    }
+    
+}
+
+// MARK: - Repositories + APIs
+
 extension APIService {
     
     /// Repositories API
@@ -27,10 +48,10 @@ extension APIService {
         ///   - project: The ID or URL-encoded path of the project owned by the authenticated user.
         ///   - options: configuration callback.
         /// - Returns: list of files and folders
-        public func list(project: DataTypes.ProjectID,
-                         options: ((ListOptions) -> Void)? = nil) async throws -> GitLabResponse<[Model.Repository.Tree]> {
+        public func list(project: InputParams.ProjectID,
+                         options: ((ListOptions) -> Void)? = nil) async throws -> GLResponse<[Model.Repository.Tree]> {
             let options = ListOptions(project: project, options)
-            return try await gitlab.execute(.init(endpoint: Endpoints.Repositories.tree, options: options))
+            return try await gitlab.execute(.init(endpoint: URLs.tree, options: options))
         }
         
         /// Allows you to receive information, such as size and content, about blobs in a repository.
@@ -43,12 +64,12 @@ extension APIService {
         ///   - project: The ID or URL-encoded path of the project owned by the authenticated user.
         /// - Returns: generic response
         public func blob(sha: String,
-                         project: DataTypes.ProjectID) async throws -> GitLabResponse<Model.NoResponse> {
-            let options = APIOptionsCollection([
-                APIOption(key: "id", project),
-                APIOption(key: "sha", sha)
+                         project: InputParams.ProjectID) async throws -> GLResponse<Model.NoResponse> {
+            let options = OutputParamsCollection([
+                OutputParam(key: "id", project),
+                OutputParam(key: "sha", sha)
             ])
-            return try await gitlab.execute(.init(endpoint: Endpoints.Repositories.blob, options: options))
+            return try await gitlab.execute(.init(endpoint: URLs.blob, options: options))
         }
         
         /// Get the raw file contents for a blob, by blob SHA.
@@ -60,12 +81,12 @@ extension APIService {
         ///   - project: The ID or URL-encoded path of the project owned by the authenticated user.
         /// - Returns: generic response
         public func blobRaw(sha: String,
-                            project: DataTypes.ProjectID) async throws -> GitLabResponse<Model.NoResponse> {
-            let options = APIOptionsCollection([
-                APIOption(key: "id", project),
-                APIOption(key: "sha", sha)
+                            project: InputParams.ProjectID) async throws -> GLResponse<Model.NoResponse> {
+            let options = OutputParamsCollection([
+                OutputParam(key: "id", project),
+                OutputParam(key: "sha", sha)
             ])
-            return try await gitlab.execute(.init(endpoint: Endpoints.Repositories.blobRaw, options: options))
+            return try await gitlab.execute(.init(endpoint: URLs.blob_raw, options: options))
         }
         
         /// Get an archive of the repository.
@@ -78,16 +99,16 @@ extension APIService {
         ///   - sha: The commit SHA to download.
         ///   - format: The commit SHA to download.
         /// - Returns: generic response
-        public func fileArchive(project: DataTypes.ProjectID,
+        public func fileArchive(project: InputParams.ProjectID,
                                 path: String? = nil,
                                 sha: String? = nil,
-                                format: DataTypes.ArchiveFormat = .zip) async throws -> GitLabResponse<Model.NoResponse> {
-            let options = APIOptionsCollection([
-                APIOption(key: "id", project),
-                APIOption(key: "sha", sha),
-                APIOption(key: "path", path)
+                                format: InputParams.ArchiveFormat = .zip) async throws -> GLResponse<Model.NoResponse> {
+            let options = OutputParamsCollection([
+                OutputParam(key: "id", project),
+                OutputParam(key: "sha", sha),
+                OutputParam(key: "path", path)
             ])
-            return try await gitlab.execute(.init(endpoint: Endpoints.Repositories.archive, options: options))
+            return try await gitlab.execute(.init(endpoint: URLs.archive, options: options))
         }
         
         /// Compare branches, tags or commits.
@@ -105,19 +126,19 @@ extension APIService {
         ///               - `false` to compare using merge base `(from…to)`’.
         ///               Default is `false`.
         /// - Returns: diff
-        public func compare(project: DataTypes.ProjectID,
+        public func compare(project: InputParams.ProjectID,
                             fromSha: String,
                             toProject compareProject: Int? = nil,
                             toSha: String,
-                            straight: Bool? = nil) async throws -> GitLabResponse<Model.ShaCompareResult> {
-            let options = APIOptionsCollection([
-                APIOption(key: "id", project),
-                APIOption(key: "from", fromSha),
-                APIOption(key: "to", toSha),
-                APIOption(key: "from_project_id", compareProject),
-                APIOption(key: "straight", straight)
+                            straight: Bool? = nil) async throws -> GLResponse<Model.ShaCompareResult> {
+            let options = OutputParamsCollection([
+                OutputParam(key: "id", project),
+                OutputParam(key: "from", fromSha),
+                OutputParam(key: "to", toSha),
+                OutputParam(key: "from_project_id", compareProject),
+                OutputParam(key: "straight", straight)
             ])
-            return try await gitlab.execute(.init(endpoint: Endpoints.Repositories.compare, options: options))
+            return try await gitlab.execute(.init(endpoint: URLs.compare, options: options))
         }
         
         /// Get repository contributors list.
@@ -129,15 +150,15 @@ extension APIService {
         ///   - orderBy: Return contributors ordered by `name`, `email`, or `commits` (orders by commit date) fields.
         ///   - sort: Return contributors sorted.
         /// - Returns: list of contributors
-        public func contributors(project: DataTypes.ProjectID,
-                                 orderBy: DataTypes.ContributorsOrder? = nil,
-                                 sort: DataTypes.Sort? = nil) async throws -> GitLabResponse<[Model.Contributor]> {
-            let options = APIOptionsCollection([
-                APIOption(key: "id", project),
-                APIOption(key: "order_by", orderBy),
-                APIOption(key: "sort", sort)
+        public func contributors(project: InputParams.ProjectID,
+                                 orderBy: InputParams.ContributorsOrder? = nil,
+                                 sort: InputParams.Sort? = nil) async throws -> GLResponse<[Model.Contributor]> {
+            let options = OutputParamsCollection([
+                OutputParam(key: "id", project),
+                OutputParam(key: "order_by", orderBy),
+                OutputParam(key: "sort", sort)
             ])
-            return try await gitlab.execute(.init(endpoint: Endpoints.Repositories.contributors, options: options))
+            return try await gitlab.execute(.init(endpoint: URLs.contributors, options: options))
         }
         
         /// Get the common ancestor for 2 or more refs, such as commit SHAs, branch names, or tags.
@@ -148,13 +169,13 @@ extension APIService {
         ///   - project: The ID or URL-encoded path of the project.
         ///   - refs: The refs to find the common ancestor of. Accepts multiple refs.
         /// - Returns: common ancestor info
-        public func mergeBase(project: DataTypes.ProjectID,
-                              refs: [String]) async throws -> GitLabResponse<Model.CommonAncestor> {
-            let options = APIOptionsCollection([
-                APIOption(key: "id", project),
-                APIOption(key: "refs", refs)
+        public func mergeBase(project: InputParams.ProjectID,
+                              refs: [String]) async throws -> GLResponse<Model.CommonAncestor> {
+            let options = OutputParamsCollection([
+                OutputParam(key: "id", project),
+                OutputParam(key: "refs", refs)
             ])
-            return try await gitlab.execute(.init(endpoint: Endpoints.Repositories.mergeBase, options: options))
+            return try await gitlab.execute(.init(endpoint: URLs.merge_base, options: options))
         }
         
         /// Generate changelog data based on commits in a repository.
@@ -164,10 +185,10 @@ extension APIService {
         ///   - project: Referenced project.
         ///   - options: Configuration callback.
         public func addChangelog(version: String,
-                                 project: DataTypes.ProjectID,
-                                 options: ((ChangelogOptions) -> Void)? = nil) async throws -> GitLabResponse<Model.NoResponse> {
+                                 project: InputParams.ProjectID,
+                                 options: ((ChangelogOptions) -> Void)? = nil) async throws -> GLResponse<Model.NoResponse> {
             let options = ChangelogOptions(version: version, project: project, options)
-            return try await gitlab.execute(.init(.post, endpoint: Endpoints.Repositories.changelog, options: options))
+            return try await gitlab.execute(.init(.post, endpoint: URLs.changelog, options: options))
         }
         
         /// Generate changelog data based on commits in a repository, without committing them to a changelog file.
@@ -183,10 +204,10 @@ extension APIService {
         ///   - callback: configuration callback.
         /// - Returns: changelog.
         public func generateChangelog(version: String,
-                               project: DataTypes.ProjectID,
-                               options: ((NewChangelogOptions) -> Void)? = nil) async throws -> GitLabResponse<Model.Changelog> {
+                               project: InputParams.ProjectID,
+                               options: ((NewChangelogOptions) -> Void)? = nil) async throws -> GLResponse<Model.Changelog> {
             let options = NewChangelogOptions(version: version, project: project, options)
-            return try await gitlab.execute(.init(.post, endpoint: Endpoints.Repositories.changelog, options: options))
+            return try await gitlab.execute(.init(.post, endpoint: URLs.changelog, options: options))
         }
         
     }

@@ -14,37 +14,37 @@ import Foundation
 
 extension APIService.Labels {
     
-    public class EditOptions: APIOptionsCollection {
+    public class EditOptions: OutputParamsCollection {
         
         /// The ID or URL-encoded path of the project owned by the authenticated user
-        @APIOption(key: "id")
-        public var project: DataTypes.ProjectID?
+        @OutputParam(key: "id")
+        public var project: InputParams.ProjectID?
 
         /// The ID or title of a group’s label.
-        @APIOption(key: "label_id")
+        @OutputParam(key: "label_id")
         public var label: String?
         
         /// The new name of the label (required if color is not provided).
-        @APIOption(key: "new_name")
+        @OutputParam(key: "new_name")
         public var newName: String?
         
         /// The color of the label given in 6-digit hex notation with leading ‘#’ sign
         /// (for example, #FFAABB) or one of the CSS color names.
         /// (Required if `newName` is not provided).
-        @APIOption(key: "color")
+        @OutputParam(key: "color")
         public var color: String?
         
         /// The description of the label
-        @APIOption(key: "description")
+        @OutputParam(key: "description")
         public var description: String?
 
         /// The priority of the label. Must be greater or equal
         /// than zero or null to remove the priority.
-        @APIOption(key: "priority")
+        @OutputParam(key: "priority")
         public var priority: Int?
 
         public init(label: String,
-                    project: DataTypes.ProjectID,
+                    project: InputParams.ProjectID,
                     _ configure: ((EditOptions) -> Void)?) {
             super.init()
             configure?(self)
@@ -54,33 +54,33 @@ extension APIService.Labels {
         
     }
     
-    public class CreateOptions: APIOptionsCollection {
+    public class CreateOptions: OutputParamsCollection {
         
         /// The ID or URL-encoded path of the project owned by the authenticated user
-        @APIOption(key: "id")
-        public var project: DataTypes.ProjectID?
+        @OutputParam(key: "id")
+        public var project: InputParams.ProjectID?
 
         /// The name of the label.
-        @APIOption(key: "name")
+        @OutputParam(key: "name")
         public var name: String?
         
         /// The color of the label given in 6-digit hex notation with leading ‘#’ sign
         /// (for example, #FFAABB) or one of the CSS color names.
-        @APIOption(key: "color")
+        @OutputParam(key: "color")
         public var color: String?
         
         /// The description of the label
-        @APIOption(key: "description")
+        @OutputParam(key: "description")
         public var description: String?
 
         /// The priority of the label. Must be greater or equal
         /// than zero or null to remove the priority.
-        @APIOption(key: "priority")
+        @OutputParam(key: "priority")
         public var priority: Int?
 
         public init(name: String,
                     color: String,
-                    project: DataTypes.ProjectID,
+                    project: InputParams.ProjectID,
                     _ configure: ((CreateOptions) -> Void)?) {
             super.init()
             configure?(self)
@@ -91,26 +91,28 @@ extension APIService.Labels {
         
     }
     
-    public class ListOptions: APIOptionsCollection {
+    public class ListOptions: OutputParamsCollection {
         
         /// The ID or URL-encoded path of the project owned by the authenticated user
-        @APIOption(key: "id")
-        public var project: DataTypes.ProjectID?
+        @OutputParam(key: "id")
+        public var project: InputParams.ProjectID?
 
         /// Whether or not to include issue and merge request counts.
-        @APIOption(key: "with_counts")
+        @OutputParam(key: "with_counts")
         public var withCounts: Bool?
         
         /// Include ancestor groups.
-        @APIOption(key: "include_ancestor_groups")
+        @OutputParam(key: "include_ancestor_groups")
         public var ancestorGroups: Bool?
         
         /// Keyword to filter labels by.
-        @APIOption(key: "search")
+        @OutputParam(key: "search")
         public var search: String?
 
-        public init(_ configure: ((ListOptions) -> Void)?) {
+        public init(project: InputParams.ProjectID,
+                    _ configure: ((ListOptions) -> Void)?) {
             super.init()
+            self.project = project
             configure?(self)
         }
         

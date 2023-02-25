@@ -17,15 +17,15 @@ extension APIService.ProjectMilestones {
     public class EditOptions: CreateOptions {
         
         /// The ID of the project’s milestone.
-        @APIOption(key: "milestone_id", location: .parameterInQueryURL)
+        @OutputParam(key: "milestone_id", location: .parameterInQueryURL)
         public var milestone: String?
         
         /// The state event of the milestone (`close` or `activate`).
-        @APIOption(key: "state_event")
-        public var stateEvent: DataTypes.MilestoneEditState?
+        @OutputParam(key: "state_event")
+        public var stateEvent: InputParams.MilestoneEditState?
      
         public init(milestone: String,
-                    project: DataTypes.ProjectID,
+                    project: InputParams.ProjectID,
                     _ configure: ((EditOptions) -> Void)?) {
             super.init(project: project, nil)
             self.milestone = milestone
@@ -34,29 +34,29 @@ extension APIService.ProjectMilestones {
         
     }
         
-    public class CreateOptions: APIOptionsCollection {
+    public class CreateOptions: OutputParamsCollection {
         
         /// The ID or URL-encoded path of the project.
-        @APIOption(key: "id")
-        public var project: DataTypes.ProjectID?
+        @OutputParam(key: "id")
+        public var project: InputParams.ProjectID?
         
         /// The title of a milestone.
-        @APIOption(key: "title")
+        @OutputParam(key: "title")
         public var title: String?
         
         /// The description of the milestone.
-        @APIOption(key: "description")
+        @OutputParam(key: "description")
         public var description: String?
         
         /// The due date of the milestone (YYYYMMDD).
-        @APIOption(key: "start_date")
-        public var startDate: DataTypes.DateOnly?
+        @OutputParam(key: "start_date")
+        public var startDate: InputParams.DateOnly?
         
         /// The start date of the milestone (YYYYMMDD)
-        @APIOption(key: "due_date")
-        public var dueDate: DataTypes.DateOnly?
+        @OutputParam(key: "due_date")
+        public var dueDate: InputParams.DateOnly?
      
-        public init(project: DataTypes.ProjectID,
+        public init(project: InputParams.ProjectID,
                     title: String? = nil,
                     _ configure: ((CreateOptions) -> Void)?) {
             super.init()
@@ -67,33 +67,33 @@ extension APIService.ProjectMilestones {
         
     }
     
-    public class ListOptions: APIOptionsCollection {
+    public class ListOptions: OutputParamsCollection {
         
         /// The ID or URL-encoded path of the project.
-        @APIOption(key: "id")
-        public var project: DataTypes.ProjectID?
+        @OutputParam(key: "id")
+        public var project: InputParams.ProjectID?
         
         /// Return only the milestones having the given iid.
-        @APIOption(key: "iids")
+        @OutputParam(key: "iids")
         public var iids: [Int]?
         
         /// Return only active or closed milestones.
-        @APIOption(key: "state")
-        public var state: DataTypes.MilestoneState?
+        @OutputParam(key: "state")
+        public var state: InputParams.MilestoneState?
         
         /// Return only the milestones having the given title.
-        @APIOption(key: "title")
+        @OutputParam(key: "title")
         public var title: String?
         
         /// Return only milestones with a title or description matching the provided string.
-        @APIOption(key: "search")
+        @OutputParam(key: "search")
         public var search: String?
         
         /// Include group milestones from parent group and its ancestors.
-        @APIOption(key: "include_parent_milestones")
+        @OutputParam(key: "include_parent_milestones")
         public var includeParent: Bool?
         
-        public init(project: DataTypes.ProjectID,
+        public init(project: InputParams.ProjectID,
                     _ configure: ((ListOptions) -> Void)?) {
             super.init()
             self.project = project

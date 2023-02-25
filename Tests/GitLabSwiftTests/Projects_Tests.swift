@@ -50,7 +50,7 @@ final class GitLabSwift_ProjectsTests: XCTestCase {
                 return
             }
 
-            let response = try await gitlab.projects.get( .id(anyProject.id))
+            let response = try await gitlab.projects.get(project: .id(anyProject.id))
             let foundProject = try response.model()
             XCTAssertNotNil(foundProject?.id)
             print("Searching for project info with id \(anyProject.id): \(foundProject!.name)")
@@ -61,7 +61,7 @@ final class GitLabSwift_ProjectsTests: XCTestCase {
     public func test_ownedProjects() async throws {
         let result = await catchErrors {
             let meUser = try await gitlab.users.me().model()
-            let response = try await gitlab.projects.usersProjects(meUser!.id, {
+            let response = try await gitlab.projects.listUsersProjects(meUser!.id, {
                 $0.sort = .desc
                 $0.statistics = true
             })
@@ -79,7 +79,7 @@ final class GitLabSwift_ProjectsTests: XCTestCase {
     public func test_starredProjects() async throws {
         let result = await catchErrors {
             let meUser = try await gitlab.users.me().model()
-            let response = try await gitlab.projects.userStarred(meUser!.id)
+            let response = try await gitlab.projects.listUserStarredProjects(meUser!.id)
             print("\(meUser!.username) starred \(response.totalItems ?? 0) projects")
             if (response.totalItems ?? 0) > 0 {
                 let starredProject = try response.model()?.randomElement()
@@ -110,7 +110,7 @@ final class GitLabSwift_ProjectsTests: XCTestCase {
     
     public func test_searchProjects() async throws {
         let result = await catchErrors {
-            let response = try await gitlab.projects.list({
+            let response = try await gitlab.projects.list(options: {
                 $0.orderBy = .id
                 $0.statistics = true
                 $0.sort = .desc
@@ -126,7 +126,7 @@ final class GitLabSwift_ProjectsTests: XCTestCase {
     
     public func test_starrersOfProject() async throws {
         let result = await catchErrors {
-            let response = try await gitlab.projects.starrers(project: .id(anyProject.id))
+            let response = try await gitlab.projects.starrersOfProject(.id(anyProject.id))
             print("Found \(response.totalItems ?? 0) users who starred project \(anyProject.id)")
         }
         XCTAssertTrue(result)
@@ -134,18 +134,9 @@ final class GitLabSwift_ProjectsTests: XCTestCase {
     
     public func test_languagesOfProject() async throws {
         let result = await catchErrors {
-            let response = try await gitlab.projects.languages(id: .id(1097))
+            let response = try await gitlab.projects.languagesOfProject(.id(1097))
             let result = try response.model()
             XCTAssertNotNil(result)
-        }
-        XCTAssertTrue(result)
-    }
-    
-    public func test_uploadFile() async throws {
-        let result = await catchErrors {
-            let path = "/Users/daniele/Desktop/create_milestone.json"
-            let response = try await gitlab.projects.uploadFile(id: .id(2008), filePath: path)
-            response.writeRawResponse("upload_file")
         }
         XCTAssertTrue(result)
     }
