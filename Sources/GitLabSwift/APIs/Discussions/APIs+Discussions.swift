@@ -77,7 +77,7 @@ extension APIService {
         ///   - project: The ID or URL-encoded path of the project.
         /// - Returns: array of `Models.Discussion`.
         public func list(issue: Int,
-                         project: InputParams.ProjectID) async throws -> GLResponse<[Model.Discussion]> {
+                         project: InputParams.Project) async throws -> GLResponse<[GLModel.Discussion]> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", project),
                 OutputParam(key: "issue_iid", issue)
@@ -96,7 +96,7 @@ extension APIService {
         /// - Returns: a single discussion.
         public func get(discussion: String,
                         issue: Int,
-                        project: InputParams.ProjectID) async throws -> GLResponse<Model.Discussion> {
+                        project: InputParams.Project) async throws -> GLResponse<GLModel.Discussion> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", project),
                 OutputParam(key: "issue_iid", issue),
@@ -119,7 +119,7 @@ extension APIService {
         public func create(issue: Int,
                            body: String,
                            createdAt: Date? = nil,
-                           project: InputParams.ProjectID) async throws -> GLResponse<Model.Discussion> {
+                           project: InputParams.Project) async throws -> GLResponse<GLModel.Discussion> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", project),
                 OutputParam(key: "issue_iid", issue),
@@ -148,7 +148,7 @@ extension APIService {
                             note: Int,
                             discussion: Int,
                             issue: Int,
-                            project: InputParams.ProjectID) async throws -> GLResponse<Model.Discussion> {
+                            project: InputParams.Project) async throws -> GLResponse<GLModel.Discussion> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", project),
                 OutputParam(key: "issue_iid", issue),
@@ -175,7 +175,7 @@ extension APIService {
                                note: Int,
                                discussion: Int,
                                issue: Int,
-                               project: InputParams.ProjectID) async throws -> GLResponse<Model.Discussion> {
+                               project: InputParams.Project) async throws -> GLResponse<GLModel.Discussion> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", project),
                 OutputParam(key: "issue_iid", issue),
@@ -199,7 +199,7 @@ extension APIService {
         public func deleteNote(note: Int,
                                discussion: Int,
                                issue: Int,
-                               project: InputParams.ProjectID) async throws -> GLResponse<Model.NoResponse> {
+                               project: InputParams.Project) async throws -> GLResponse<GLModel.NoResponse> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", project),
                 OutputParam(key: "issue_iid", issue),
@@ -221,7 +221,7 @@ extension APIService {
         ///   - project: The ID or URL-encoded path of the project.
         /// - Returns: discussions
         public func list(snippet: Int,
-                         project: InputParams.ProjectID) async throws -> GLResponse<[Model.Discussion]> {
+                         project: InputParams.Project) async throws -> GLResponse<[GLModel.Discussion]> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", project),
                 OutputParam(key: "snippet_id", snippet)
@@ -240,7 +240,7 @@ extension APIService {
         /// - Returns: discussion
         public func get(snippet: Int,
                         discussion: Int,
-                        project: InputParams.ProjectID) async throws -> GLResponse<Model.Discussion> {
+                        project: InputParams.Project) async throws -> GLResponse<GLModel.Discussion> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", project),
                 OutputParam(key: "snippet_id", snippet),
@@ -262,7 +262,7 @@ extension APIService {
         public func createSnippet(body: String,
                                   date: Date? = nil,
                                   snippet: Int,
-                                  project: InputParams.ProjectID) async throws -> GLResponse<Model.Discussion> {
+                                  project: InputParams.Project) async throws -> GLResponse<GLModel.Discussion> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", project),
                 OutputParam(key: "snippet_id", snippet),
@@ -286,7 +286,7 @@ extension APIService {
         public func addNote(body: String,
                             date: Date? = nil,
                             snippet: InputParams.DiscussionSnippet,
-                            project: InputParams.ProjectID) async throws -> GLResponse<Model.Discussion> {
+                            project: InputParams.Project) async throws -> GLResponse<GLModel.Discussion> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", project),
                 OutputParam(key: "snippet_id", snippet.snippet_id),
@@ -309,7 +309,7 @@ extension APIService {
         /// - Returns: modified snippet.
         public func modifySnippet(body: String,
                                   snippet: InputParams.DiscussionSnippet,
-                                  project: InputParams.ProjectID) async throws -> GLResponse<Model.Discussion> {
+                                  project: InputParams.Project) async throws -> GLResponse<GLModel.Discussion> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", project),
                 OutputParam(key: "snippet_id", snippet.snippet_id),
@@ -329,7 +329,7 @@ extension APIService {
         ///   - project: The ID or URL-encoded path of the project.
         /// - Returns: generic response.
         public func deleteSnippet(_ snippet: InputParams.DiscussionSnippet,
-                                  project: InputParams.ProjectID) async throws -> GLResponse<Model.NoResponse> {
+                                  project: InputParams.Project) async throws -> GLResponse<GLModel.NoResponse> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", project),
                 OutputParam(key: "snippet_id", snippet.snippet_id),
@@ -354,7 +354,7 @@ extension APIService {
         ///   - project: The ID or URL-encoded path of the project.
         /// - Returns: all discussion items for a single merge request.
         public func list(mergeRequest: Int,
-                         project: InputParams.ProjectID) async throws -> GLResponse<[Model.Discussion]> {
+                         project: InputParams.Project) async throws -> GLResponse<[GLModel.Discussion]> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", project),
                 OutputParam(key: "merge_request_iid", mergeRequest)
@@ -373,7 +373,7 @@ extension APIService {
         /// - Returns: single discussion item for a specific project merge request.
         public func get(mergeRequest: Int,
                         discussion: Int,
-                        project: InputParams.ProjectID) async throws -> GLResponse<Model.Discussion> {
+                        project: InputParams.Project) async throws -> GLResponse<GLModel.Discussion> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", project),
                 OutputParam(key: "merge_request_iid", mergeRequest),

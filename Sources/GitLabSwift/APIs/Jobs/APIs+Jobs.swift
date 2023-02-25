@@ -53,8 +53,8 @@ extension APIService {
         ///   - project: ID or URL-encoded path of the project owned by the authenticated user.
         ///   - scopes: Scope(s) of jobs to show.
         /// - Returns: jobs list
-        public func list(project: InputParams.ProjectID,
-                         scopes: [InputParams.JobScope]) async throws -> GLResponse<[Model.Job]> {
+        public func list(project: InputParams.Project,
+                         scopes: [InputParams.JobScope]) async throws -> GLResponse<[GLModel.Job]> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", project),
                 OutputParam(key: "scope", scopes)
@@ -74,9 +74,9 @@ extension APIService {
         ///   - includeRetried: Include retried jobs in the response.
         /// - Returns: jobs.
         public func list(pipeline: Int,
-                         project: InputParams.ProjectID,
+                         project: InputParams.Project,
                          scopes: [InputParams.JobScope],
-                         includeRetried: Bool? = nil) async throws -> GLResponse<[Model.Job]> {
+                         includeRetried: Bool? = nil) async throws -> GLResponse<[GLModel.Job]> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", project),
                 OutputParam(key: "pipeline_id", pipeline),
@@ -94,7 +94,7 @@ extension APIService {
         ///   - project: ID or URL-encoded path of the project owned by the authenticated user.
         /// - Returns: job
         public func get(job: Int,
-                        project: InputParams.ProjectID) async throws -> GLResponse<Model.Job> {
+                        project: InputParams.Project) async throws -> GLResponse<GLModel.Job> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", project),
                 OutputParam(key: "job_id", job)
@@ -111,7 +111,7 @@ extension APIService {
         ///   - project: ID or URL-encoded path of the project owned by the authenticated user.
         /// - Returns: cancelled job
         public func cancel(job: Int,
-                           project: InputParams.ProjectID) async throws -> GLResponse<Model.Job> {
+                           project: InputParams.Project) async throws -> GLResponse<GLModel.Job> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", project),
                 OutputParam(key: "job_id", job)
@@ -128,7 +128,7 @@ extension APIService {
         ///   - project: ID or URL-encoded path of the project owned by the authenticated user.
         /// - Returns: retried job
         public func retry(job: Int,
-                          project: InputParams.ProjectID) async throws -> GLResponse<Model.Job> {
+                          project: InputParams.Project) async throws -> GLResponse<GLModel.Job> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", project),
                 OutputParam(key: "job_id", job)
@@ -144,7 +144,7 @@ extension APIService {
         ///   - project: ID or URL-encoded path of the project owned by the authenticated user.
         /// - Returns: erased job
         public func erase(job: Int,
-                          project: InputParams.ProjectID) async throws -> GLResponse<Model.Job> {
+                          project: InputParams.Project) async throws -> GLResponse<GLModel.Job> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", project),
                 OutputParam(key: "job_id", job)
@@ -160,7 +160,7 @@ extension APIService {
         ///   - project: ID or URL-encoded path of the project owned by the authenticated user.
         /// - Returns: runned job
         public func run(job: Int,
-                        project: InputParams.ProjectID) async throws -> GLResponse<Model.Job> {
+                        project: InputParams.Project) async throws -> GLResponse<GLModel.Job> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", project),
                 OutputParam(key: "job_id", job)

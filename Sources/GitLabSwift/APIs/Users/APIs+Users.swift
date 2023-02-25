@@ -95,7 +95,7 @@ extension APIService {
         ///
         /// - Parameter options: configuration callback.
         /// - Returns: found users.
-        public func search(options: @escaping ((SearchOptions) -> Void)) async throws -> GLResponse<[Model.User]> {
+        public func search(options: @escaping ((SearchOptions) -> Void)) async throws -> GLResponse<[GLModel.User]> {
             let options = SearchOptions(options)
             return try await gitlab.execute(.init(endpoint: URLs.users, options: options))
         }
@@ -104,7 +104,7 @@ extension APIService {
         ///
         /// - Parameter id: id of the user.
         /// - Returns: found user, if any.
-        public func user(_ id: Int) async throws -> GLResponse<Model.User> {
+        public func user(_ id: Int) async throws -> GLResponse<GLModel.User> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", id)
             ])
@@ -114,7 +114,7 @@ extension APIService {
         /// Get the currently authenticated user.
         ///
         /// - Returns: this user.
-        public func me() async throws -> GLResponse<Model.User> {
+        public func me() async throws -> GLResponse<GLModel.User> {
             return try await gitlab.execute(.init(endpoint: URLs.user))
         }
         

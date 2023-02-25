@@ -19,7 +19,7 @@ extension APIService.ProtectedBranches {
         
         /// The ID or URL-encoded path of the project.
         @OutputParam(key: "id")
-        public var project: InputParams.ProjectID?
+        public var project: InputParams.Project?
         
         /// The name of the branch or wildcard
         @OutputParam(key: "name")
@@ -66,7 +66,7 @@ extension APIService.ProtectedBranches {
         // MARK: - Initialization
         
         public init(name: String,
-                    project: InputParams.ProjectID,
+                    project: InputParams.Project,
                     _ configure: ((ProtectBranchOptions) -> Void)?) {
             super.init()
             self.name = name
@@ -80,7 +80,7 @@ extension APIService.ProtectedBranches {
      
         /// The ID or URL-encoded path of the project.
         @OutputParam(key: "id")
-        public var project: InputParams.ProjectID?
+        public var project: InputParams.Project?
         
         /// The name of the branch or wildcard
         @OutputParam(key: "name")
@@ -113,7 +113,7 @@ extension APIService.ProtectedBranches {
         public var codeOwnerApprovalRequired: Bool?
         
         public init(name: String,
-                    project: InputParams.ProjectID,
+                    project: InputParams.Project,
                     _ configure: ((UpdateBranchOptions) -> Void)?) {
             super.init()
             self.name = name

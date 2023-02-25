@@ -48,7 +48,7 @@ extension APIService {
         ///   - options: configuration callback.
         /// - Returns: milestones.
         public func list(group: Int,
-                         options: ((ListOptions) -> Void)? = nil) async throws -> GLResponse<[Model.Milestone]> {
+                         options: ((ListOptions) -> Void)? = nil) async throws -> GLResponse<[GLModel.Milestone]> {
             let options = ListOptions(group: group, options)
             return try await gitlab.execute(.init(endpoint: URLs.list, options: options))
         }
@@ -62,7 +62,7 @@ extension APIService {
         ///   - group: The ID of the group milestone
         /// - Returns: milestone
         public func get(milestone: Int,
-                        group: Int) async throws -> GLResponse<Model.Milestone> {
+                        group: Int) async throws -> GLResponse<GLModel.Milestone> {
             let options = OutputParamsCollection([
                 OutputParam(key: "milestone_id", milestone),
                 OutputParam(key: "id", group)
@@ -85,7 +85,7 @@ extension APIService {
                            description: String? = nil,
                            due: Date? = nil,
                            start: Date? = nil,
-                           group: Int) async throws -> GLResponse<Model.Milestone> {
+                           group: Int) async throws -> GLResponse<GLModel.Milestone> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", group),
                 OutputParam(key: "title", title),
@@ -115,7 +115,7 @@ extension APIService {
                          description: String? = nil,
                          due: Date? = nil,
                          start: Date? = nil,
-                         state: InputParams.MilestoneState? = nil) async throws -> GLResponse<Model.Milestone> {
+                         state: InputParams.MilestoneState? = nil) async throws -> GLResponse<GLModel.Milestone> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", group),
                 OutputParam(key: "milestone_id", milestone),
@@ -137,7 +137,7 @@ extension APIService {
         ///   - group: The ID or URL-encoded path of the group owned by the authenticated user
         /// - Returns: no response
         public func delete(milestone: Int,
-                           group: Int) async throws -> GLResponse<Model.NoResponse> {
+                           group: Int) async throws -> GLResponse<GLModel.NoResponse> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", group),
                 OutputParam(key: "milestone_id", milestone)
@@ -154,7 +154,7 @@ extension APIService {
         ///   - project: The ID or URL-encoded path of the group owned by the authenticated user.
         /// - Returns: issues of the milestone (note: it doesn’t return issues from any subgroups)
         public func issuesAssignedTo(milestone: Int,
-                                     group: Int) async throws -> GLResponse<[Model.Issue]> {
+                                     group: Int) async throws -> GLResponse<[GLModel.Issue]> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", group),
                 OutputParam(key: "milestone_id", milestone)
@@ -171,7 +171,7 @@ extension APIService {
         ///   - project: The ID or URL-encoded path of the group owned by the authenticated user.
         /// - Returns: list of merge requests.
         public func mergeRequestsAssignedTo(milestone: Int,
-                                            group: Int) async throws -> GLResponse<[Model.MergeRequest]> {
+                                            group: Int) async throws -> GLResponse<[GLModel.MergeRequest]> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", group),
                 OutputParam(key: "milestone_id", milestone)

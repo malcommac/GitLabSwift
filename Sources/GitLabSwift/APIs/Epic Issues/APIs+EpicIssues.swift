@@ -44,7 +44,7 @@ extension APIService {
         ///   - project: The ID or URL-encoded path of the group owned by the authenticated user.
         /// - Returns: list of issues
         public func list(epic: Int,
-                         project: InputParams.ProjectID) async throws -> GLResponse<[Model.Issue]> {
+                         project: InputParams.Project) async throws -> GLResponse<[GLModel.Issue]> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", project),
                 OutputParam(key: "epic_iid", epic)
@@ -64,7 +64,7 @@ extension APIService {
         /// - Returns: the link created
         public func assign(issue: Int,
                            epic: Int,
-                           project: InputParams.ProjectID) async throws -> GLResponse<Model.EpicIssueAssociation> {
+                           project: InputParams.Project) async throws -> GLResponse<GLModel.EpicIssueAssociation> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", project),
                 OutputParam(key: "epic_iid", epic),
@@ -83,7 +83,7 @@ extension APIService {
         /// - Returns: association
         public func removeIssueEpic(association: Int,
                                     epic: Int,
-                                    project: InputParams.ProjectID) async throws -> GLResponse<Model.EpicIssueAssociation> {
+                                    project: InputParams.Project) async throws -> GLResponse<GLModel.EpicIssueAssociation> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", project),
                 OutputParam(key: "epic_iid", epic),
@@ -105,9 +105,9 @@ extension APIService {
         /// - Returns: ordered issues of the epic.
         public func updateIssueEpic(association : Int,
                                     epic: Int,
-                                    project: InputParams.ProjectID,
+                                    project: InputParams.Project,
                                     moveBefore: Int? = nil,
-                                    moveAfter: Int? = nil) async throws -> GLResponse<[Model.Issue]> {
+                                    moveAfter: Int? = nil) async throws -> GLResponse<[GLModel.Issue]> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", project),
                 OutputParam(key: "epic_iid", epic),

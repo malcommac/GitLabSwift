@@ -51,7 +51,7 @@ extension APIService.Issues {
         
         /// The project reference.
         @OutputParam(key: "id")
-        public var project: InputParams.ProjectID?
+        public var project: InputParams.Project?
         
         /// The internal ID of a project’s issue
         @OutputParam(key: "issue_iid")
@@ -84,7 +84,7 @@ extension APIService.Issues {
         // MARK: - Initialization
         
         public init(issue: Int,
-                    project: InputParams.ProjectID,
+                    project: InputParams.Project,
                     _ configure: ((EditOptions) -> Void)?) {
             super.init()
             self.issue = issue
@@ -134,7 +134,7 @@ extension APIService.Issues {
         
         /// The project reference.
         @OutputParam(key: "id")
-        public var project: InputParams.ProjectID?
+        public var project: InputParams.Project?
         
         /// The project reference iid.
         @OutputParam(key: "iid")
@@ -167,7 +167,7 @@ extension APIService.Issues {
         // MARK: - Initialization
         
         public init(title: String,
-                    project: InputParams.ProjectID,
+                    project: InputParams.Project,
                     _ configure: ((CreateOptions) -> Void)?) {
             super.init()
             self.project = project
@@ -181,11 +181,11 @@ extension APIService.Issues {
         
         /// Id of the group.
         @OutputParam(key: "id")
-        public var project: InputParams.ProjectID?
+        public var project: InputParams.Project?
         
         // MARK: - Initialization
         
-        public init(project: InputParams.ProjectID,
+        public init(project: InputParams.Project,
                     _ configure: ((ListProjectOptions) -> Void)?) {
             super.init(nil)
             self.project = project

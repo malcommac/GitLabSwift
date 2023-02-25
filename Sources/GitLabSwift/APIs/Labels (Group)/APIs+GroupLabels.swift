@@ -45,7 +45,7 @@ extension APIService {
         ///   - options: configuration callback.
         /// - Returns: list of labels.
         public func list(group: Int,
-                         options: ((ListOptions) -> Void)? = nil) async throws -> GLResponse<[Model.Label]> {
+                         options: ((ListOptions) -> Void)? = nil) async throws -> GLResponse<[GLModel.Label]> {
             let options = ListOptions(options)
             return try await gitlab.execute(.init(endpoint: URLs.list, options: options))
         }
@@ -61,7 +61,7 @@ extension APIService {
         /// - Returns: label.
         public func get(id: Int,
                         group: Int,
-                        options: ((ListOptions) -> Void)? = nil) async throws -> GLResponse<Model.Label> {
+                        options: ((ListOptions) -> Void)? = nil) async throws -> GLResponse<GLModel.Label> {
             let options = ListOptions(options)
             options.customOptions = [
                 OutputParam(key: "label_id", id),
@@ -83,7 +83,7 @@ extension APIService {
         public func create(name: String,
                            group: Int,
                            color: String,
-                           description: String? = nil) async throws -> GLResponse<Model.Label> {
+                           description: String? = nil) async throws -> GLResponse<GLModel.Label> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", group),
                 OutputParam(key: "name", name),
@@ -109,7 +109,7 @@ extension APIService {
                            group: Int,
                            name: String? = nil,
                            color: String? = nil,
-                           description: String? = nil) async throws -> GLResponse<Model.Label> {
+                           description: String? = nil) async throws -> GLResponse<GLModel.Label> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", group),
                 OutputParam(key: "label_id", id),
@@ -129,7 +129,7 @@ extension APIService {
         ///   - group: The ID or URL-encoded path of the group owned by the authenticated user
         /// - Returns: no response
         public func delete(id: Int,
-                           group: Int) async throws -> GLResponse<Model.NoResponse> {
+                           group: Int) async throws -> GLResponse<GLModel.NoResponse> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", group),
                 OutputParam(key: "label_id", id)
@@ -146,7 +146,7 @@ extension APIService {
         ///   - group: The ID or title of a group’s label.
         /// - Returns: label
         public func subscribe(id: Int,
-                              group: Int) async throws -> GLResponse<Model.Label> {
+                              group: Int) async throws -> GLResponse<GLModel.Label> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", group),
                 OutputParam(key: "label_id", id)
@@ -164,7 +164,7 @@ extension APIService {
         ///   - group: The ID or URL-encoded path of the group owned by the authenticated user
         /// - Returns: label
         public func unsubscribe(id: Int,
-                                group: Int) async throws -> GLResponse<Model.Label> {
+                                group: Int) async throws -> GLResponse<GLModel.Label> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", group),
                 OutputParam(key: "label_id", id)

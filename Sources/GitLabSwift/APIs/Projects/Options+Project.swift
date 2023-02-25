@@ -74,7 +74,7 @@ extension APIService.Projects {
         
         /// The ID or URL-encoded path of the project.
         @OutputParam(key: "id")
-        public var project: InputParams.ProjectID?
+        public var project: InputParams.Project?
         
         /// Limit by archived status.
         @OutputParam(key: "archived")
@@ -133,7 +133,7 @@ extension APIService.Projects {
         @OutputParam(key: "with_merge_requests_enabled")
         public var onlyWithMRsEnabled: Bool?
         
-        public init(project: InputParams.ProjectID,
+        public init(project: InputParams.Project,
                     _ configure: ((ForksSearchOptions) -> Void)?) {
             super.init()
             self.project = project
@@ -146,7 +146,7 @@ extension APIService.Projects {
         
         /// The ID or URL-encoded path of the project.
         @OutputParam(key: "id")
-        public var project: InputParams.ProjectID?
+        public var project: InputParams.Project?
         
         /// The description assigned to the resultant project after forking.
         @OutputParam(key: "description")
@@ -177,7 +177,7 @@ extension APIService.Projects {
         @OutputParam(key: "visibility")
         public var visibility: InputParams.ProjectVisibility?
         
-        public init(project: InputParams.ProjectID,
+        public init(project: InputParams.Project,
                     _ configure: ((ForkOptions) -> Void)?) {
             super.init()
             self.project = project
@@ -189,7 +189,7 @@ extension APIService.Projects {
     
         /// The ID or URL-encoded path of the project.
         @OutputParam(key: "id")
-        public var project: InputParams.ProjectID?
+        public var project: InputParams.Project?
         
         /// Search for specific groups.
         @OutputParam(key: "search")
@@ -211,7 +211,7 @@ extension APIService.Projects {
         @OutputParam(key: "with_shared")
         public var withShared: Bool?
 
-        public init(project: InputParams.ProjectID,
+        public init(project: InputParams.Project,
                     _ configure: ((ProjectGroupsOptions) -> Void)?) {
             super.init()
             self.project = project
@@ -224,7 +224,7 @@ extension APIService.Projects {
     
         /// The ID or URL-encoded path of the project.
         @OutputParam(key: "id")
-        public var project: InputParams.ProjectID?
+        public var project: InputParams.Project?
         
         /// Search for specific users.
         @OutputParam(key: "search")
@@ -234,7 +234,7 @@ extension APIService.Projects {
         @OutputParam(key: "skip_users")
         public var skipUsers: [Int]?
 
-        public init(project: InputParams.ProjectID,
+        public init(project: InputParams.Project,
                     _ configure: ((ProjectUsersOptions) -> Void)?) {
             super.init()
             self.project = project
@@ -248,7 +248,7 @@ extension APIService.Projects {
         
         /// The ID or URL-encoded path of the project.
         @OutputParam(key: "id")
-        public var project: InputParams.ProjectID?
+        public var project: InputParams.Project?
 
         /// Include project license data.
         @OutputParam(key: "license")
@@ -262,7 +262,7 @@ extension APIService.Projects {
         @OutputParam(key: "with_custom_attributes")
         public var withCustomAttributes: Bool?
      
-        public init(project: InputParams.ProjectID,
+        public init(project: InputParams.Project,
                     _ configure: ((SearchProjectOptions) -> Void)?) {
             super.init()
             self.project = project

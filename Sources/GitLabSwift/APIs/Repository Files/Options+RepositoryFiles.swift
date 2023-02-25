@@ -34,7 +34,7 @@ extension APIService.RepositoryFiles {
         
         /// The ID or URL-encoded path of the project owned by the authenticated user.
         @OutputParam(key: "id")
-        public var project: InputParams.ProjectID?
+        public var project: InputParams.Project?
         
         /// The commit author’s email address.
         @OutputParam(key: "author_email")
@@ -60,7 +60,7 @@ extension APIService.RepositoryFiles {
                     commit: String,
                     content: String,
                     filePath: String,
-                    project: InputParams.ProjectID,
+                    project: InputParams.Project,
                     _ configure: ((CreateOptions) -> Void)?) {
             super.init()
             self.project = project

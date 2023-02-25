@@ -20,6 +20,8 @@ public final class GitLab {
     
     /// Configuration used for gitlab service communication.
     public let config: Config
+    
+    // MARK: - APIs Services
 
     public lazy var users: APIService.Users = { .init(gitlab: self) }()
     public lazy var projects: APIService.Projects = { .init(gitlab: self) }()

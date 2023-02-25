@@ -47,10 +47,10 @@ extension APIService {
         ///   - sort: Return tags sorted by value.
         ///   - search: Return list of tags matching the search criteria.
         /// - Returns: tags
-        public func list(project: InputParams.ProjectID,
+        public func list(project: InputParams.Project,
                          order: InputParams.TagsOrder? = nil,
                          sort: InputParams.Sort? = nil,
-                         search: InputParams.Search? = nil) async throws -> GLResponse<[Model.Tag]> {
+                         search: InputParams.Search? = nil) async throws -> GLResponse<[GLModel.Tag]> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", project),
                 OutputParam(key: "order_by", order),
@@ -69,7 +69,7 @@ extension APIService {
         ///   - project: The ID or URL-encoded path of the project owned by the authenticated user
         /// - Returns: found tag
         public func get(name: String,
-                        project: InputParams.ProjectID) async throws -> GLResponse<Model.Tag> {
+                        project: InputParams.Project) async throws -> GLResponse<GLModel.Tag> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", project),
                 OutputParam(key: "tag_name", name)
@@ -89,8 +89,8 @@ extension APIService {
         /// - Returns: new tag
         public func create(name: String,
                            ref: String,
-                           project: InputParams.ProjectID,
-                           message: String? = nil) async throws -> GLResponse<Model.Tag> {
+                           project: InputParams.Project,
+                           message: String? = nil) async throws -> GLResponse<GLModel.Tag> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", project),
                 OutputParam(key: "tag_name", name),
@@ -109,7 +109,7 @@ extension APIService {
         ///   - project: The ID or URL-encoded path of the project owned by the authenticated user
         /// - Returns: no response
         public func delete(name: String,
-                           project: InputParams.ProjectID) async throws -> GLResponse<Model.NoResponse> {
+                           project: InputParams.Project) async throws -> GLResponse<GLModel.NoResponse> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", project),
                 OutputParam(key: "tag_name", name)

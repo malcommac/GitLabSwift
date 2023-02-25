@@ -49,8 +49,8 @@ extension APIService {
         /// - Parameters:
         ///   - project: The ID or URL-encoded path of the project owned by the authenticated user
         ///   - options: configuration callback.
-        public func list(project: InputParams.ProjectID,
-                         options: ((SearchOptions) -> Void)? = nil) async throws -> GLResponse<[Model.Pipeline]> {
+        public func list(project: InputParams.Project,
+                         options: ((SearchOptions) -> Void)? = nil) async throws -> GLResponse<[GLModel.Pipeline]> {
             let options = SearchOptions(project: project, options)
             return try await gitlab.execute(.init(endpoint: URLs.list, options: options))
         }
@@ -64,7 +64,7 @@ extension APIService {
         ///   - project: The ID or URL-encoded path of the project owned by the authenticated user.
         /// - Returns: list of pipelines
         public func get(pipeline: Int,
-                        project: InputParams.ProjectID) async throws -> GLResponse<[Model.Pipeline]> {
+                        project: InputParams.Project) async throws -> GLResponse<[GLModel.Pipeline]> {
             let options = OutputParamsCollection([
                 OutputParam(key: "pipeline_id", pipeline),
                 OutputParam(key: "id", project)
@@ -81,7 +81,7 @@ extension APIService {
         ///   - project: The ID or URL-encoded path of the project owned by the authenticated user.
         /// - Returns: list of variables
         public func variables(pipeline: Int,
-                              project: InputParams.ProjectID) async throws -> GLResponse<[Model.Pipeline.Variable]> {
+                              project: InputParams.Project) async throws -> GLResponse<[GLModel.Pipeline.Variable]> {
             let options = OutputParamsCollection([
                 OutputParam(key: "pipeline_id", pipeline),
                 OutputParam(key: "id", project)
@@ -98,7 +98,7 @@ extension APIService {
         ///   - project: The ID or URL-encoded path of the project owned by the authenticated user.
         /// - Returns: report of the test.
         public func testReport(pipeline: Int,
-                               project: InputParams.ProjectID) async throws -> GLResponse<Model.Pipeline.TestReport> {
+                               project: InputParams.Project) async throws -> GLResponse<GLModel.Pipeline.TestReport> {
             let options = OutputParamsCollection([
                 OutputParam(key: "pipeline_id", pipeline),
                 OutputParam(key: "id", project)
@@ -115,7 +115,7 @@ extension APIService {
         ///   - project: The ID or URL-encoded path of the project owned by the authenticated user.
         /// - Returns: summary
         public func testReportSummary(pipeline: Int,
-                                      project: InputParams.ProjectID) async throws -> GLResponse<Model.Pipeline.TestSummary> {
+                                      project: InputParams.Project) async throws -> GLResponse<GLModel.Pipeline.TestSummary> {
             let options = OutputParamsCollection([
                 OutputParam(key: "pipeline_id", pipeline),
                 OutputParam(key: "id", project)
@@ -132,8 +132,8 @@ extension APIService {
         ///   - ref: The branch or tag to check for the latest pipeline.
         ///          Defaults to the default branch when not specified.
         /// - Returns: pipeline
-        public func latest(project: InputParams.ProjectID,
-                           ref: String? = nil) async throws -> GLResponse<Model.Pipeline> {
+        public func latest(project: InputParams.Project,
+                           ref: String? = nil) async throws -> GLResponse<GLModel.Pipeline> {
             let options = OutputParamsCollection([
                 OutputParam(key: "ref", ref),
                 OutputParam(key: "id", project)
@@ -151,8 +151,8 @@ extension APIService {
         ///   - variables: variables available in the pipeline.
         /// - Returns: new created pipeline
         public func create(ref: String,
-                           project: InputParams.ProjectID,
-                           variables: [[String: Any]]) async throws -> GLResponse<Model.Pipeline> {
+                           project: InputParams.Project,
+                           variables: [[String: Any]]) async throws -> GLResponse<GLModel.Pipeline> {
             let options = OutputParamsCollection([
                 OutputParam(key: "ref", ref),
                 OutputParam(key: "id", project),
@@ -170,7 +170,7 @@ extension APIService {
         ///   - project: The ID or URL-encoded path of the project owned by the authenticated user.
         /// - Returns: retried pipeline
         public func retry(pipeline: Int,
-                          project: InputParams.ProjectID) async throws -> GLResponse<Model.Pipeline> {
+                          project: InputParams.Project) async throws -> GLResponse<GLModel.Pipeline> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", project),
                 OutputParam(key: "pipeline_id", pipeline)
@@ -187,7 +187,7 @@ extension APIService {
         ///   - project: The ID or URL-encoded path of the project owned by the authenticated user.
         /// - Returns: cancelled pipeline
         public func cancel(pipeline: Int,
-                           project: InputParams.ProjectID) async throws -> GLResponse<Model.Pipeline> {
+                           project: InputParams.Project) async throws -> GLResponse<GLModel.Pipeline> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", project),
                 OutputParam(key: "pipeline_id", pipeline)
@@ -206,7 +206,7 @@ extension APIService {
         ///   - project: The ID or URL-encoded path of the project owned by the authenticated user.
         /// - Returns: no response
         public func delete(pipeline: Int,
-                           project: InputParams.ProjectID) async throws -> GLResponse<Model.NoResponse> {
+                           project: InputParams.Project) async throws -> GLResponse<GLModel.NoResponse> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", project),
                 OutputParam(key: "pipeline_id", pipeline)

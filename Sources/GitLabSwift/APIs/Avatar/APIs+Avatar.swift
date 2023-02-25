@@ -37,7 +37,7 @@ extension APIService {
         ///   - email: Public email address of the user.
         ///   - size: Single pixel dimension (because images are squares).
         /// - Returns: avatar.
-        public func url(email: String, size: Int? = nil) async throws -> GLResponse<Model.Avatar> {
+        public func url(email: String, size: Int? = nil) async throws -> GLResponse<GLModel.Avatar> {
             let options = OutputParamsCollection([
                 OutputParam(key: "email", email),
                 OutputParam(key: "size", size)

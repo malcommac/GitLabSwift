@@ -394,7 +394,7 @@ public extension InputParams {
         public var encodedValue: String { rawValue }
     }
     
-    enum ProjectID: URLEncodable, ExpressibleByIntegerLiteral, ExpressibleByStringLiteral, CustomStringConvertible {
+    enum Project: URLEncodable, ExpressibleByIntegerLiteral, ExpressibleByStringLiteral, CustomStringConvertible {
         public typealias StringLiteralType = String
         public typealias IntegerLiteralType = Int
         

@@ -68,7 +68,7 @@ extension APIService {
         ///
         /// - Parameter options: options callback.
         /// - Returns: found issues.
-        public func list(options: ((ListOptions) -> Void)? = nil) async throws -> GLResponse<[Model.Issue]> {
+        public func list(options: ((ListOptions) -> Void)? = nil) async throws -> GLResponse<[GLModel.Issue]> {
             let options = ListOptions(options)
             return try await gitlab.execute(.init(endpoint: URLs.list, options: options))
         }
@@ -85,7 +85,7 @@ extension APIService {
         ///   - options: options for configuration.
         /// - Returns: found issues.
         public func list(group: Int,
-                         options: ((ListGroupOptions) -> Void)? = nil) async throws -> GLResponse<[Model.Issue]> {
+                         options: ((ListGroupOptions) -> Void)? = nil) async throws -> GLResponse<[GLModel.Issue]> {
             let options = ListGroupOptions(group: group, options)
             return try await gitlab.execute(.init(endpoint: URLs.list_groups, options: options))
         }
@@ -101,8 +101,8 @@ extension APIService {
         ///   - project: id of the project.
         ///   - callback: configuration callback.
         /// - Returns: found issues.
-        public func list(project: InputParams.ProjectID,
-                         options: ((ListProjectOptions) -> Void)? = nil) async throws -> GLResponse<[Model.Issue]> {
+        public func list(project: InputParams.Project,
+                         options: ((ListProjectOptions) -> Void)? = nil) async throws -> GLResponse<[GLModel.Issue]> {
             let options = ListProjectOptions(project: project, options)
             return try await gitlab.execute(.init(endpoint: URLs.list_projects, options: options))
         }
@@ -113,7 +113,7 @@ extension APIService {
         ///
         /// - Parameter issue: id of the issue to retrive.
         /// - Returns: found issue.
-        public func get(issue: Int) async throws -> GLResponse<Model.Issue> {
+        public func get(issue: Int) async throws -> GLResponse<GLModel.Issue> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", issue)
             ])
@@ -128,7 +128,7 @@ extension APIService {
         ///   - project: The global ID or URL-encoded path of the project owned by the authenticated user.
         /// - Returns: found issue.
         public func get(issue: Int,
-                        project: InputParams.ProjectID) async throws -> GLResponse<Model.Issue> {
+                        project: InputParams.Project) async throws -> GLResponse<GLModel.Issue> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", project),
                 OutputParam(key: "issue_iid", issue)
@@ -145,8 +145,8 @@ extension APIService {
         ///   - project: parent project.
         ///   - callback: configuration callback.
         public func create(title: String,
-                           inProject project: InputParams.ProjectID,
-                           _ callback: ((CreateOptions) -> Void)? = nil) async throws -> GLResponse<Model.Issue> {
+                           inProject project: InputParams.Project,
+                           _ callback: ((CreateOptions) -> Void)? = nil) async throws -> GLResponse<GLModel.Issue> {
             let options = CreateOptions(title: title, project: project, callback)
             return try await gitlab.execute(.init(.post, endpoint: URLs.list_projects, options: options))
         }
@@ -162,8 +162,8 @@ extension APIService {
         ///   - options: configuration callbaxck.
         /// - Returns: updated issue.
         public func edit(issue: Int,
-                         project: InputParams.ProjectID,
-                         options: ((EditOptions) -> Void)? = nil) async throws -> GLResponse<Model.Issue> {
+                         project: InputParams.Project,
+                         options: ((EditOptions) -> Void)? = nil) async throws -> GLResponse<GLModel.Issue> {
             let options = EditOptions(issue: issue, project: project, options)
             return try await gitlab.execute(.init(.put, endpoint: URLs.list_projects, options: options))
         }
@@ -178,7 +178,7 @@ extension APIService {
         ///   - project: Reference project.
         /// - Returns: no response.
         public func delete(issue: Int,
-                           project: InputParams.ProjectID) async throws -> GLResponse<Model.NoResponse> {
+                           project: InputParams.Project) async throws -> GLResponse<GLModel.NoResponse> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", project),
                 OutputParam(key: "issue_iid", issue)
@@ -197,9 +197,9 @@ extension APIService {
         ///   - afterID: The global ID of a project’s issue that should be placed before this issue
         /// - Returns: no response.
         public func reorder(issue: Int,
-                            project: InputParams.ProjectID,
+                            project: InputParams.Project,
                             beforeID: Int? = nil,
-                            afterID: Int? = nil) async throws -> GLResponse<Model.NoResponse> {
+                            afterID: Int? = nil) async throws -> GLResponse<GLModel.NoResponse> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", project),
                 OutputParam(key: "issue_iid", issue),
@@ -222,8 +222,8 @@ extension APIService {
         ///   - destProject: The ID of the new project
         /// - Returns: no response.
         public func move(issue: Int,
-                         project: InputParams.ProjectID,
-                         to destProject: InputParams.ProjectID) async throws -> GLResponse<Model.NoResponse> {
+                         project: InputParams.Project,
+                         to destProject: InputParams.Project) async throws -> GLResponse<GLModel.NoResponse> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", project),
                 OutputParam(key: "issue_iid", issue),
@@ -246,9 +246,9 @@ extension APIService {
         ///   - withNotes: Clone the issue with notes.
         /// - Returns: new cloned issue
         public func clone(issue: Int,
-                          project: InputParams.ProjectID,
-                          to destProject: InputParams.ProjectID,
-                          notes: Bool? = nil) async throws -> GLResponse<Model.Issue> {
+                          project: InputParams.Project,
+                          to destProject: InputParams.Project,
+                          notes: Bool? = nil) async throws -> GLResponse<GLModel.Issue> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", project),
                 OutputParam(key: "issue_iid", issue),
@@ -268,7 +268,7 @@ extension APIService {
         ///   - project: The global ID or URL-encoded path of the project owned by the authenticated user.
         /// - Returns: subscribed issue.
         public func subscribe(issue: Int,
-                              project: InputParams.ProjectID) async throws -> GLResponse<Model.Issue> {
+                              project: InputParams.Project) async throws -> GLResponse<GLModel.Issue> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", project),
                 OutputParam(key: "issue_iid", issue)
@@ -286,7 +286,7 @@ extension APIService {
         ///   - project: The global ID or URL-encoded path of the project owned by the authenticated user.
         /// - Returns: unbscribed issue.
         public func unsubscribe(issue: Int,
-                                project: InputParams.ProjectID) async throws -> GLResponse<Model.Issue> {
+                                project: InputParams.Project) async throws -> GLResponse<GLModel.Issue> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", project),
                 OutputParam(key: "issue_iid", issue)
@@ -304,7 +304,7 @@ extension APIService {
         ///   - project: The global ID or URL-encoded path of the project owned by the authenticated user.
         /// - Returns: issue
         public func createToDo(issue: Int,
-                               project: InputParams.ProjectID) async throws -> GLResponse<Model.Issue> {
+                               project: InputParams.Project) async throws -> GLResponse<GLModel.Issue> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", project),
                 OutputParam(key: "issue_iid", issue)
@@ -322,8 +322,8 @@ extension APIService {
         ///   - note: The content of a note. Must contain `/promote` at the start of a new line.
         /// - Returns: note.
         public func promoteToEpic(issue: Int,
-                                  project: InputParams.ProjectID,
-                                  note: String) async throws -> GLResponse<Model.Note> {
+                                  project: InputParams.Project,
+                                  note: String) async throws -> GLResponse<GLModel.Note> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", project),
                 OutputParam(key: "issue_iid", issue),
@@ -343,7 +343,7 @@ extension APIService {
         /// - Returns: estimate stat
         public func setEstimate(_ duration: TimeInterval,
                                 issue: Int,
-                                project: InputParams.ProjectID) async throws -> GLResponse<Model.TimeStats> {
+                                project: InputParams.Project) async throws -> GLResponse<GLModel.TimeStats> {
             let formatter = DateComponentsFormatter()
             formatter.unitsStyle = .brief
             formatter.allowedUnits = [.day, .hour]
@@ -364,7 +364,7 @@ extension APIService {
         ///   - project: The global ID or URL-encoded path of the project owned by the authenticated user.
         /// - Returns: estimate stat
         public func resetEstimate(issue: Int,
-                                  project: InputParams.ProjectID) async throws -> GLResponse<Model.TimeStats> {
+                                  project: InputParams.Project) async throws -> GLResponse<GLModel.TimeStats> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", project),
                 OutputParam(key: "issue_iid", issue)
@@ -384,8 +384,8 @@ extension APIService {
         /// - Returns: spent time stat
         public func setSpentTime(_ duration: TimeInterval,
                                  issue: Int,
-                                 project: InputParams.ProjectID,
-                                 summary: String? = nil) async throws -> GLResponse<Model.TimeStats> {
+                                 project: InputParams.Project,
+                                 summary: String? = nil) async throws -> GLResponse<GLModel.TimeStats> {
             let formatter = DateComponentsFormatter()
             formatter.unitsStyle = .brief
             formatter.allowedUnits = [.day, .hour]
@@ -407,7 +407,7 @@ extension APIService {
         ///   - project: The global ID or URL-encoded path of the project owned by the authenticated user
         /// - Returns: spent time stat.
         public func resetSpentTime(issue: Int,
-                                   project: InputParams.ProjectID) async throws -> GLResponse<Model.TimeStats> {
+                                   project: InputParams.Project) async throws -> GLResponse<GLModel.TimeStats> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", project),
                 OutputParam(key: "issue_iid", issue)
@@ -423,7 +423,7 @@ extension APIService {
         ///   - project: The global ID or URL-encoded path of the project owned by the authenticated user
         /// - Returns: time stat.
         public func getTimeTracking(issue: Int,
-                                    project: InputParams.ProjectID) async throws -> GLResponse<Model.TimeStats> {
+                                    project: InputParams.Project) async throws -> GLResponse<GLModel.TimeStats> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", project),
                 OutputParam(key: "issue_iid", issue)
@@ -440,7 +440,7 @@ extension APIService {
         ///   - project: The global ID or URL-encoded path of the project owned by the authenticated user.
         /// - Returns: list of merge requests linked to the issue
         public func mergeRequestsForIssue(_ issue: Int,
-                                          project: InputParams.ProjectID) async throws -> GLResponse<[Model.MergeRequest]> {
+                                          project: InputParams.Project) async throws -> GLResponse<[GLModel.MergeRequest]> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", project),
                 OutputParam(key: "issue_iid", issue)
@@ -457,7 +457,7 @@ extension APIService {
         ///   - project: The global ID or URL-encoded path of the project owned by the authenticated user.
         /// - Returns: merge requests.
         public func mergeRequestsClosesIssue(_ issue: Int,
-                                             project: InputParams.ProjectID) async throws -> GLResponse<[Model.MergeRequest]> {
+                                             project: InputParams.Project) async throws -> GLResponse<[GLModel.MergeRequest]> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", project),
                 OutputParam(key: "issue_iid", issue)
@@ -474,7 +474,7 @@ extension APIService {
         ///   - project: The global ID or URL-encoded path of the project owned by the authenticated user
         /// - Returns: list of users
         public func participantsOnIssue(_ issue: Int,
-                                        project: InputParams.ProjectID) async throws -> GLResponse<[Model.User]> {
+                                        project: InputParams.Project) async throws -> GLResponse<[GLModel.User]> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", project),
                 OutputParam(key: "issue_iid", issue)
@@ -493,7 +493,7 @@ extension APIService {
         ///   - project: The global ID or URL-encoded path of the project owned by the authenticated user
         /// - Returns: agent detail
         public func userAgentsDetails(issue: Int,
-                                      project: InputParams.ProjectID) async throws -> GLResponse<Model.UserAgentDetail> {
+                                      project: InputParams.Project) async throws -> GLResponse<GLModel.UserAgentDetail> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", project),
                 OutputParam(key: "issue_iid", issue)

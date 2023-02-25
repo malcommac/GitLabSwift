@@ -18,7 +18,7 @@ extension APIService.Repositories {
         
         /// The id of the project.
         @OutputParam(key: "id")
-        public var project: InputParams.ProjectID?
+        public var project: InputParams.Project?
      
         /// The id of the project.
         @OutputParam(key: "version")
@@ -45,7 +45,7 @@ extension APIService.Repositories {
         public var trailer: String?
         
         public init(version: String,
-                    project: InputParams.ProjectID,
+                    project: InputParams.Project,
                     _ configure: ((NewChangelogOptions) -> Void)?) {
             super.init()
             self.project = project
@@ -58,7 +58,7 @@ extension APIService.Repositories {
 
         /// The id of the project.
         @OutputParam(key: "id")
-        public var project: InputParams.ProjectID?
+        public var project: InputParams.Project?
         
         /// The version to generate the changelog for. The format must follow semantic versioning.
         @OutputParam(key: "version")
@@ -97,7 +97,7 @@ extension APIService.Repositories {
         public var trailer: String?
 
         public init(version: String,
-                    project: InputParams.ProjectID,
+                    project: InputParams.Project,
                     _ configure: ((ChangelogOptions) -> Void)?) {
             super.init()
             self.project = project
@@ -111,7 +111,7 @@ extension APIService.Repositories {
         
         /// The ID or URL-encoded path of the project owned by the authenticated use.
         @OutputParam(key: "id")
-        public var project: InputParams.ProjectID?
+        public var project: InputParams.Project?
         
         /// The tree record ID at which to fetch the next page.
         /// Used only with keyset pagination.
@@ -134,7 +134,7 @@ extension APIService.Repositories {
         @OutputParam(key: "ref")
         public var ref: String?
 
-        public init(project: InputParams.ProjectID,
+        public init(project: InputParams.Project,
                     _ configure: ((ListOptions) -> Void)?) {
             super.init()
             self.project = project

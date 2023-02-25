@@ -43,8 +43,8 @@ extension APIService {
         ///   - id: The ID or URL-encoded path of the project owned by the authenticated user
         ///   - search: Name or part of the name of protected branches to be searched for
         /// - Returns: array of `Models.Branch`
-        public func list(project: InputParams.ProjectID,
-                         search: InputParams.Search? = nil) async throws -> GLResponse<[Model.ProtectedBranch]> {
+        public func list(project: InputParams.Project,
+                         search: InputParams.Search? = nil) async throws -> GLResponse<[GLModel.ProtectedBranch]> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", project),
                 OutputParam(key: "search", search)
@@ -61,7 +61,7 @@ extension APIService {
         ///   - id: ID or URL-encoded path of the project owned by the authenticated user.
         /// - Returns: `Models.ProtectedBranch`
         public func get(_ name: String,
-                        project: InputParams.ProjectID) async throws -> GLResponse<Model.ProtectedBranch> {
+                        project: InputParams.Project) async throws -> GLResponse<GLModel.ProtectedBranch> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", project),
                 OutputParam(key: "branch", name)
@@ -80,8 +80,8 @@ extension APIService {
         ///   - options: Configuration options.
         /// - Returns: protected branch.
         public func protect(_ name: String,
-                            project: InputParams.ProjectID,
-                            options: @escaping ((ProtectBranchOptions) -> Void)) async throws -> GLResponse<Model.ProtectedBranch> {
+                            project: InputParams.Project,
+                            options: @escaping ((ProtectBranchOptions) -> Void)) async throws -> GLResponse<GLModel.ProtectedBranch> {
             let options = ProtectBranchOptions(name: name, project: project, options)
             return try await gitlab.execute(.init(.post, endpoint: URLs.protectedList, options: options))
         }
@@ -94,7 +94,7 @@ extension APIService {
         ///   - name: The name of the branch
         ///   - id: The ID or URL-encoded path of the project owned by the authenticated user.
         public func unprotect(_ name: String,
-                              project: InputParams.ProjectID) async throws -> GLResponse<Model.NoResponse> {
+                              project: InputParams.Project) async throws -> GLResponse<GLModel.NoResponse> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", project),
                 OutputParam(key: "branch", name)
@@ -112,8 +112,8 @@ extension APIService {
         ///   - options: Configuration options.
         /// - Returns: updated protected branch
         public func update(_ name: String,
-                           project: InputParams.ProjectID,
-                           options: @escaping ((UpdateBranchOptions) -> Void)) async throws -> GLResponse<Model.ProtectedBranch> {
+                           project: InputParams.Project,
+                           options: @escaping ((UpdateBranchOptions) -> Void)) async throws -> GLResponse<GLModel.ProtectedBranch> {
             let options = UpdateBranchOptions(name: name, project: project, options)
             return try await gitlab.execute(.init(.patch, endpoint: URLs.detailProtected, options: options))
         }

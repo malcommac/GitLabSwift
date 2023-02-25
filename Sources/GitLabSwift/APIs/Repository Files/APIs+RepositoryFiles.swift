@@ -47,7 +47,7 @@ extension APIService {
         /// - Returns: file
         public func fileInfo(path: String,
                              ref: String,
-                             project: InputParams.ProjectID) async throws -> GLResponse<Model.File> {
+                             project: InputParams.Project) async throws -> GLResponse<GLModel.File> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", project),
                 OutputParam(key: "ref", ref),
@@ -73,7 +73,7 @@ extension APIService {
                           filePath: String,
                           rangeStart: Int,
                           rangeEnd: Int,
-                          project: InputParams.ProjectID) async throws -> GLResponse<Model.FileBlame> {
+                          project: InputParams.Project) async throws -> GLResponse<GLModel.FileBlame> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", project),
                 OutputParam(key: "ref", ref),
@@ -97,7 +97,7 @@ extension APIService {
         public func file(path: String,
                          ref: String,
                          lfs: Bool? = nil,
-                         project: InputParams.ProjectID) async throws -> GLResponse<Model.NoResponse> {
+                         project: InputParams.Project) async throws -> GLResponse<GLModel.NoResponse> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", project),
                 OutputParam(key: "file_path", path),
@@ -123,8 +123,8 @@ extension APIService {
                                commit: String,
                                content: String,
                                filePath: String,
-                               project: InputParams.ProjectID,
-                               options: ((CreateOptions) -> Void)? = nil) async throws -> GLResponse<Model.NoResponse> {
+                               project: InputParams.Project,
+                               options: ((CreateOptions) -> Void)? = nil) async throws -> GLResponse<GLModel.NoResponse> {
             let options = CreateOptions(
                 branch: branch,
                 commit: commit,
@@ -152,8 +152,8 @@ extension APIService {
                                commit: String,
                                content: String,
                                filePath: String,
-                               project: InputParams.ProjectID,
-                               options: ((CreateOptions) -> Void)? = nil) async throws -> GLResponse<Model.NoResponse> {
+                               project: InputParams.Project,
+                               options: ((CreateOptions) -> Void)? = nil) async throws -> GLResponse<GLModel.NoResponse> {
             let options = CreateOptions(
                 branch: branch,
                 commit: commit,
@@ -179,8 +179,8 @@ extension APIService {
                                commit: String,
                                content: String,
                                filePath: String,
-                               project: InputParams.ProjectID,
-                               options: ((CreateOptions) -> Void)? = nil) async throws -> GLResponse<Model.NoResponse> {
+                               project: InputParams.Project,
+                               options: ((CreateOptions) -> Void)? = nil) async throws -> GLResponse<GLModel.NoResponse> {
             let options = CreateOptions(
                 branch: branch,
                 commit: commit,

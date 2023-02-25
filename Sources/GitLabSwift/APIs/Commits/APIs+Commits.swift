@@ -56,8 +56,8 @@ extension APIService {
         ///   - project: The ID or URL-encoded path of the project owned by the authenticated user
         ///   - options: configuratin callback.
         /// - Returns: array of `Models.Commits`
-        public func list(project: InputParams.ProjectID,
-                         options: ((ListOptions) -> Void)? = nil) async throws -> GLResponse<[Model.Commit]> {
+        public func list(project: InputParams.Project,
+                         options: ((ListOptions) -> Void)? = nil) async throws -> GLResponse<[GLModel.Commit]> {
             let options = ListOptions(project: project, options)
             return try await gitlab.execute(.init(endpoint: URLs.commits, options: options))
         }
@@ -71,9 +71,9 @@ extension APIService {
         ///   - project: The ID or URL-encoded path of the project owned by the authenticated user
         ///   - stats: Include commit stats. Default is `true`.
         public func get(sha: String,
-                        project: InputParams.ProjectID,
+                        project: InputParams.Project,
                         stats: Bool = false)
-            async throws -> GLResponse<Model.Commit> {
+            async throws -> GLResponse<GLModel.Commit> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", project),
                 OutputParam(key: "sha", sha),
@@ -93,8 +93,8 @@ extension APIService {
         ///   - type: The scope of commits. Possible values `branch`, `tag`, `all`. Default is `all`.
         /// - Returns: array of `Models.Commit.Ref`.
         public func ref(sha: String,
-                        project: InputParams.ProjectID,
-                        type: InputParams.CommitRefType? = nil) async throws -> GLResponse<[Model.Commit.Ref]> {
+                        project: InputParams.Project,
+                        type: InputParams.CommitRefType? = nil) async throws -> GLResponse<[GLModel.Commit.Ref]> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", project),
                 OutputParam(key: "sha", sha),
@@ -115,8 +115,8 @@ extension APIService {
         /// - Returns: `Models.Commit`
         public func cherryPick(sha: String,
                                branch: String,
-                               project: InputParams.ProjectID,
-                               callback: ((CherryPickOptions) -> Void)? = nil) async throws -> GLResponse<Model.Commit> {
+                               project: InputParams.Project,
+                               callback: ((CherryPickOptions) -> Void)? = nil) async throws -> GLResponse<GLModel.Commit> {
             let options = CherryPickOptions(sha: sha, branch: branch, project: project, callback)
             return try await gitlab.execute(.init(.post, endpoint: URLs.cherryPick, options: options))
         }
@@ -133,8 +133,8 @@ extension APIService {
         /// - Returns: `Models.Commit`
         public func revert(sha: String,
                            branch: String,
-                           project: InputParams.ProjectID,
-                           dryRun: Bool? = nil) async throws -> GLResponse<Model.Commit> {
+                           project: InputParams.Project,
+                           dryRun: Bool? = nil) async throws -> GLResponse<GLModel.Commit> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", project),
                 OutputParam(key: "sha", sha),
@@ -152,7 +152,7 @@ extension APIService {
         ///   - project: The ID or URL-encoded path of the project owned by the authenticated user
         /// - Returns: differences in commit.
         public func diff(sha: String,
-                         project: InputParams.ProjectID) async throws -> GLResponse<[Model.Commit.Diff]> {
+                         project: InputParams.Project) async throws -> GLResponse<[GLModel.Commit.Diff]> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", project),
                 OutputParam(key: "sha", sha)
@@ -169,7 +169,7 @@ extension APIService {
         ///   - project: The ID or URL-encoded path of the project owned by the authenticated user
         /// - Returns: array of `Models.Commit.Comment`
         public func comments(sha: String,
-                             project: InputParams.ProjectID) async throws -> GLResponse<[Model.Commit.Comment]> {
+                             project: InputParams.Project) async throws -> GLResponse<[GLModel.Commit.Comment]> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", project),
                 OutputParam(key: "sha", sha)
@@ -188,8 +188,8 @@ extension APIService {
         ///   - project: The ID or URL-encoded path of the project owned by the authenticated user
         ///   - options: Configure options callback.
         /// - Returns: `Models.Commit.Comment`
-        public func postComment(sha: String, project: InputParams.ProjectID,
-                                options: @escaping ((PostCommentOptions) -> Void)) async throws -> GLResponse<Model.Commit.Comment> {
+        public func postComment(sha: String, project: InputParams.Project,
+                                options: @escaping ((PostCommentOptions) -> Void)) async throws -> GLResponse<GLModel.Commit.Comment> {
             let options = PostCommentOptions(sha: sha, project: project, options)
             return try await gitlab.execute(.init(.post, endpoint: URLs.comments, options: options))
         }
@@ -204,7 +204,7 @@ extension APIService {
         ///   - scope: The scope of commits. Possible values `branch`, `tag`, `all`. Default is `all`.
         ///   - project: The ID or URL-encoded path of the project owned by the authenticated user
         /// - Returns: array of `Models.Commit.Ref`
-        public func refs(sha: String, scope: InputParams.CommitScope, project: InputParams.ProjectID) async throws -> GLResponse<[Model.Commit.Ref]> {
+        public func refs(sha: String, scope: InputParams.CommitScope, project: InputParams.Project) async throws -> GLResponse<[GLModel.Commit.Ref]> {
             let options = OutputParamsCollection([
                     OutputParam(key: "id", project),
                     OutputParam(key: "sha", sha),
@@ -222,7 +222,7 @@ extension APIService {
         ///   - project: The ID or URL-encoded path of the project owned by the authenticated user
         /// - Returns: array of `Models.Discussion`.
         public func discussions(sha: String,
-                                project: InputParams.ProjectID) async throws -> GLResponse<[Model.Discussion]> {
+                                project: InputParams.Project) async throws -> GLResponse<[GLModel.Discussion]> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", project),
                 OutputParam(key: "sha", sha)
@@ -242,8 +242,8 @@ extension APIService {
         ///   - sha: The commit SHA
         ///   - project: The ID or URL-encoded path of the project owned by the authenticated user
         /// - Returns: array of `Models.Commit.Status`.
-        public func statuses(sha: String, project: InputParams.ProjectID,
-                             _ callback: ((CommitStatusOptions) -> Void)? = nil) async throws -> GLResponse<[Model.Commit.Status]> {
+        public func statuses(sha: String, project: InputParams.Project,
+                             _ callback: ((CommitStatusOptions) -> Void)? = nil) async throws -> GLResponse<[GLModel.Commit.Status]> {
             let options = CommitStatusOptions(sha: sha, project: project, callback)
             return try await gitlab.execute(.init(endpoint: URLs.statuses, options: options))
         }
@@ -256,7 +256,7 @@ extension APIService {
         ///   - sha: The commit SHA
         ///   - project: The ID or URL-encoded path of the project owned by the authenticated user
         /// - Returns: array of `Models.MergeRequest`
-        public func mergeRequests(sha: String, project: InputParams.ProjectID) async throws -> GLResponse<[Model.MergeRequest]> {
+        public func mergeRequests(sha: String, project: InputParams.Project) async throws -> GLResponse<[GLModel.MergeRequest]> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", project),
                 OutputParam(key: "sha", sha)
@@ -272,7 +272,7 @@ extension APIService {
         ///   - sha: The commit hash or name of a repository branch or tag
         ///   - project: The ID or URL-encoded path of the project owned by the authenticated user
         /// - Returns: `Models.Commit.GPGSignature`
-        public func gpgSignature(sha: String, project: InputParams.ProjectID) async throws -> GLResponse<Model.Commit.GPGSignature> {
+        public func gpgSignature(sha: String, project: InputParams.Project) async throws -> GLResponse<GLModel.Commit.GPGSignature> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", project),
                 OutputParam(key: "sha",  sha)

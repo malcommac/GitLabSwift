@@ -18,7 +18,7 @@ extension APIService.Labels {
         
         /// The ID or URL-encoded path of the project owned by the authenticated user
         @OutputParam(key: "id")
-        public var project: InputParams.ProjectID?
+        public var project: InputParams.Project?
 
         /// The ID or title of a group’s label.
         @OutputParam(key: "label_id")
@@ -44,7 +44,7 @@ extension APIService.Labels {
         public var priority: Int?
 
         public init(label: String,
-                    project: InputParams.ProjectID,
+                    project: InputParams.Project,
                     _ configure: ((EditOptions) -> Void)?) {
             super.init()
             configure?(self)
@@ -58,7 +58,7 @@ extension APIService.Labels {
         
         /// The ID or URL-encoded path of the project owned by the authenticated user
         @OutputParam(key: "id")
-        public var project: InputParams.ProjectID?
+        public var project: InputParams.Project?
 
         /// The name of the label.
         @OutputParam(key: "name")
@@ -80,7 +80,7 @@ extension APIService.Labels {
 
         public init(name: String,
                     color: String,
-                    project: InputParams.ProjectID,
+                    project: InputParams.Project,
                     _ configure: ((CreateOptions) -> Void)?) {
             super.init()
             configure?(self)
@@ -95,7 +95,7 @@ extension APIService.Labels {
         
         /// The ID or URL-encoded path of the project owned by the authenticated user
         @OutputParam(key: "id")
-        public var project: InputParams.ProjectID?
+        public var project: InputParams.Project?
 
         /// Whether or not to include issue and merge request counts.
         @OutputParam(key: "with_counts")
@@ -109,7 +109,7 @@ extension APIService.Labels {
         @OutputParam(key: "search")
         public var search: String?
 
-        public init(project: InputParams.ProjectID,
+        public init(project: InputParams.Project,
                     _ configure: ((ListOptions) -> Void)?) {
             super.init()
             self.project = project

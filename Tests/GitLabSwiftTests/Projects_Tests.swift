@@ -17,7 +17,7 @@ import RealHTTP
 
 final class GitLabSwift_ProjectsTests: XCTestCase {
     
-    private var anyProject: Model.Project!
+    private var anyProject: GLModel.Project!
     
     override func setUp() async throws {
     //    let project = try await gitlab.projects.list().model()?.randomElement()

@@ -18,7 +18,7 @@ extension APIService.Pipelines {
         
         /// The ID or URL-encoded path of the project owned by the authenticated user
         @OutputParam(key: "id")
-        public var project: InputParams.ProjectID?
+        public var project: InputParams.Project?
         
         /// The scope of pipelines.
         @OutputParam(key: "scope")
@@ -63,7 +63,7 @@ extension APIService.Pipelines {
         @OutputParam(key: "sort_by")
         public var sort: InputParams.Sort?
 
-        public init(project: InputParams.ProjectID,
+        public init(project: InputParams.Project,
                     _ configure: ((SearchOptions) -> Void)?) {
             super.init()
             self.project = project

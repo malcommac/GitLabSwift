@@ -45,8 +45,8 @@ extension APIService {
         ///   - project: The ID or URL-encoded path of the project owned by the authenticated user
         ///   - options: Options callback configuration.
         /// - Returns: found labels.
-        public func list(project: InputParams.ProjectID,
-                         options: ((ListOptions) -> Void)? = nil) async throws -> GLResponse<[Model.Label]> {
+        public func list(project: InputParams.Project,
+                         options: ((ListOptions) -> Void)? = nil) async throws -> GLResponse<[GLModel.Label]> {
             let options = ListOptions(project: project, options)
             return try await gitlab.execute(.init(endpoint: URLs.labels, options: options))
         }
@@ -62,7 +62,7 @@ extension APIService {
         /// - Returns: label info.
         public func get(_ label: Int,
                         includeAncestor: Bool? = nil,
-                        project: InputParams.ProjectID) async throws -> GLResponse<[Model.Label]> {
+                        project: InputParams.Project) async throws -> GLResponse<[GLModel.Label]> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", project),
                 OutputParam(key: "label_id", label),
@@ -83,8 +83,8 @@ extension APIService {
         /// - Returns: Created label object.
         public func create(name: String,
                            color: String,
-                           project: InputParams.ProjectID,
-                           options: @escaping ((CreateOptions) -> Void)) async throws -> GLResponse<Model.Label> {
+                           project: InputParams.Project,
+                           options: @escaping ((CreateOptions) -> Void)) async throws -> GLResponse<GLModel.Label> {
             let options = CreateOptions(name: name, color: color, project: project, options)
             return try await gitlab.execute(.init(.post, endpoint: URLs.labels, options: options))
         }
@@ -98,7 +98,7 @@ extension APIService {
         ///   - project: The ID or URL-encoded path of the project owned by the authenticated user
         /// - Returns: generic response
         public func delete(_ id: String,
-                           project: InputParams.ProjectID) async throws -> GLResponse<Model.NoResponse> {
+                           project: InputParams.Project) async throws -> GLResponse<GLModel.NoResponse> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", project),
                 OutputParam(key: "label_id", id)
@@ -118,8 +118,8 @@ extension APIService {
         ///   - options: configuration callback. At least one parameter is required, to update the label.
         /// - Returns: updated label
         public func edit(_ label: String,
-                         project: InputParams.ProjectID,
-                         options: @escaping ((EditOptions) -> Void)) async throws -> GLResponse<Model.Label> {
+                         project: InputParams.Project,
+                         options: @escaping ((EditOptions) -> Void)) async throws -> GLResponse<GLModel.Label> {
             let options = EditOptions(label: label, project: project, options)
             return try await gitlab.execute(.init(.put, endpoint: URLs.labels_single, options: options))
         }
@@ -134,7 +134,7 @@ extension APIService {
         ///   - label: The ID or title of a group’s label.
         ///   - project: The ID or URL-encoded path of the project owned by the authenticated user
         public func promoteToGroup(label: String,
-                                   project: InputParams.ProjectID) async throws -> GLResponse<Model.Label> {
+                                   project: InputParams.Project) async throws -> GLResponse<GLModel.Label> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", project),
                 OutputParam(key: "label_id", label)
@@ -152,7 +152,7 @@ extension APIService {
         ///   - label: The ID or title of a group’s label.
         ///   - project: The ID or URL-encoded path of the project owned by the authenticated user
         public func subscribe(label: String,
-                              project: InputParams.ProjectID) async throws -> GLResponse<Model.NoResponse> {
+                              project: InputParams.Project) async throws -> GLResponse<GLModel.NoResponse> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", project),
                 OutputParam(key: "label_id", label)
@@ -170,7 +170,7 @@ extension APIService {
         ///   - project: The ID or URL-encoded path of the project owned by the authenticated user
         /// - Returns: generic response
         public func unsubscribe(label: String,
-                                project: InputParams.ProjectID) async throws -> GLResponse<Model.NoResponse> {
+                                project: InputParams.Project) async throws -> GLResponse<GLModel.NoResponse> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", project),
                 OutputParam(key: "label_id", label)

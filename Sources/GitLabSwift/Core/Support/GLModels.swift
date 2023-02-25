@@ -12,9 +12,9 @@
 
 import Foundation
 
-public enum Model { }
+public enum GLModel { }
 
-public extension Model {
+public extension GLModel {
     
     struct NoResponse: Codable { }
         
@@ -267,7 +267,7 @@ public extension Model {
         
         public struct Comment: Decodable {
             public let note: String?
-            public let author: Model.User?
+            public let author: GLModel.User?
         }
         
         public struct Ref: Decodable {
@@ -288,7 +288,7 @@ public extension Model {
             public let finished_at: Date?
             public let allow_failure: Bool?
             public let coverage: Int?
-            public let author: Model.User?
+            public let author: GLModel.User?
         }
     }
 
@@ -388,13 +388,13 @@ public extension Model {
         public let source_branch: String?
         public let upvotes: Int
         public let downvotes: Int
-        public let author: Model.User?
-        public let assignee: Model.User?
+        public let author: GLModel.User?
+        public let assignee: GLModel.User?
         public let source_project_id: Int?
         public let target_project_id: Int?
         public let labels: [String]?
         public let work_in_progress: Bool?
-        public let milestone: Model.Milestone?
+        public let milestone: GLModel.Milestone?
         public let merge_when_pipeline_succeds: Bool?
         public let merge_status: String?
         public let sha: String?
@@ -431,7 +431,7 @@ public extension Model {
         public let id: Int
         public let type: String
         public let body: String
-        public let author: Model.User?
+        public let author: GLModel.User?
         public let createdAt: Date?
         public let updatedAt: Date?
         public let system: Bool
@@ -468,12 +468,12 @@ public extension Model {
         public let created_at: Date?
         public let updated_at: Date?
         public let closed_at: Date?
-        public let closed_by: Model.User?
+        public let closed_by: GLModel.User?
         public let labels: [String]?
-        public let milestone: Model.Milestone?
-        public let assignees: [Model.User]?
-        public let author: Model.User?
-        public let assignee: Model.User?
+        public let milestone: GLModel.Milestone?
+        public let assignees: [GLModel.User]?
+        public let author: GLModel.User?
+        public let assignee: GLModel.User?
         public let user_notes_count: Int?
         public let upvotes: Int?
         public let downvotes: Int?
@@ -481,7 +481,7 @@ public extension Model {
         public let confidential: Bool?
         public let discussion_locked: Bool?
         public let web_url: URL
-        public let time_stats: Model.TimeStats?
+        public let time_stats: GLModel.TimeStats?
     }
 
     struct Label: Decodable {

@@ -25,7 +25,7 @@ extension APIService.ProjectMilestones {
         public var stateEvent: InputParams.MilestoneEditState?
      
         public init(milestone: String,
-                    project: InputParams.ProjectID,
+                    project: InputParams.Project,
                     _ configure: ((EditOptions) -> Void)?) {
             super.init(project: project, nil)
             self.milestone = milestone
@@ -38,7 +38,7 @@ extension APIService.ProjectMilestones {
         
         /// The ID or URL-encoded path of the project.
         @OutputParam(key: "id")
-        public var project: InputParams.ProjectID?
+        public var project: InputParams.Project?
         
         /// The title of a milestone.
         @OutputParam(key: "title")
@@ -56,7 +56,7 @@ extension APIService.ProjectMilestones {
         @OutputParam(key: "due_date")
         public var dueDate: InputParams.DateOnly?
      
-        public init(project: InputParams.ProjectID,
+        public init(project: InputParams.Project,
                     title: String? = nil,
                     _ configure: ((CreateOptions) -> Void)?) {
             super.init()
@@ -71,7 +71,7 @@ extension APIService.ProjectMilestones {
         
         /// The ID or URL-encoded path of the project.
         @OutputParam(key: "id")
-        public var project: InputParams.ProjectID?
+        public var project: InputParams.Project?
         
         /// Return only the milestones having the given iid.
         @OutputParam(key: "iids")
@@ -93,7 +93,7 @@ extension APIService.ProjectMilestones {
         @OutputParam(key: "include_parent_milestones")
         public var includeParent: Bool?
         
-        public init(project: InputParams.ProjectID,
+        public init(project: InputParams.Project,
                     _ configure: ((ListOptions) -> Void)?) {
             super.init()
             self.project = project

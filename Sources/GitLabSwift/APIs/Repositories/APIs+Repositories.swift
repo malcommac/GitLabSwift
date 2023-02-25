@@ -48,8 +48,8 @@ extension APIService {
         ///   - project: The ID or URL-encoded path of the project owned by the authenticated user.
         ///   - options: configuration callback.
         /// - Returns: list of files and folders
-        public func list(project: InputParams.ProjectID,
-                         options: ((ListOptions) -> Void)? = nil) async throws -> GLResponse<[Model.Repository.Tree]> {
+        public func list(project: InputParams.Project,
+                         options: ((ListOptions) -> Void)? = nil) async throws -> GLResponse<[GLModel.Repository.Tree]> {
             let options = ListOptions(project: project, options)
             return try await gitlab.execute(.init(endpoint: URLs.tree, options: options))
         }
@@ -64,7 +64,7 @@ extension APIService {
         ///   - project: The ID or URL-encoded path of the project owned by the authenticated user.
         /// - Returns: generic response
         public func blob(sha: String,
-                         project: InputParams.ProjectID) async throws -> GLResponse<Model.NoResponse> {
+                         project: InputParams.Project) async throws -> GLResponse<GLModel.NoResponse> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", project),
                 OutputParam(key: "sha", sha)
@@ -81,7 +81,7 @@ extension APIService {
         ///   - project: The ID or URL-encoded path of the project owned by the authenticated user.
         /// - Returns: generic response
         public func blobRaw(sha: String,
-                            project: InputParams.ProjectID) async throws -> GLResponse<Model.NoResponse> {
+                            project: InputParams.Project) async throws -> GLResponse<GLModel.NoResponse> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", project),
                 OutputParam(key: "sha", sha)
@@ -99,10 +99,10 @@ extension APIService {
         ///   - sha: The commit SHA to download.
         ///   - format: The commit SHA to download.
         /// - Returns: generic response
-        public func fileArchive(project: InputParams.ProjectID,
+        public func fileArchive(project: InputParams.Project,
                                 path: String? = nil,
                                 sha: String? = nil,
-                                format: InputParams.ArchiveFormat = .zip) async throws -> GLResponse<Model.NoResponse> {
+                                format: InputParams.ArchiveFormat = .zip) async throws -> GLResponse<GLModel.NoResponse> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", project),
                 OutputParam(key: "sha", sha),
@@ -126,11 +126,11 @@ extension APIService {
         ///               - `false` to compare using merge base `(from…to)`’.
         ///               Default is `false`.
         /// - Returns: diff
-        public func compare(project: InputParams.ProjectID,
+        public func compare(project: InputParams.Project,
                             fromSha: String,
                             toProject compareProject: Int? = nil,
                             toSha: String,
-                            straight: Bool? = nil) async throws -> GLResponse<Model.ShaCompareResult> {
+                            straight: Bool? = nil) async throws -> GLResponse<GLModel.ShaCompareResult> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", project),
                 OutputParam(key: "from", fromSha),
@@ -150,9 +150,9 @@ extension APIService {
         ///   - orderBy: Return contributors ordered by `name`, `email`, or `commits` (orders by commit date) fields.
         ///   - sort: Return contributors sorted.
         /// - Returns: list of contributors
-        public func contributors(project: InputParams.ProjectID,
+        public func contributors(project: InputParams.Project,
                                  orderBy: InputParams.ContributorsOrder? = nil,
-                                 sort: InputParams.Sort? = nil) async throws -> GLResponse<[Model.Contributor]> {
+                                 sort: InputParams.Sort? = nil) async throws -> GLResponse<[GLModel.Contributor]> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", project),
                 OutputParam(key: "order_by", orderBy),
@@ -169,8 +169,8 @@ extension APIService {
         ///   - project: The ID or URL-encoded path of the project.
         ///   - refs: The refs to find the common ancestor of. Accepts multiple refs.
         /// - Returns: common ancestor info
-        public func mergeBase(project: InputParams.ProjectID,
-                              refs: [String]) async throws -> GLResponse<Model.CommonAncestor> {
+        public func mergeBase(project: InputParams.Project,
+                              refs: [String]) async throws -> GLResponse<GLModel.CommonAncestor> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", project),
                 OutputParam(key: "refs", refs)
@@ -185,8 +185,8 @@ extension APIService {
         ///   - project: Referenced project.
         ///   - options: Configuration callback.
         public func addChangelog(version: String,
-                                 project: InputParams.ProjectID,
-                                 options: ((ChangelogOptions) -> Void)? = nil) async throws -> GLResponse<Model.NoResponse> {
+                                 project: InputParams.Project,
+                                 options: ((ChangelogOptions) -> Void)? = nil) async throws -> GLResponse<GLModel.NoResponse> {
             let options = ChangelogOptions(version: version, project: project, options)
             return try await gitlab.execute(.init(.post, endpoint: URLs.changelog, options: options))
         }
@@ -204,8 +204,8 @@ extension APIService {
         ///   - callback: configuration callback.
         /// - Returns: changelog.
         public func generateChangelog(version: String,
-                               project: InputParams.ProjectID,
-                               options: ((NewChangelogOptions) -> Void)? = nil) async throws -> GLResponse<Model.Changelog> {
+                               project: InputParams.Project,
+                               options: ((NewChangelogOptions) -> Void)? = nil) async throws -> GLResponse<GLModel.Changelog> {
             let options = NewChangelogOptions(version: version, project: project, options)
             return try await gitlab.execute(.init(.post, endpoint: URLs.changelog, options: options))
         }

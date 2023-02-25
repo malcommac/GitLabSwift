@@ -41,7 +41,7 @@ extension APIService {
         ///
         /// - Parameter options: configuration callback.
         /// - Returns: list of issues
-        public func list(options: ((SearchOptions) -> Void)? = nil) async throws -> GLResponse<[Model.Issue]> {
+        public func list(options: ((SearchOptions) -> Void)? = nil) async throws -> GLResponse<[GLModel.Issue]> {
             let options = SearchOptions(options)
             return try await gitlab.execute(.init(endpoint: URLs.list, options: options))
         }
@@ -55,7 +55,7 @@ extension APIService {
         ///   - options: configuration callback.
         /// - Returns: issues
         public func list(group: Int,
-                         options: ((SearchOptions) -> Void)? = nil) async throws -> GLResponse<[Model.Issue]> {
+                         options: ((SearchOptions) -> Void)? = nil) async throws -> GLResponse<[GLModel.Issue]> {
             let options = SearchOptions(options)
             options.customOptions = [
                 OutputParam(key: "id", group)
@@ -70,8 +70,8 @@ extension APIService {
         ///   - project: The ID or URL-encoded path of the project owned by the authenticated user
         ///   - options: configuration callback.
         /// - Returns: issues list
-        public func list(project: InputParams.ProjectID,
-                         options: ((SearchOptions) -> Void)? = nil) async throws -> GLResponse<[Model.Issue]> {
+        public func list(project: InputParams.Project,
+                         options: ((SearchOptions) -> Void)? = nil) async throws -> GLResponse<[GLModel.Issue]> {
             let options = SearchOptions(options)
             options.customOptions = [
                 OutputParam(key: "id", project)

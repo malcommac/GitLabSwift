@@ -42,8 +42,8 @@ extension APIService {
         ///   - id: ID or URL-encoded path of the project owned by the authenticated user.
         ///   - search: Return list of branches containing the search string.
         /// - Returns: array of `Models.Branch`
-        public func list(project id: InputParams.ProjectID,
-                         search: InputParams.Search? = nil) async throws -> GLResponse<[Model.Branch]> {
+        public func list(project id: InputParams.Project,
+                         search: InputParams.Search? = nil) async throws -> GLResponse<[GLModel.Branch]> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", id),
                 OutputParam(key: "search", search)
@@ -59,7 +59,7 @@ extension APIService {
         ///   - id: ID or URL-encoded path of the project owned by the authenticated user.
         /// - Returns: `Models.Branch`
         public func get(_ name: String,
-                        project id: InputParams.ProjectID) async throws -> GLResponse<Model.Branch> {
+                        project id: InputParams.Project) async throws -> GLResponse<GLModel.Branch> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", id),
                 OutputParam(key: "branch", name)
@@ -76,7 +76,7 @@ extension APIService {
         /// - Returns: Branch
         public func create(name: String,
                            fromRef ref: String,
-                           project id: InputParams.ProjectID) async throws -> GLResponse<Model.Branch> {
+                           project id: InputParams.Project) async throws -> GLResponse<GLModel.Branch> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", id),
                 OutputParam(key: "branch", name),
@@ -91,7 +91,7 @@ extension APIService {
         ///   - name: name of the branch to remove.
         ///   - id: The ID or URL-encoded path of the project owned by the authenticated user.
         public func delete(name: String,
-                           project id: InputParams.ProjectID) async throws -> GLResponse<Model.NoResponse> {
+                           project id: InputParams.Project) async throws -> GLResponse<GLModel.NoResponse> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", id),
                 OutputParam(key: "branch", name),
@@ -104,7 +104,7 @@ extension APIService {
         ///
         /// - Parameter id: The ID or URL-encoded path of the project owned by the authenticated user.
         /// - Returns: generic response
-        public func deleteMergedBranches(project id: InputParams.ProjectID) async throws -> GLResponse<Model.NoResponse> {
+        public func deleteMergedBranches(project id: InputParams.Project) async throws -> GLResponse<GLModel.NoResponse> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", id)
             ])

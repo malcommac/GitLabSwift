@@ -18,7 +18,7 @@ extension APIService.Commits {
         
         /// The ID or URL-encoded path of the project.
         @OutputParam(key: "id")
-        public var project: InputParams.ProjectID?
+        public var project: InputParams.Project?
         
         /// The commit SHA.
         @OutputParam(key: "sha")
@@ -41,7 +41,7 @@ extension APIService.Commits {
         public var all: Bool?
         
         public init(sha: String,
-                    project: InputParams.ProjectID,
+                    project: InputParams.Project,
                     _ configure: ((CommitStatusOptions) -> Void)?) {
             super.init()
             self.sha = sha
@@ -55,7 +55,7 @@ extension APIService.Commits {
         
         /// The ID or URL-encoded path of the project.
         @OutputParam(key: "id")
-        public var project: InputParams.ProjectID?
+        public var project: InputParams.Project?
         
         /// The commit SHA or name of a repository branch or tag
         @OutputParam(key: "sha")
@@ -78,7 +78,7 @@ extension APIService.Commits {
         public var line_type: InputParams.CommitCommentLineType?
         
         public init(sha: String,
-                    project: InputParams.ProjectID,
+                    project: InputParams.Project,
                     _ configure: ((PostCommentOptions) -> Void)?) {
             super.init()
             self.sha = sha
@@ -92,7 +92,7 @@ extension APIService.Commits {
         
         /// The ID or URL-encoded path of the project.
         @OutputParam(key: "id")
-        public var project: InputParams.ProjectID?
+        public var project: InputParams.Project?
         
         /// The commit hash
         @OutputParam(key: "sha")
@@ -112,7 +112,7 @@ extension APIService.Commits {
         
         public init(sha: String,
                     branch: String,
-                    project: InputParams.ProjectID,
+                    project: InputParams.Project,
                     _ configure: ((CherryPickOptions) -> Void)?) {
             super.init()
             self.project = project
@@ -127,7 +127,7 @@ extension APIService.Commits {
         
         /// The ID or URL-encoded path of the project.
         @OutputParam(key: "id")
-        public var project: InputParams.ProjectID?
+        public var project: InputParams.Project?
         
         /// The name of a repository branch, tag or revision range, or if not given the default branch
         @OutputParam(key: "ref_name")
@@ -165,7 +165,7 @@ extension APIService.Commits {
         @OutputParam(key: "trailers")
         public var includeTrailers: Bool?
         
-        public init(project: InputParams.ProjectID,
+        public init(project: InputParams.Project,
                     _ configure: ((ListOptions) -> Void)?) {
             super.init()
             self.project = project

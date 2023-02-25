@@ -90,7 +90,7 @@ extension APIService {
         ///
         /// - Parameter options: search configuration callback.
         /// - Returns: list of projects.
-        public func list(options: ((SearchOptions) -> Void)? = nil) async throws -> GLResponse<[Model.Project]> {
+        public func list(options: ((SearchOptions) -> Void)? = nil) async throws -> GLResponse<[GLModel.Project]> {
             let options = SearchOptions(options)
             return try await gitlab.execute(.init(endpoint: URLs.all, options: options))
         }
@@ -105,7 +105,7 @@ extension APIService {
         ///   - callback: options configuration.
         /// - Returns: list of projects.
         public func listUsersProjects(_ user: Int,
-                                  _ callback: ((UserProjectsOptions) -> Void)? = nil) async throws -> GLResponse<[Model.Project]> {
+                                  _ callback: ((UserProjectsOptions) -> Void)? = nil) async throws -> GLResponse<[GLModel.Project]> {
             let options = UserProjectsOptions(user: user, callback)
             return try await gitlab.execute(.init(endpoint: URLs.user_projects, options: options))
         }
@@ -117,7 +117,7 @@ extension APIService {
         ///
         /// - Parameter user: user identifier.
         /// - Returns: list of projects.
-        public func listUserStarredProjects(_ user: Int) async throws -> GLResponse<[Model.Project]> {
+        public func listUserStarredProjects(_ user: Int) async throws -> GLResponse<[GLModel.Project]> {
             let options = OutputParamsCollection([
                 OutputParam(key: "user_id", user)
             ])
@@ -133,8 +133,8 @@ extension APIService {
         ///   - projectID: The ID or URL-encoded path of the project.
         ///   - options: options configuration.
         /// - Returns: found project, if any.
-        public func get(project: InputParams.ProjectID,
-                        options: ((SearchProjectOptions) -> Void)? = nil) async throws -> GLResponse<Model.Project> {
+        public func get(project: InputParams.Project,
+                        options: ((SearchProjectOptions) -> Void)? = nil) async throws -> GLResponse<GLModel.Project> {
             let options = SearchProjectOptions(project: project, options)
             return try await gitlab.execute(.init(endpoint: URLs.detail, options: options))
         }
@@ -147,8 +147,8 @@ extension APIService {
         ///   - project: The ID or URL-encoded path of the project.
         ///   - callback: configuration callback.
         /// - Returns: `[Models.User]`
-        public func usersList(project: InputParams.ProjectID,
-                              options: ((ProjectUsersOptions) -> Void)? = nil) async throws -> GLResponse<[Model.User]> {
+        public func usersList(project: InputParams.Project,
+                              options: ((ProjectUsersOptions) -> Void)? = nil) async throws -> GLResponse<[GLModel.User]> {
             let options = ProjectUsersOptions(project: project, options)
             return try await gitlab.execute(.init(endpoint: URLs.users, options: options))
         }
@@ -161,8 +161,8 @@ extension APIService {
         ///   - project: The ID or URL-encoded path of the project.
         ///   - options: configuration callback.
         /// - Returns: array of `Models.Group`
-        public func groupsOfProject(_ project: InputParams.ProjectID,
-                                    options: ((ProjectGroupsOptions) -> Void)? = nil) async throws -> GLResponse<[Model.Group]> {
+        public func groupsOfProject(_ project: InputParams.Project,
+                                    options: ((ProjectGroupsOptions) -> Void)? = nil) async throws -> GLResponse<[GLModel.Group]> {
             let options = ProjectGroupsOptions(project: project, options)
             return try await gitlab.execute(.init(endpoint: URLs.groups, options: options))
         }
@@ -179,8 +179,8 @@ extension APIService {
         ///   - project: The ID or URL-encoded path of the project.
         ///   - options: configuration callback.
         /// - Returns: generic response
-        public func fork(project: InputParams.ProjectID,
-                         options: ((ForkOptions) -> Void)? = nil) async throws -> GLResponse<Model.NoResponse> {
+        public func fork(project: InputParams.Project,
+                         options: ((ForkOptions) -> Void)? = nil) async throws -> GLResponse<GLModel.NoResponse> {
             let options = ForkOptions(project: project, options)
             return try await gitlab.execute(.init(.post, endpoint: URLs.fork, options: options))
         }
@@ -194,8 +194,8 @@ extension APIService {
         ///   - project: The ID or URL-encoded path of the project.
         ///   - options: configuration callback.
         /// - Returns: `Models.Project`
-        public func forksOfProject(_ project: InputParams.ProjectID,
-                                   options: ((ForksSearchOptions) -> Void)? = nil) async throws -> GLResponse<[Model.Project]> {
+        public func forksOfProject(_ project: InputParams.Project,
+                                   options: ((ForksSearchOptions) -> Void)? = nil) async throws -> GLResponse<[GLModel.Project]> {
             let options = ForksSearchOptions(project: project, options)
             return try await gitlab.execute(.init(endpoint: URLs.fork, options: options))
         }
@@ -207,7 +207,7 @@ extension APIService {
         ///
         /// - Parameter project: The ID or URL-encoded path of the project.
         /// - Returns: `Models.Project`
-        public func star(project: InputParams.ProjectID) async throws -> GLResponse<Model.Project> {
+        public func star(project: InputParams.Project) async throws -> GLResponse<GLModel.Project> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", project)
             ])
@@ -220,7 +220,7 @@ extension APIService {
         ///
         /// - Parameter project: The ID or URL-encoded path of the project.
         /// - Returns: `Models.Project`
-        public func unstar(project: InputParams.ProjectID) async throws -> GLResponse<Model.Project> {
+        public func unstar(project: InputParams.Project) async throws -> GLResponse<GLModel.Project> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", project)
             ])
@@ -234,9 +234,9 @@ extension APIService {
         /// - Parameters:
         ///   - project: The ID or URL-encoded path of the project.
         ///   - search: Search for specific users.
-        public func starrersOfProject(_ project: InputParams.ProjectID,
+        public func starrersOfProject(_ project: InputParams.Project,
                                       search: String? = nil)
-        async throws -> GLResponse<[Model.User]> {
+        async throws -> GLResponse<[GLModel.User]> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", project),
                 OutputParam(key: "search", search)
@@ -250,7 +250,7 @@ extension APIService {
         ///
         /// - Parameter project: The ID or URL-encoded path of the project.
         /// - Returns: a dictionary with languages and their percentage
-        public func languagesOfProject(_ project: InputParams.ProjectID) async throws ->  GLResponse<[String: Double]> {
+        public func languagesOfProject(_ project: InputParams.Project) async throws ->  GLResponse<[String: Double]> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", project)
             ])
@@ -264,7 +264,7 @@ extension APIService {
         ///
         /// - Parameter project: The ID or URL-encoded path of the project.
         /// - Returns: archived project
-        public func archive(project: InputParams.ProjectID) async throws ->  GLResponse<Model.Project> {
+        public func archive(project: InputParams.Project) async throws ->  GLResponse<GLModel.Project> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", project)
             ])
@@ -278,7 +278,7 @@ extension APIService {
         ///
         /// - Parameter project: The ID or URL-encoded path of the project.
         /// - Returns: unarchived project.
-        public func unarchive(project: InputParams.ProjectID) async throws ->  GLResponse<Model.Project> {
+        public func unarchive(project: InputParams.Project) async throws ->  GLResponse<GLModel.Project> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", project)
             ])
@@ -291,7 +291,7 @@ extension APIService {
         ///
         /// - Parameter project: The ID or URL-encoded path of the project.
         /// - Returns: generic response..
-        public func delete(project: InputParams.ProjectID) async throws ->  GLResponse<Model.NoResponse> {
+        public func delete(project: InputParams.Project) async throws ->  GLResponse<GLModel.NoResponse> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", project)
             ])
@@ -304,7 +304,7 @@ extension APIService {
         ///
         /// - Parameter project: The ID or URL-encoded path of the project.
         /// - Returns: generic response
-        public func restore(project: InputParams.ProjectID) async throws ->  GLResponse<Model.NoResponse> {
+        public func restore(project: InputParams.Project) async throws ->  GLResponse<GLModel.NoResponse> {
             let options = OutputParamsCollection([
                 OutputParam(key: "id", project)
             ])

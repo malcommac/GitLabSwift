@@ -50,7 +50,7 @@ public struct GLError: LocalizedError {
         }
 
         if let data = response.httpResponse.data,
-           let decodedError = try? JSONDecoder().decode(Model.ErrorResponse.self, from: data) {
+           let decodedError = try? JSONDecoder().decode(GLModel.ErrorResponse.self, from: data) {
             self.message = decodedError.message
         } else {
             self.message = "HTTP response received: \(response.httpResponse.statusCode.rawValue)"
