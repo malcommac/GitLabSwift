@@ -13,8 +13,24 @@
 import Foundation
 import RealHTTP
 
-/// Represent an error of the GitLabSwift library.
-public struct GLError: LocalizedError {
+// MARK: - GLErrors
+
+/// Errors throwable by the library.
+public enum GLErrors: LocalizedError {
+    /// Networking related error.
+    case networkError(GLNetworkError)
+    /// Empty data received.
+    case emptyData
+    /// Failed to create request
+    case failedToCreateRequest
+    /// Page limit reached
+    case pageLimitHasReached
+}
+
+// MARK: - GLNetworkError
+
+/// Represent a network error of the GitLabSwift library.
+public struct GLNetworkError: LocalizedError {
     
     // MARK: - Public Properties
     

@@ -33,6 +33,12 @@ public class GLResponse<Object: Decodable>: Response {
     public var httpRequest: HTTPRequest? {
         httpResponse.request
     }
+    
+    // MARK: - Private Properties
+    
+    /// Reference to the client who have executed the request of this response.
+    weak var gitlab: GLApi?
+    var request: GLRequest?
         
     // MARK: - Pages Inspector
     
@@ -95,14 +101,75 @@ public class GLResponse<Object: Decodable>: Response {
         }
         
         guard let data = httpResponse.data else {
-            throw GLError(message: "Empty data received", response: self, request: nil)
+            throw GLErrors.emptyData
         }
                 
         _value = try jsonDecoder.decode(Object.self, from: data)
         return _value
     }
     
+    /// Load the next page if available.
+    ///
+    /// - Returns: response of the next page.
+    public func nextPage() async throws -> GLResponse<Object> {
+        let (newRequest, api) = try createNewRequestFromOrigin()        
+        guard currentPage <= totalPages else {
+            throw GLErrors.pageLimitHasReached
+        }
+        
+        newRequest.optionsData?.page = (currentPage + 1)
+        return try await api.execute(newRequest)
+    }
+    
+    /// Load results of the previous page.
+    ///
+    /// - Returns: response of the previous page.
+    public func prevPage() async throws -> GLResponse<Object> {
+        let (newRequest, api) = try createNewRequestFromOrigin()
+        guard currentPage > 0 else {
+            throw GLErrors.pageLimitHasReached
+        }
+        
+        newRequest.optionsData?.page = (currentPage - 1)
+        return try await api.execute(newRequest)
+    }
+    
+    /// Load all the remaining pages and return when all response are collected.
+    ///
+    /// - Parameter count: count of pages to load,
+    ///                    if `nil` load all the remaining pages according to the total number received in this call.
+    /// - Returns: all remaining pages.
+    public func nextPages(_ count: Int?) async throws -> [GLResponse<Object>] {
+        guard currentPage != totalPages else {
+            return []
+        }
+        
+        var responses = [GLResponse<Object>]()
+        
+        let endPageIdx = (count != nil ? currentPage + count! : (totalPages - currentPage) )
+        for pageIdx in (currentPage+1)...endPageIdx {
+            let (newRequest, api) = try createNewRequestFromOrigin()
+            newRequest.optionsData?.page = pageIdx
+            let fetchResponse: GLResponse<Object> = try await api.execute(newRequest)
+            responses.append(fetchResponse)
+        }
+        
+        return responses
+    }
+    
     // MARK: - Private Functions
+    
+    /// Create a copy of the request and validate the service.
+    ///
+    /// - Returns: request and gitlab service.
+    private func createNewRequestFromOrigin() throws -> (request: GLRequest, gitlab: GLApi) {
+        guard let gitlab = self.gitlab,
+              let newRequest = self.request else {
+            throw GLErrors.failedToCreateRequest
+        }
+        
+        return (newRequest, gitlab)
+    }
     
     /// Write response data at file url.
     ///
@@ -113,6 +180,14 @@ public class GLResponse<Object: Decodable>: Response {
         }
         
         try data.write(to: fileURL)
+    }
+    
+}
+
+extension GLRequest {
+    
+    var optionsData: OutputParamsCollection? {
+        options as? OutputParamsCollection
     }
     
 }

@@ -95,7 +95,9 @@ public final class GLApi {
     public func execute<T>(_ request: GLRequest) async throws -> GLResponse<T> {
         let httpRequest = try request.httpRequest(forClient: self)
         let response = try await GLResponse<T>(httpResponse: httpRequest.fetch(httpClient), decoder: config.jsonDecoder)
-        if let error = GLError(response: response, request: request) {
+        response.gitlab = self
+        response.request = request
+        if let error = GLNetworkError(response: response, request: request) {
             throw error
         }
         return response

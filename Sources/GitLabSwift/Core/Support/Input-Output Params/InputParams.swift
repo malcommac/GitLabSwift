@@ -14,10 +14,6 @@ import Foundation
 
 public enum InputParams {}
 
-public protocol APIRequestsURLConvertible {
-    var options: OptionsConvertible { get }
-}
-
 public protocol URLEncodable: Any {
     var encodedValue: String { get }
 }
