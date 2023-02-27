@@ -6,7 +6,8 @@
 </p
 
 
-## Async/Await Gitlab API v4 client for Swift
+# Async/Await Gitlab API v4 client for Swift
+
 
 GitLabSwift is an async/await client to perform type-safe, multi-thread Swift call to the GitLab API services.  
 It's effortless to use; below just a few examples:
@@ -38,23 +39,23 @@ let commits =try await gitlab.commits.list(project: anyProjectID, options: {
 ```
 
 Each API is available inside its namespace. Currently, this library supports:
-- [Avatar](https://docs.gitlab.com/ee/api/avatar.html)) - via `.avatar`
-- [Branches](https://docs.gitlab.com/ee/api/branches.html)) - via `.branches`
-- [Branches (Protected)](https://docs.gitlab.com/ee/api/protected_branches.html)) - via `.protectedBranches`
+- [Avatar](https://docs.gitlab.com/ee/api/avatar.html) - via `.avatar`
+- [Branches](https://docs.gitlab.com/ee/api/branches.html) - via `.branches`
+- [Branches (Protected)](https://docs.gitlab.com/ee/api/protected_branches.html) - via `.protectedBranches`
 - [Commits](https://docs.gitlab.com/ee/api/commits.html)) - via `.commits`)
 - [Discussions](https://docs.gitlab.com/ee/api/discussions.html) - via `.discussions`
 - [Epic Issues](https://docs.gitlab.com/ee/api/epic_issues.html) - via `.epicIssues`
 - [Issues](https://docs.gitlab.com/ee/api/issues.html) - via `.issues`
-- [IssuesStatistics](https://docs.gitlab.com/ee/api/issues_statistics.html)) - via `.issuesStatistics`
+- [IssuesStatistics](https://docs.gitlab.com/ee/api/issues_statistics.html) - via `.issuesStatistics`
 - [Jobs](https://docs.gitlab.com/ee/api/jobs.html)) - via `.jobs`)
 - [Labels (Group)](https://docs.gitlab.com/ee/api/group_labels.html) - via `.groupLabels`
-- [Labels (Project)](https://docs.gitlab.com/ee/api/labels.html#list-labels)) - via `.labels`
+- [Labels (Project)](https://docs.gitlab.com/ee/api/labels.html#list-labels) - via `.labels`
 - [Milestones (Group)](https://docs.gitlab.com/ee/api/group_milestones.html) - via `.milestones\
 - [Milestones (Project)](https://docs.gitlab.com/ee/api/milestones.html) - via `.projectMilestones`
 - [Pipelines](https://docs.gitlab.com/ee/api/pipelines.html)) - via `.pipelines`
 - [Projects](https://docs.gitlab.com/ee/api/projects.html)) - via `.projects`
-- [Repositories](https://docs.gitlab.com/ee/api/repositories.html)) - via `.repositories`
-- [Repository Files](https://docs.gitlab.com/ee/api/repository_files.html)) - via `.repositoryFiles`
+- [Repositories](https://docs.gitlab.com/ee/api/repositories.html) - via `.repositories`
+- [Repository Files](https://docs.gitlab.com/ee/api/repository_files.html) - via `.repositoryFiles`
 - [Tags](https://docs.gitlab.com/ee/api/tags.html)) - via `.tags`
 - [Users](https://docs.gitlab.com/ee/api/users.html) - via `.users`
 
