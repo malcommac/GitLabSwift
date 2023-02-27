@@ -141,7 +141,7 @@ Add it as a dependency in a Swift Package, and add it to your Package. Swift:
 
 ```swift
 dependencies: [
-  .package(url: "https://github.com/malcommac/GitLabSwift.git", from: "1.0.0")
+  .package(url: "https://github.com/malcommac/GitLabSwift.git", from: "0.9.0")
 ]
 ```
 
