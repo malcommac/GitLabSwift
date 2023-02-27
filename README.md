@@ -1,7 +1,7 @@
 <p align="center">
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="./Documentation/gitlabswift-logo-dark.png" width="300">
-  <img alt="logo-library" src="./Documentation/gitlabswift-logo-light.png" width="300">
+  <source media="(prefers-color-scheme: dark)" srcset="./Documentation/gitlabswift-dark.png" width="300">
+  <img alt="logo-library" src="./Documentation/gitlabswift-light.png" width="300">
 </picture>
 </p
 
