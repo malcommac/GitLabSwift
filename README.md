@@ -8,7 +8,7 @@
 ## Async/Await Gitlab API v4 client for Swift
 
 GitLabSwift is an async/await client to perform type-safe, multi-thread Swift call to the GitLab API services.  
-It's very simple to use, below just few examples:
+It's effortless to use; below just a few examples:
 
 ```swift
 // Configure your APIs service connector
@@ -18,7 +18,7 @@ let api = GitLab(config: .init(baseURL: "http://...", {
 
 // SOME EXAMPLES
 
-// Get your own profile
+// Get your profile
 let me: GLModel.User = try await gitlab.users.me()
 
 // Get projects
@@ -36,7 +36,7 @@ let commits =try await gitlab.commits.list(project: anyProjectID, options: {
 })
 ```
 
-Each API is available inside their own namespace. Currently this library supports:
+Each API is available inside its namespace. Currently, this library supports:
 - [Avatar](https://docs.gitlab.com/ee/api/avatar.html)) - via `.avatar`
 - [Branches](https://docs.gitlab.com/ee/api/branches.html)) - via `.branches`
 - [Branches (Protected)](https://docs.gitlab.com/ee/api/protected_branches.html)) - via `.protectedBranches`
@@ -58,12 +58,12 @@ Each API is available inside their own namespace. Currently this library support
 - [Users](https://docs.gitlab.com/ee/api/users.html) - via `.users`
 
 > **Note**
-> Not all APIs endpoints are supported. I tried to implement the most commonly used. Feel free to contribute by opening a new PR.
+> Not all API endpoints are supported. I tried to implement the most commonly used. Feel free to contribute by opening a new PR.
 
 ## Documentation
 
-Usage of the library is pretty simple.  
-First of all you need to instantiate a new `GLApi` service which is the service used to communicate with your own GitLab instance:
+The usage of the library is pretty simple.  
+First of all, you need to instantiate a new `GLApi` service which is the service used to communicate with your own GitLab instance:
 
 ```swift
 let api = GitLab(config: .init(baseURL: "http://...", {
@@ -71,10 +71,10 @@ let api = GitLab(config: .init(baseURL: "http://...", {
 })
 ```
 
-Currently GitLabSwift supports Personal Access Tokens you can create directly from your GitLab instance profile.  
-Once ready each context is reachable by calling `gitlab.<context>.<api_call>`.  
+GitLabSwift supports Personal Access Tokens you can create directly from your GitLab instance profile.  
+Once ready, each context is reachable by calling `gitlab.<context>.<api_call>`.  
 
-Each APIs is typesafe. When an API supports multiple options an options callback is used where each parameter is type-safe.  
+Each endpoint is type-safe. When an API supports multiple options, an options callback is used where each parameter is type-safe.  
 For example:
 
 ```swift
@@ -87,18 +87,18 @@ let response = try await gitlab.milestones.list(project: .id(1097), options: {
 ```
 
 Each request return a generic object called `GLResponse`.  
-This objects allows you to identify any metadata of the request:
+This object allows you to identify any metadata of the request:
 
 ```swift
 print("There are \(response.totalItems) in \(response.totalPages)"
 print("Now showing \(response.countItemsPerPage) items per page")
 ```
-You can also access to the underlyin data via `response.httpResponse` and the original request via `response.httpRequest`.
+You can also access the underlying data via `response.httpResponse` and the original request via `response.httpRequest`.
 
-Since the result is a throwing async function, if an error occours a `GLErrors` is catched.
+Since the result is an async throwing function, if an error occurs, a `GLErrors` is cached.
 
-Most of the times you're interested in getting the decoded objects. GitLabSwift uses `Codable` and each supported GitLab model is exposed via `GLModel` namespace.  
-You just need to call `response.decode()` function to get the actual model instance from the reponse:
+Most of the time, you're interested in getting the decoded objects. GitLabSwift uses `Codable` and each supported GitLab model is exposed via `GLModel` namespace.  
+You just need to call `response.decode()` function to get the actual model instance from the response:
 
 ```swift
 let tags: [GLModel.Tag] = try await gitlab.tags.list(
@@ -111,6 +111,17 @@ for tag in tags {
     print("- Tag \(tag.name) from commit \(tag.commit.id) created on \(tag.commit.created_at)")
 }
 ```
+
+Starting from a response, you can easily move to the next pages:
+
+```swift
+let nextPageResponse = try await response.nextPage() // move forward
+let prevPageResponse = try await response.prevPage() // move backward
+let next3Pages = try await response.nextPages(3) // get the next 3 pages responses from current page of the response
+let allRemainingPages = try await response.nextPages() // get all remaining pages
+```
+> **Note**
+> These functions execute multiple async requests and return results at the end. If one of the calls fails, the entire flow fails.
 
 ## Requirements
 
