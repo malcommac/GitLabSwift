@@ -37,25 +37,25 @@ let commits =try await gitlab.commits.list(project: anyProjectID, options: {
 ```
 
 Each API is available inside their own namespace. Currently this library supports:
-- Avatar
-- Branches
-- Branches (Protected)
-- Commits
-- Discussions
-- Epic Issues
-- Issues
-- IssuesStatistics
-- Jobs
-- Labels (Group)
-- Labels (Project)
-- Milestones (Group)
-- Milestones (Project)
-- Pipelines
-- Projects
-- Repositories
-- Repository Files
-- Tags
-- Users
+- [Avatar](https://docs.gitlab.com/ee/api/avatar.html)) - via `.avatar`
+- [Branches](https://docs.gitlab.com/ee/api/branches.html)) - via `.branches`
+- [Branches (Protected)](https://docs.gitlab.com/ee/api/protected_branches.html)) - via `.protectedBranches`
+- [Commits](https://docs.gitlab.com/ee/api/commits.html)) - via `.commits`)
+- [Discussions](https://docs.gitlab.com/ee/api/discussions.html) - via `.discussions`
+- [Epic Issues](https://docs.gitlab.com/ee/api/epic_issues.html) - via `.epicIssues`
+- [Issues](https://docs.gitlab.com/ee/api/issues.html) - via `.issues`
+- [IssuesStatistics](https://docs.gitlab.com/ee/api/issues_statistics.html)) - via `.issuesStatistics`
+- [Jobs](https://docs.gitlab.com/ee/api/jobs.html)) - via `.jobs`)
+- [Labels (Group)](https://docs.gitlab.com/ee/api/group_labels.html) - via `.groupLabels`
+- [Labels (Project)](https://docs.gitlab.com/ee/api/labels.html#list-labels)) - via `.labels`
+- [Milestones (Group)](https://docs.gitlab.com/ee/api/group_milestones.html) - via `.milestones\
+- [Milestones (Project)](https://docs.gitlab.com/ee/api/milestones.html) - via `.projectMilestones`
+- [Pipelines](https://docs.gitlab.com/ee/api/pipelines.html)) - via `.pipelines`
+- [Projects](https://docs.gitlab.com/ee/api/projects.html)) - via `.projects`
+- [Repositories](https://docs.gitlab.com/ee/api/repositories.html)) - via `.repositories`
+- [Repository Files](https://docs.gitlab.com/ee/api/repository_files.html)) - via `.repositoryFiles`
+- [Tags](https://docs.gitlab.com/ee/api/tags.html)) - via `.tags`
+- [Users](https://docs.gitlab.com/ee/api/users.html) - via `.users`
 
 > **Note**
 > Not all APIs endpoints are supported. I tried to implement the most commonly used. Feel free to contribute by opening a new PR.
@@ -90,7 +90,7 @@ Each request return a generic object called `GLResponse`.
 This objects allows you to identify any metadata of the request:
 
 ```swift
-print("There are \(response.totalItems) in \(response.totalPages)")
+print("There are \(response.totalItems) in \(response.totalPages)"
 print("Now showing \(response.countItemsPerPage) items per page")
 ```
 You can also access to the underlyin data via `response.httpResponse` and the original request via `response.httpRequest`.
@@ -101,7 +101,11 @@ Most of the times you're interested in getting the decoded objects. GitLabSwift 
 You just need to call `response.decode()` function to get the actual model instance from the reponse:
 
 ```swift
-let tags: [GLModel.Tag] = try await gitlab.tags.list(project: .id(1097), sort: .asc, search: "release").decode()
+let tags: [GLModel.Tag] = try await gitlab.tags.list(
+    project: .id(1097), 
+    sort: .asc, 
+    search: "release"
+).decode()
 // You will get an array of `Tags`!
 for tag in tags {
     print("- Tag \(tag.name) from commit \(tag.commit.id) created on \(tag.commit.created_at)")
