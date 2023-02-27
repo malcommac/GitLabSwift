@@ -1,12 +1,9 @@
 <p align="center">
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="./Documentation/gitlabswift.png" width="250">
-  <img alt="logo-library" src="./Documentation/gitlabswift.png" width="250">
+  <source media="(prefers-color-scheme: dark)" srcset="./Documentation/gitlabswift-dark.png" width="300">
+  <img alt="logo-library" src="./Documentation/gitlabswift-light.png" width="300">
 </picture>
 </p
-
-
-# Async/Await Gitlab API v4 client for Swift
 
 
 GitLabSwift is an async/await client to perform type-safe, multi-thread Swift call to the GitLab API services.  
@@ -15,7 +12,7 @@ It's effortless to use; below just a few examples:
 ```swift
 // Configure your APIs service connector
 let api = GitLab(config: .init(baseURL: "http://...", {
-    $0.token = "<YOUR_PERSONAL_TOKEN>"
+    $0.token = "<YOUR_PERSONAL_TOKEN>" // GitLab PAT
 })
 
 // SOME EXAMPLES
@@ -42,17 +39,17 @@ Each API is available inside its namespace. Currently, this library supports:
 - [Avatar](https://docs.gitlab.com/ee/api/avatar.html) - via `.avatar`
 - [Branches](https://docs.gitlab.com/ee/api/branches.html) - via `.branches`
 - [Branches (Protected)](https://docs.gitlab.com/ee/api/protected_branches.html) - via `.protectedBranches`
-- [Commits](https://docs.gitlab.com/ee/api/commits.html)) - via `.commits`)
+- [Commits](https://docs.gitlab.com/ee/api/commits.html) - via `.commits`)
 - [Discussions](https://docs.gitlab.com/ee/api/discussions.html) - via `.discussions`
 - [Epic Issues](https://docs.gitlab.com/ee/api/epic_issues.html) - via `.epicIssues`
 - [Issues](https://docs.gitlab.com/ee/api/issues.html) - via `.issues`
 - [IssuesStatistics](https://docs.gitlab.com/ee/api/issues_statistics.html) - via `.issuesStatistics`
-- [Jobs](https://docs.gitlab.com/ee/api/jobs.html)) - via `.jobs`)
+- [Jobs](https://docs.gitlab.com/ee/api/jobs.html)) - via `.jobs`
 - [Labels (Group)](https://docs.gitlab.com/ee/api/group_labels.html) - via `.groupLabels`
 - [Labels (Project)](https://docs.gitlab.com/ee/api/labels.html#list-labels) - via `.labels`
-- [Milestones (Group)](https://docs.gitlab.com/ee/api/group_milestones.html) - via `.milestones\
+- [Milestones (Group)](https://docs.gitlab.com/ee/api/group_milestones.html) - via `.milestones`
 - [Milestones (Project)](https://docs.gitlab.com/ee/api/milestones.html) - via `.projectMilestones`
-- [Pipelines](https://docs.gitlab.com/ee/api/pipelines.html)) - via `.pipelines`
+- [Pipelines](https://docs.gitlab.com/ee/api/pipelines.html) - via `.pipelines`
 - [Projects](https://docs.gitlab.com/ee/api/projects.html)) - via `.projects`
 - [Repositories](https://docs.gitlab.com/ee/api/repositories.html) - via `.repositories`
 - [Repository Files](https://docs.gitlab.com/ee/api/repository_files.html) - via `.repositoryFiles`
