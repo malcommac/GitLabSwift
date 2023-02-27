@@ -1,7 +1,7 @@
 <p align="center">
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="./Documentation/gitlabswift-dark.png" width="300">
-  <img alt="logo-library" src="./Documentation/gitlabswift-light.png" width="300">
+  <source media="(prefers-color-scheme: dark)" srcset="./Documentation/gitlabswift-logo-dark.png" width="300">
+  <img alt="logo-library" src="./Documentation/gitlabswift-logo-light.png" width="300">
 </picture>
 </p
 
@@ -155,9 +155,11 @@ targets: [
 ## Author
 
 GitLabSwift is currently owned and maintained by Daniele Margutti.
-You can follow me on 
+
 - 🐦 on twitter [@danielemargutti](http://twitter.com/danielemargutti/)).
 - 👩‍💻 on my web site [www.danielemargutti.com](https://www.danielemargutti.com)
 - 💼 on LinkedIn [Daniele Margutti](http://linkedin.com/in/danielemargutti/)
+
+## License
 
 This software is licensed under MIT License.
