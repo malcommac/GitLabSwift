@@ -1,7 +1,7 @@
 <p align="center">
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="./Documentation/gitlabswift.png" width="350">
-  <img alt="logo-library" src="./Documentation/gitlabswift.png" width="350">
+  <source media="(prefers-color-scheme: dark)" srcset="./Documentation/gitlabswift.png" width="250">
+  <img alt="logo-library" src="./Documentation/gitlabswift.png" width="250">
 </picture>
 </p
 
@@ -35,3 +35,115 @@ let commits =try await gitlab.commits.list(project: anyProjectID, options: {
     $0.includeStats = true
 })
 ```
+
+Each API is available inside their own namespace. Currently this library supports:
+- Avatar
+- Branches
+- Branches (Protected)
+- Commits
+- Discussions
+- Epic Issues
+- Issues
+- IssuesStatistics
+- Jobs
+- Labels (Group)
+- Labels (Project)
+- Milestones (Group)
+- Milestones (Project)
+- Pipelines
+- Projects
+- Repositories
+- Repository Files
+- Tags
+- Users
+
+> **Note**
+> Not all APIs endpoints are supported. I tried to implement the most commonly used. Feel free to contribute by opening a new PR.
+
+## Documentation
+
+Usage of the library is pretty simple.  
+First of all you need to instantiate a new `GLApi` service which is the service used to communicate with your own GitLab instance:
+
+```swift
+let api = GitLab(config: .init(baseURL: "http://...", {
+    $0.token = "<YOUR_PERSONAL_TOKEN>"
+})
+```
+
+Currently GitLabSwift supports Personal Access Tokens you can create directly from your GitLab instance profile.  
+Once ready each context is reachable by calling `gitlab.<context>.<api_call>`.  
+
+Each APIs is typesafe. When an API supports multiple options an options callback is used where each parameter is type-safe.  
+For example:
+
+```swift
+let response = try await gitlab.milestones.list(project: .id(1097), options: {
+    // Each parameter is type-safe
+    $0.includeParent = true
+    $0.state = .activate
+    $0.search = .beginWith("geo")
+})
+```
+
+Each request return a generic object called `GLResponse`.  
+This objects allows you to identify any metadata of the request:
+
+```swift
+print("There are \(response.totalItems) in \(response.totalPages)")
+print("Now showing \(response.countItemsPerPage) items per page")
+```
+You can also access to the underlyin data via `response.httpResponse` and the original request via `response.httpRequest`.
+
+Since the result is a throwing async function, if an error occours a `GLErrors` is catched.
+
+Most of the times you're interested in getting the decoded objects. GitLabSwift uses `Codable` and each supported GitLab model is exposed via `GLModel` namespace.  
+You just need to call `response.decode()` function to get the actual model instance from the reponse:
+
+```swift
+let tags: [GLModel.Tag] = try await gitlab.tags.list(project: .id(1097), sort: .asc, search: "release").decode()
+// You will get an array of `Tags`!
+for tag in tags {
+    print("- Tag \(tag.name) from commit \(tag.commit.id) created on \(tag.commit.created_at)")
+}
+```
+
+## Requirements
+
+GitLabSwift can be installed on any platform which supports:
+
+- iOS 13+, macOS Catalina+, watchOS 6+, tvOS 13+
+- Xcode 14+ 
+- Swift 5.7+  
+
+## Installation
+
+### Swift Package Manager
+
+Add it as a dependency in a Swift Package, and add it to your Package. Swift:
+
+```swift
+dependencies: [
+  .package(url: "https://github.com/malcommac/GitLabSwift.git", from: "1.0.0")
+]
+```
+
+And add it as a dependency of your target:
+
+```swift
+targets: [
+  .target(name: "MyTarget", dependencies: [
+    .product(name: "https://github.com/malcommac/GitLabSwift.git", package: "GitLabSwift")
+  ])
+]
+```
+
+## Author
+
+GitLabSwift is currently owned and maintained by Daniele Margutti.
+You can follow me on 
+- 🐦 on twitter [@danielemargutti](http://twitter.com/danielemargutti/)).
+- 👩‍💻 on my web site [www.danielemargutti.com](https://www.danielemargutti.com)
+- 💼 on LinkedIn [Daniele Margutti](http://linkedin.com/in/danielemargutti/)
+
+This software is licensed under MIT License.
