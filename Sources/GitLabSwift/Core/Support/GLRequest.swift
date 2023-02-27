@@ -22,18 +22,12 @@ public struct GLRequest {
     public var httpMethod: HTTPMethod
     
     /// Endpoint for the call.
-    public var endpoint: GLEndpoint?
+    public var endpoint: GLEndpoint
 
     // MARK: - Private Properties
     
     /// Underlying parameters dictionary.
-    public var options: OptionsConvertible?
-    
-    // MARK: - Internal Properties
-    
-    /// In order to support `nextPage()` and `prevPage()` from an already executed
-    /// request, we can create a new `GLRequest` instance with an absolute url.
-    internal var fixedURL: URL?
+    public var options: OptionsConvertible
     
     // MARK: - Private Properties
     
@@ -53,45 +47,13 @@ public struct GLRequest {
         self.httpMethod = method
         self.options = options
         self.endpoint = endpoint
-        self.fixedURL = nil
     }
-    
-    init(_ method: HTTPMethod = .get, fixedURL: URL) {
-        self.httpMethod = method
-        self.fixedURL = fixedURL
-        self.endpoint = nil
-        self.options = nil
-    }
-    
-    // MARK: - Internal Functions
-    
-    internal func httpRequest(forClient gitlab: GLApi) throws -> HTTPRequest {
-        if let fixedURL {
-            return try httpRequest(forClient: gitlab, fixedURL: fixedURL)
-        } else if let endpoint = self.endpoint, let options = self.options  {
-            return try httpRequest(gitlab: gitlab, options: options, endpoint: endpoint)
-        } else {
-            fatalError()
-        }
-    }
-    
-    // MARK: - Private Functions
-    
-    private func httpRequest(forClient gitlab: GLApi, fixedURL: URL) throws -> HTTPRequest {
-        HTTPRequest {
-            $0.url = fixedURL
-            $0.method = httpMethod
-            if let auth = gitlab.config.authenticationToken() {
-                $0.headers.set(auth.key, auth.value)
-            }
-        }
-    }
-    
+
     /// Create an executable http request for a given client.
     ///
     /// - Parameter gitlab: gitlab client where the request will be executed.
     /// - Returns: the request itself, throws if something went wrong.
-    private func httpRequest(gitlab: GLApi, options: OptionsConvertible, endpoint: GLEndpoint) throws -> HTTPRequest {
+    func httpRequest(forClient gitlab: GLApi) throws -> HTTPRequest {
         // Expand parameters and create the url based upon the request.
         let queryData = try options.encodedOptions()
         let allVariables = queryData.queryItems
