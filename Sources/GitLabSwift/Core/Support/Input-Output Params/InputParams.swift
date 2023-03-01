@@ -90,6 +90,22 @@ public extension InputParams {
         public var encodedValue: String { rawValue }
     }
     
+    enum MilestoneStateList: String, URLEncodable {
+        case opened
+        case closed
+        case locked
+        case merged
+        
+        public var encodedValue: String { rawValue }
+    }
+    
+    enum MilestoneWip: String, URLEncodable {
+        case yes
+        case no
+        
+        public var encodedValue: String { rawValue }
+    }
+    
     enum PipelineSource: String, URLEncodable {
         case push
         case web
@@ -386,6 +402,14 @@ public extension InputParams {
         case updated
         case name
         case version
+        
+        public var encodedValue: String { rawValue }
+    }
+    
+    enum MilestoneOrder: String, URLEncodable {
+        case created_at
+        case title
+        case updated_at
         
         public var encodedValue: String { rawValue }
     }

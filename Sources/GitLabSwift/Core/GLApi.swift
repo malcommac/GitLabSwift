@@ -68,6 +68,7 @@ public final class GLApi {
     public lazy var repositoryFiles: APIs.RepositoryFiles = { .init(gitlab: self) }()
     public lazy var tags: APIs.Tags = { .init(gitlab: self) }()
     public lazy var avatar: APIs.Avatar = { .init(gitlab: self) }()
+    public lazy var mergeRequest: APIs.MergeRequests = { .init(gitlab: self) }()
 
     // MARK: - Private Properties
     

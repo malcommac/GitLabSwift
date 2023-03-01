@@ -16,7 +16,8 @@ import RealHTTP
 
 let gitlab: GLApi = {
     let config = Config(baseURL: "", {
-        $0.apiVersion = "4"
+       // $0.apiVersion = "4"
+        $0.token = ""
     })
     return .init(config: config)
 }()
@@ -37,7 +38,7 @@ public func catchErrors(_ block: (() async throws -> Void)) async -> Bool {
         print("Type '\(type)' mismatch:", context.debugDescription)
         print("codingPath:", context.codingPath)
     } catch {
-        if let gitlabError = error as? GLError {
+        if let gitlabError = error as? GLNetworkError {
             if gitlabError.statusCode == .notFound {
                 print("This call is not supported by the WS. Cannot be tested.")
                 return true

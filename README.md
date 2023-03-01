@@ -47,6 +47,7 @@ Each API is available inside its namespace. Currently, this library supports:
 - [Jobs](https://docs.gitlab.com/ee/api/jobs.html)) - via `.jobs`
 - [Labels (Group)](https://docs.gitlab.com/ee/api/group_labels.html) - via `.groupLabels`
 - [Labels (Project)](https://docs.gitlab.com/ee/api/labels.html#list-labels) - via `.labels`
+- [Merge Requests](https://docs.gitlab.com/ee/api/merge_requests.html) - via `.mergeRequests`
 - [Milestones (Group)](https://docs.gitlab.com/ee/api/group_milestones.html) - via `.milestones`
 - [Milestones (Project)](https://docs.gitlab.com/ee/api/milestones.html) - via `.projectMilestones`
 - [Pipelines](https://docs.gitlab.com/ee/api/pipelines.html) - via `.pipelines`
