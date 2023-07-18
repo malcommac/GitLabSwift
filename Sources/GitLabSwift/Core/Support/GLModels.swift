@@ -482,6 +482,7 @@ public extension GLModel {
         public let discussion_locked: Bool?
         public let web_url: URL
         public let time_stats: GLModel.TimeStats?
+        public let merge_requests_count: Int?
     }
 
     struct Label: Decodable {
