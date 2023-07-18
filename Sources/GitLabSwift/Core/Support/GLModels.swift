@@ -242,7 +242,7 @@ public extension GLModel {
         public let committed_date: Date?
         public let status: String?
         public let last_pipeline: Pipeline?
-        public let web_url: String?
+        public let web_url: URL
         
         public struct GPGSignature: Decodable {
             public let signature_type: String
