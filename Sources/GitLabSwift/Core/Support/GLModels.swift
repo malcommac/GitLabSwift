@@ -89,7 +89,7 @@ public extension GLModel {
         public let status: String?
         public let failure_reason: String?
         public let tag: Bool?
-        public let web_url: URL?
+        public let web_url: URL
         public let user: User?
     }
     
@@ -242,6 +242,7 @@ public extension GLModel {
         public let committed_date: Date?
         public let status: String?
         public let last_pipeline: Pipeline?
+        public let web_url: String?
         
         public struct GPGSignature: Decodable {
             public let signature_type: String
