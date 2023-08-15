@@ -18,9 +18,9 @@ public extension GLModel {
     
     struct NoResponse: Codable { }
         
-    struct Repository: Decodable {
+    struct Repository: Codable {
         
-        public struct Tree: Decodable {
+        public struct Tree: Codable {
             public let id: String
             public let name: String
             public let type: String
@@ -30,16 +30,16 @@ public extension GLModel {
         
     }
     
-    struct FileBlame: Decodable {
+    struct FileBlame: Codable {
         public let commit: Commit
         public let lines: [String]
     }
     
-    struct Avatar: Decodable {
+    struct Avatar: Codable {
         public let avatar_url: String
     }
     
-    struct Tag: Decodable {
+    struct Tag: Codable {
         public let name: String
         public let target: String?
         public let message: String?
@@ -47,13 +47,13 @@ public extension GLModel {
         public let commit: Commit
         public let release: Release?
         
-        public struct Release: Decodable {
+        public struct Release: Codable {
             public let tag_name: String
             public let description: String?
         }
     }
 
-    struct File: Decodable {
+    struct File: Codable {
         public let file_name: String
         public let file_path: String
         public let size: Int
@@ -67,7 +67,7 @@ public extension GLModel {
         public let execute_filemode: Bool?
     }
     
-    struct Job: Decodable {
+    struct Job: Codable {
         public let commit: Commit?
         public let coverage: String?
         public let allows_failure: Bool?
@@ -93,14 +93,14 @@ public extension GLModel {
         public let user: User?
     }
     
-    struct JobArtifact: Decodable {
+    struct JobArtifact: Codable {
         public let file_type: String?
         public let size: UInt
         public let filename: String
         public let file_format: String?
     }
     
-    struct UserAgentDetail: Decodable {
+    struct UserAgentDetail: Codable {
         public let user_agent: String
         public let ip_address: String
         public let akismet_submitted: Bool?
@@ -136,7 +136,7 @@ public extension GLModel {
         
     }
     
-    struct Project: Decodable {
+    struct Project: Codable {
         public let id: Int
         public let description: String
         public let name: String
@@ -151,7 +151,7 @@ public extension GLModel {
         public let owner: User?
     }
 
-    struct Branch: Decodable {
+    struct Branch: Codable {
         public let name: String
         public let merged: Bool
         public let protected: Bool
@@ -160,12 +160,12 @@ public extension GLModel {
         public let commit: Commit
     }
     
-    struct ProtectedBranch: Decodable, CustomStringConvertible {
+    struct ProtectedBranch: Codable, CustomStringConvertible {
         public let name: String
         public let push_access_levels: [AccessLevel]
         public let merge_access_levels: [AccessLevel]
 
-        public struct AccessLevel: Decodable, CustomStringConvertible {
+        public struct AccessLevel: Codable, CustomStringConvertible {
             public let access_level: Int
             public let access_level_description: String
             
@@ -183,11 +183,11 @@ public extension GLModel {
         
     }
     
-    struct Changelog: Decodable {
+    struct Changelog: Codable {
         public let notes: String
     }
     
-    struct CommonAncestor: Decodable {
+    struct CommonAncestor: Codable {
         public let id: String
         public let short_id: String
         public let title: String
@@ -201,7 +201,7 @@ public extension GLModel {
         public let committed_date: Date
     }
     
-    struct Contributor: Decodable {
+    struct Contributor: Codable {
         public let name: String
         public let email: String
         public let commits: Int
@@ -209,7 +209,7 @@ public extension GLModel {
         public let deletions: Int
     }
     
-    struct ShaCompareResult: Decodable {
+    struct ShaCompareResult: Codable {
         public let commit: Commit?
         public let commits: [Commit]
         public let diffs: [Diff]
@@ -217,7 +217,7 @@ public extension GLModel {
         public let compare_same_ref: Bool?
     }
     
-    struct Diff: Decodable {
+    struct Diff: Codable {
         public let old_path: String
         public let new_path: String
         public let a_mode: String
@@ -228,7 +228,7 @@ public extension GLModel {
         public let diff: String
     }
 
-    struct Commit: Decodable {
+    struct Commit: Codable {
         public let id: String
         public let short_id: String
         public let title: String
@@ -244,7 +244,7 @@ public extension GLModel {
         public let last_pipeline: Pipeline?
         public let web_url: URL
         
-        public struct GPGSignature: Decodable {
+        public struct GPGSignature: Codable {
             public let signature_type: String
             public let verification_status: String
             public let gpg_key_id: Int?
@@ -255,7 +255,7 @@ public extension GLModel {
             public let gpg_key_subkey_id: String?
         }
 
-        public struct Diff: Decodable {
+        public struct Diff: Codable {
             public let old_path: String?
             public let new_path: String?
             public let a_mode: String?
@@ -266,17 +266,17 @@ public extension GLModel {
             public let diff: String?
         }
         
-        public struct Comment: Decodable {
+        public struct Comment: Codable {
             public let note: String?
             public let author: GLModel.User?
         }
         
-        public struct Ref: Decodable {
+        public struct Ref: Codable {
             public let type: String?
             public let name: String?
         }
         
-        public struct Status: Decodable {
+        public struct Status: Codable {
             public let status: String
             public let id: Int
             public let sha: String
@@ -293,7 +293,7 @@ public extension GLModel {
         }
     }
 
-    struct Group: Decodable {
+    struct Group: Codable {
         public let id: Int
         public let name: String?
         public let avatar_url: URL?
@@ -302,20 +302,20 @@ public extension GLModel {
         public let full_path: String?
     }
     
-    struct Pipeline: Decodable {
+    struct Pipeline: Codable {
         public let id: Int?
         public let sha: String?
         public let ref: String?
         public let status: String?
         public let project_id: Int?
         
-        public struct Variable: Decodable {
+        public struct Variable: Codable {
             public let key: String
             public let value: String
             public let variable_type: String
         }
         
-        public struct TestReport: Decodable {
+        public struct TestReport: Codable {
             public let total_time: Int
             public let total_count: Int
             public let success_count: Int
@@ -325,7 +325,7 @@ public extension GLModel {
             public let test_suites: [TestSuite]
         }
         
-        public struct TestSuite: Decodable {
+        public struct TestSuite: Codable {
             public let name: String
             public let total_time: Int
             public let total_count: Int
@@ -336,7 +336,7 @@ public extension GLModel {
             public let test_cases: [TestCase]
         }
         
-        public struct TestCase: Decodable {
+        public struct TestCase: Codable {
             public let status: String
             public let name: String
             public let classname: String?
@@ -345,7 +345,7 @@ public extension GLModel {
             public let stack_trace: String?
         }
         
-        public struct TestSummary: Decodable {
+        public struct TestSummary: Codable {
             public let time: Int
             public let count: Int
             public let success: Int
@@ -356,12 +356,12 @@ public extension GLModel {
         }
     }
 
-    struct Discussion: Decodable {
+    struct Discussion: Codable {
         public let id: String
         public let individual_note: Bool
         public let notes: [Note]
         
-        public struct Note: Decodable {
+        public struct Note: Codable {
             public let id: Int
             public let type: String?
             public let body: String?
@@ -376,7 +376,7 @@ public extension GLModel {
         }
     }
     
-    struct MergeRequest: Decodable {
+    struct MergeRequest: Codable {
         public let id: Int
         public let iid: Int
         public let project_id: Int
@@ -408,7 +408,7 @@ public extension GLModel {
         public let time_stats: TimeStats?
     }
     
-    struct Milestone: Decodable {
+    struct Milestone: Codable {
         public let id: Int
         public let iid: Int
         public let project_id: Int
@@ -421,14 +421,14 @@ public extension GLModel {
         public let start_date: Date?
     }
 
-    struct TimeStats: Decodable {
+    struct TimeStats: Codable {
         public let time_estimate: Int?
         public let total_time_spent: Int?
         public let human_time_estimate: Int?
         public let human_total_time_spent: Int?
     }
     
-    struct Note: Decodable {
+    struct Note: Codable {
         public let id: Int
         public let type: String
         public let body: String
@@ -443,13 +443,13 @@ public extension GLModel {
         public let noteable_iid: Int?
     }
     
-    struct EpicIssueAssociation: Decodable {
+    struct EpicIssueAssociation: Codable {
         public let id: Int
         public let epic: Epic
         public let issue: Issue
     }
     
-    struct Epic: Decodable {
+    struct Epic: Codable {
         public let id: Int
         public let iid: Int
         public let title: String
@@ -459,7 +459,7 @@ public extension GLModel {
         public let end_date: Date?
     }
     
-    struct Issue: Decodable {
+    struct Issue: Codable {
         public let id: Int
         public let iid: Int
         public let project_id: Int
@@ -486,7 +486,7 @@ public extension GLModel {
         public let merge_requests_count: Int?
     }
 
-    struct Label: Decodable {
+    struct Label: Codable {
         public let id: Int
         public let name: String
         public let color: String?

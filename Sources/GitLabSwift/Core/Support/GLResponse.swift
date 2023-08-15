@@ -22,7 +22,7 @@ public protocol Response {
 }
 
 /// GitLab response.
-public class GLResponse<Object: Decodable>: Response {
+public class GLResponse<Object: Codable>: Response {
     
     // MARK: - Public Properties
     
