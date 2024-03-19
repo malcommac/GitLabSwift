@@ -37,6 +37,7 @@ extension APIs.MergeRequests {
         case add_spent_time = "/projects/{id}/merge_requests/{merge_request_iid}/add_spent_time"
         case reset_spent_time = "/projects/{id}/merge_requests/{merge_request_iid}/reset_spent_time"
         case time_stats = "/projects/{id}/merge_requests/{merge_request_iid}/time_stats"
+        case approvals = "/projects/{id}/merge_requests/{merge_request_iid}/approvals"
 
         public var value: String { rawValue }
     }
@@ -133,6 +134,23 @@ extension APIs {
                 OutputParam(key: "merge_request_iid", mergeRequest)
             ])
             return try await gitlab.execute(.init(endpoint: URLs.partecipants, options: options))
+        }
+        
+        /// Return informations about the group’s approval rules for a merge request.
+        ///
+        /// [API Documentation](https://docs.gitlab.com/ee/api/merge_request_approvals.html)
+        ///
+        /// - Parameters:
+        ///   - mergeRequest: The internal ID of the merge request.
+        ///   - project: The ID or URL-encoded path of the project owned by the authenticated user.
+        /// - Returns: approval rules
+        public func approvals(_ mergeRequest: Int,
+                              project: InputParams.Project) async throws -> GLResponse<GLModel.MergeRequestApprovals> {
+            let options = OutputParamsCollection([
+                OutputParam(key: "id", project),
+                OutputParam(key: "merge_request_iid", mergeRequest)
+            ])
+            return try await gitlab.execute(.init(endpoint: URLs.approvals, options: options))
         }
         
         /// Get a list of merge request reviewers.

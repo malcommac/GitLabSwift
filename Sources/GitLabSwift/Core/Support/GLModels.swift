@@ -396,8 +396,10 @@ public extension GLModel {
         public let labels: [String]?
         public let work_in_progress: Bool?
         public let milestone: GLModel.Milestone?
+        public let squash_commit_sha: String?
         public let merge_when_pipeline_succeds: Bool?
         public let merge_status: String?
+        public let detailed_merge_status: String?
         public let sha: String?
         public let merge_commit_sha: String?
         public let user_notes_count: Int
@@ -406,6 +408,38 @@ public extension GLModel {
         public let force_remove_source_branch: Bool?
         public let web_url: URL
         public let time_stats: TimeStats?
+    }
+    
+    struct MergeRequestApprovals: Codable {
+        public let id: Int
+        public let iid: Int
+        public let project_id: Int
+        public let title: String?
+        public let description: String?
+        public let state: String
+        public let created_at: Date?
+        public let updated_at: Date?
+        public let merge_status: String?
+        public let approved: Bool
+        public let approvals_required: Int?
+        public let approvals_left: Int?
+        public let require_password_to_approve: Bool?
+        public let approved_by: [GLModel.User]?
+        public let suggested_approvers: [GLModel.User]?
+        public let approvers: [GLModel.User]?
+        public let user_has_approved: Bool?
+        public let user_can_approve: Bool?
+        public let approval_rules_left: [ApprovalRule]?
+        public let has_approval_rules: Bool
+        public let merge_request_approvers_available: Bool
+        public let multiple_approval_rules_available: Bool
+        public let invalid_approvers_rules: [ApprovalRule]?
+    }
+    
+    struct ApprovalRule: Codable {
+        public let id: Int
+        public let name: String
+        public let rule_type: String
     }
     
     struct Milestone: Codable {
