@@ -178,11 +178,7 @@ extension APIs.Issues {
     }
     
     public class ListProjectOptions: ListOptions {
-        
-        /// Id of the group.
-        @OutputParam(key: "id")
-        public var project: InputParams.Project?
-        
+    
         // MARK: - Initialization
         
         public init(project: InputParams.Project,
@@ -211,6 +207,10 @@ extension APIs.Issues {
     }
         
     public class ListOptions: OutputParamsCollection {
+        
+        /// Id of the group.
+        @OutputParam(key: "id")
+        public var project: InputParams.Project?
         
         /// Return issues assigned to the given user id.
         /// Mutually exclusive with assignee_username.
@@ -338,8 +338,9 @@ extension APIs.Issues {
         
         // MARK: - Initialization
         
-        public init(_ configure: ((ListOptions) -> Void)?) {
+        public init(project: InputParams.Project? = nil, _ configure: ((ListOptions) -> Void)?) {
             super.init()
+            self.project = project
             configure?(self)
         }
         
