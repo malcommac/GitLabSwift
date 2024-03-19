@@ -16,6 +16,10 @@ extension APIs.MergeRequests {
     
     public class ListOptions: OutputParamsCollection {
         
+        /// Id of the group.
+        @OutputParam(key: "id")
+        public var project: InputParams.Project?
+        
         /// Returns merge requests which have been approved by all the users with the given id.
         @OutputParam(key: "approved_by_ids")
         public var approvedByIds: [Int]?
@@ -139,7 +143,7 @@ extension APIs.MergeRequests {
         @OutputParam(key: "wip")
         public var wip: InputParams.MilestoneWip?
         
-        public init(_ configure: ((ListOptions) -> Void)?) {
+        public init(project: InputParams.Project? = nil, _ configure: ((ListOptions) -> Void)?) {
             super.init()
             configure?(self)
         }

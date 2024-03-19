@@ -82,7 +82,7 @@ extension APIs {
         /// - Returns: found merge requests.
         public func list(project: InputParams.Project,
                          options: ((ListOptions) -> Void)? = nil) async throws -> GLResponse<[GLModel.MergeRequest]> {
-            let options = ListOptions(options)
+            let options = ListOptions(project: project, options)
             return try await gitlab.execute(.init(endpoint: URLs.merge_requests, options: options))
         }
         
