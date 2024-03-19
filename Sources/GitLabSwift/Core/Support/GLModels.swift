@@ -403,7 +403,7 @@ public extension GLModel {
         public let user_notes_count: Int
         public let discussion_locked: Bool?
         public let should_remove_source_branch: Bool?
-        public let force_remove_source_branch: Bool
+        public let force_remove_source_branch: Bool?
         public let web_url: URL
         public let time_stats: TimeStats?
     }
