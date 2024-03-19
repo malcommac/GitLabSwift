@@ -408,6 +408,7 @@ public extension GLModel {
         public let force_remove_source_branch: Bool?
         public let web_url: URL
         public let time_stats: TimeStats?
+        public let reviewers: [GLModel.User]?
     }
     
     struct MergeRequestApprovals: Codable {
