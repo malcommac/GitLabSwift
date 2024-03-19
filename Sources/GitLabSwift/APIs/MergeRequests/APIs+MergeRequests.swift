@@ -18,6 +18,7 @@ extension APIs.MergeRequests {
     
     fileprivate enum URLs: String, GLEndpoint {
         case merge_requests = "/merge_requests"
+        case merge_requests_project = "/projects/{id}/merge_requests"
         case merge_request_iid = "/projects/{id}/merge_requests/{merge_request_iid}"
         case partecipants = "/projects/{id}/merge_requests/{merge_request_iid}/participants"
         case reviewers = "/projects/{id}/merge_requests/{merge_request_iid}/reviewers"
@@ -77,13 +78,13 @@ extension APIs {
         /// [API Documentation](https://docs.gitlab.com/ee/api/merge_requests.html#list-project-merge-requests)
         ///
         /// - Parameters:
-        ///   - project: project.
+        ///   - project: project (if any). Otherwise list is global.
         ///   - options: options.
         /// - Returns: found merge requests.
-        public func list(project: InputParams.Project,
+        public func list(project: InputParams.Project?,
                          options: ((ListOptions) -> Void)? = nil) async throws -> GLResponse<[GLModel.MergeRequest]> {
             let options = ListOptions(project: project, options)
-            return try await gitlab.execute(.init(endpoint: URLs.merge_requests, options: options))
+            return try await gitlab.execute(.init(endpoint: (project == nil ? URLs.merge_requests : URLs.merge_requests_project), options: options))
         }
         
         /// Get all merge requests for this group and its subgroups.
