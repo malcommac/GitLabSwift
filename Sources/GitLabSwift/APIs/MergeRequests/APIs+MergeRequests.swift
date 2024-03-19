@@ -38,6 +38,7 @@ extension APIs.MergeRequests {
         case reset_spent_time = "/projects/{id}/merge_requests/{merge_request_iid}/reset_spent_time"
         case time_stats = "/projects/{id}/merge_requests/{merge_request_iid}/time_stats"
         case approvals = "/projects/{id}/merge_requests/{merge_request_iid}/approvals"
+        case discussions = "/projects/{id}/merge_requests/{merge_request_iid}/discussions"
 
         public var value: String { rawValue }
     }
@@ -134,6 +135,23 @@ extension APIs {
                 OutputParam(key: "merge_request_iid", mergeRequest)
             ])
             return try await gitlab.execute(.init(endpoint: URLs.partecipants, options: options))
+        }
+        
+        /// Get the discussions of a merge request.
+        ///
+        /// [API Documentation](https://docs.gitlab.com/ee/api/discussions.html)
+        ///
+        /// - Parameters:
+        ///   - mergeRequest: The internal ID of the merge request.
+        ///   - project: The ID or URL-encoded path of the project owned by the authenticated user.
+        /// - Returns: discussions
+        public func discussions(_ mergeRequest: Int,
+                                project: InputParams.Project) async throws -> GLResponse<[GLModel.Discussion]> {
+            let options = OutputParamsCollection([
+                OutputParam(key: "id", project),
+                OutputParam(key: "merge_request_iid", mergeRequest)
+            ])
+            return try await gitlab.execute(.init(endpoint: URLs.discussions, options: options))
         }
         
         /// Return informations about the group’s approval rules for a merge request.
