@@ -145,6 +145,7 @@ extension APIs.MergeRequests {
         
         public init(project: InputParams.Project? = nil, _ configure: ((ListOptions) -> Void)?) {
             super.init()
+            self.project = project
             configure?(self)
         }
         
