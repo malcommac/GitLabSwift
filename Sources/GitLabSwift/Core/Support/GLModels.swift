@@ -424,9 +424,9 @@ public extension GLModel {
         public let approvals_required: Int?
         public let approvals_left: Int?
         public let require_password_to_approve: Bool?
-        public let approved_by: [GLModel.User]?
-        public let suggested_approvers: [GLModel.User]?
-        public let approvers: [GLModel.User]?
+        public let approved_by: [ApprovalUser]?
+        public let suggested_approvers: [ApprovalUser]?
+        public let approvers: [ApprovalUser]?
         public let user_has_approved: Bool?
         public let user_can_approve: Bool?
         public let approval_rules_left: [ApprovalRule]?
@@ -435,7 +435,11 @@ public extension GLModel {
         public let multiple_approval_rules_available: Bool
         public let invalid_approvers_rules: [ApprovalRule]?
     }
-    
+        
+    struct ApprovalUser: Codable {
+        public let user: User
+    }
+        
     struct ApprovalRule: Codable {
         public let id: Int
         public let name: String
