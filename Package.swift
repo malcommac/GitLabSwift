@@ -15,7 +15,7 @@ let package = Package(
             targets: ["GitLabSwift"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/immobiliare/RealHTTP.git", from: "1.0.0"),
+        .package(url: "https://github.com/immobiliare/RealHTTP.git", branch: "fix/query-param-encoding"),
         .package(url: "https://github.com/immobiliare/Glider", from: "2.0.0")
     ],
     targets: [
