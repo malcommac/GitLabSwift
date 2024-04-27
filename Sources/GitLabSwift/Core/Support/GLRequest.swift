@@ -77,7 +77,7 @@ public struct GLRequest {
             $0.url = URL(string: fullURL)
             $0.method = httpMethod
             if !queryURLVariables.isEmpty {
-                $0.query = queryURLVariables
+                $0.percentEncodedQueryItems = queryURLVariables
             }
             if let body = jsonBody {
                 $0.body = body
