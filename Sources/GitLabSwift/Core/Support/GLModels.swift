@@ -138,7 +138,7 @@ public extension GLModel {
     
     struct Project: Codable {
         public let id: Int
-        public let description: String
+        public let description: String?
         public let name: String
         public let created_at: Date?
         public let default_branch: String?
