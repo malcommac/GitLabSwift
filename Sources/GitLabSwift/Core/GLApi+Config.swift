@@ -75,6 +75,6 @@ public struct Config {
     func authenticationToken() -> (key: String, value: String)? {
         guard let token else { return nil }
         
-        return ("PRIVATE-TOKEN", token)
+        return ("Authorization", "Bearer " + token)
     }
 }
